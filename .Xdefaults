@@ -1,0 +1,95 @@
+!
+! (c) Copyright 1995 TriGem Microsystem, Inc.
+! ALL RIGHTS RESERVED
+!
+! OSF/Motif Release 2.0
+! X Window System, Version 11, Release 6.3
+! defaults RESOURCE SPECIFICATIONS
+!
+!
+xterm*utf8:             1
+xterm*title:           	xterm
+xterm*scrollBar:        off
+xterm*foreground:       white
+xterm*background:       black
+!xterm*initailFont:             7x14
+!xterm*hangulFont:		-baekmuk-gulim-medium-*-*-*-20-*-*-*-*-0-*-*
+xterm*hangulKeyboard:		2
+xterm*saveLines:                3000
+xterm*reverseWrap:              true
+xterm*BorderColor:		gray
+xterm*sunFunctionKeys:			false
+xterm*highlightSelection:       true
+xterm*VT100*colorBDMode:        on
+xterm*VT100*colorBD:            steelblue1
+xterm*VT100*colorULMode:        on
+xterm*VT100*underLine:          off
+xterm*VT100*colorUL:            light pink
+xterm*VT100*dynamicColors:      on
+XTerm*vt100.renderFont:			true
+XTerm*visualBell:              false
+XTerm*visualBellDelay:            0
+XTerm*fastScroll:				 True
+!XTerm*color0: black
+!XTerm*color1: light pink
+!XTerm*color2: light goldenrod
+!XTerm*color3: steelblue1
+!XTerm*color4: light green
+!XTerm*color5: orange
+!XTerm*color6:    #008080
+!XTerm*color7:    #c0c0c0
+!XTerm*color8:    #808080
+!XTerm*color9:    #ff6060
+!XTerm*color10:   #00ff00
+!XTerm*color11:   #ffff00
+!XTerm*color12:   #8080ff
+!XTerm*color13:   #ff40ff
+!XTerm*color14:   #00ffff
+!XTerm*color15:   #ffffff
+xterm*color0:                 #2E3436
+xterm*color1:                 #CC0000
+xterm*color2:                 #4E9A06
+xterm*color3:                 #C4A000
+xterm*color4:                 #3465A4
+xterm*color5:                 #75507B
+xterm*color6:                 #06989A
+xterm*color7:                 #D3D7CF
+xterm*color8:                 #555753
+xterm*color9:                 #EF2929
+xterm*color10:                #8AE234
+xterm*color11:                #FCE94F
+xterm*color12:                #729FCF
+xterm*color13:                #AD7FA8
+xterm*color14:                #34E2E2
+xterm*color15:                #EEEEEC
+
+!XTerm*faceName: "Bitstream Vera Serif Mono"
+XTerm*faceName: "Luxi Mono"
+
+XTerm*faceSize:	12 
+!XTerm*faceName: Monospace:size=14
+!xterm*font:                 -misc-*-medium-r-*-*-14-*-*-*-*-*-iso10646-1
+!xterm*boldfont:             -misc-*-bold-r-*-*-14-*-*-*-*-*-iso10646-1
+!xterm*wideFont:             -misc-baekmuk dotum-medium-*-*-*-14-*-*-*-*-*-iso10646-1
+!xterm*VT100*translations:    #override \
+!    !Ctrl           <Btn4Down>: scroll-back(1,halfpage) \n\
+!    !Lock Ctrl      <Btn4Down>: scroll-back(1,halfpage) \n\
+!    !Lock @Num_Lock Ctrl    <Btn4Down>: scroll-back(1,halfpage) \n\
+!    ! @Num_Lock Ctrl    <Btn4Down>: scroll-back(1,halfpage) \n\
+!                <Btn4Down>: scroll-back(5,line) \n\
+!    !Ctrl           <Btn5Down>: scroll-forw(1,halfpage) \n\
+!    !Lock Ctrl      <Btn5Down>: scroll-forw(1,halfpage) \n\
+!    !Lock @Num_Lock Ctrl    <Btn5Down>: scroll-forw(1,halfpage) \n\
+!    ! @Num_Lock Ctrl    <Btn5Down>: scroll-forw(1,halfpage) \n\
+!                <Btn5Down>: scroll-forw(5,line)
+!
+!	<Key>Insert:		string(0x1b) string("[2;2~")\n\
+!	<Key>Delete:		string(0x1b) string("[3;2~")\n\
+!	<Key>Page_Up:		scroll-back(1,halfpage)\n\
+!	<Key>Page_Down:		scroll-forw(1,halfpage)\n\
+!	Shift <KeyPress> Insert:		insert-selection(CLIPBOARD, CUT_BUFFER0)\n\
+!	<Key>Insert:		\n\
+XTerm*VT100*translations:	#override \n\
+	<Key>Home:			string(0x1b) string("OH")\n\
+	<Key>End:			string(0x1b) string("OF")
+
