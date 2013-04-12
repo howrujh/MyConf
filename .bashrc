@@ -12,7 +12,7 @@ export XTERM=xterm
 
 ################ SVN ##############################################
 
-SVN_EDITOR=$HOME/bin/vim
+SVN_EDITOR=$HOME/local/bin/vim
 export SVN_EDITOR
 ############### CTRL + S command off ###########################
 stty ixany
@@ -27,15 +27,15 @@ alias grep='grep --color=always'
 alias grepr='source ~/bin/grepr.sh'
 alias greprs='source ~/bin/greprs.sh'
 
+alias less='less -R'
 
 alias c='clear'
 alias l='ls'
 alias p='pwd'
 alias sr='screen -S jh_session -X setenv DISPLAY "$DISPLAY"; screen -S jh_session -rd'
 
-#alias ta='source ~/bin/tmux_get_display.sh; /usr/bin/tmux attach-session -t  orz_jh || /usr/bin/tmux new-session -s orz_jh'
-alias ta='/usr/bin/tmux attach-session -t  orz_jh || /usr/bin/tmux new-session -s orz_jh'
-#alias td='source ~/bin/tmux_set_display.sh'
+alias ta='source ~/bin/tmux_get_display.sh; /usr/bin/tmux attach-session -t  orz_jh || /usr/bin/tmux new-session -s orz_jh'
+alias td='source ~/bin/tmux_set_display.sh'
 
 alias sb='source ~/.bashrc'
 

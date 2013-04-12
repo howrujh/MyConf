@@ -63,10 +63,15 @@ xterm*color13:                #AD7FA8
 xterm*color14:                #34E2E2
 xterm*color15:                #EEEEEC
 
-!XTerm*faceName: "Bitstream Vera Serif Mono"
-XTerm*faceName: "Luxi Mono"
 
-XTerm*faceSize:	12 
+Xtf.antialias: true
+
+!XTerm*faceName: "Bitstream Vera Serif Mono"
+XTerm*faceName: "Bitstream Vera Sans Mono"
+!XTerm*faceName: "NanumGothicCoding"
+!XTerm*faceName: "Luxi Mono"
+
+XTerm*faceSize:	11 
 !XTerm*faceName: Monospace:size=14
 !xterm*font:                 -misc-*-medium-r-*-*-14-*-*-*-*-*-iso10646-1
 !xterm*boldfont:             -misc-*-bold-r-*-*-14-*-*-*-*-*-iso10646-1
@@ -93,3 +98,40 @@ XTerm*VT100*translations:	#override \n\
 	<Key>Home:			string(0x1b) string("OH")\n\
 	<Key>End:			string(0x1b) string("OF")
 
+uxterm*color0:                 #2E3436
+uxterm*color1:                 #CC0000
+uxterm*color2:                 #4E9A06
+uxterm*color3:                 #C4A000
+uxterm*color4:                 #3465A4
+uxterm*color5:                 #75507B
+uxterm*color6:                 #06989A
+uxterm*color7:                 #D3D7CF
+uxterm*color8:                 #555753
+uxterm*color9:                 #EF2929
+uxterm*color10:                #8AE234
+uxterm*color11:                #FCE94F
+uxterm*color12:                #729FCF
+uxterm*color13:                #AD7FA8
+uxterm*color14:                #34E2E2
+uxterm*color15:                #EEEEEC
+UXTerm*faceName: "Bitstream Vera Sans Mono"
+UXTerm*faceSize:	12 
+
+rxvt*background:  #000000
+rxvt*foreground:  #7f7f7f
+rxvt*color0:      #000000
+rxvt*color1:      #9e1828
+rxvt*color2:      #aece92
+rxvt*color3:      #968a38
+rxvt*color4:      #414171
+rxvt*color5:      #963c59
+rxvt*color6:      #418179
+rxvt*color7:      #bebebe
+rxvt*color8:      #666666
+rxvt*color9:      #cf6171
+rxvt*color10:     #c5f779
+rxvt*color11:     #fff796
+rxvt*color12:     #4186be
+rxvt*color13:     #cf9ebe
+rxvt*color14:     #71bebe
+rxvt*color15:     #ffffff
