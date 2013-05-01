@@ -120,42 +120,69 @@ function! TEST()
 	echo getcwd()	
 endfunction
 
-nmap <F8> :call CurrentFunc()<CR>
-"nmap <F8> :call DebugPrintf()<CR>
+"nmap <F8> :call CurrentFunc()<CR>
+nmap <F8> :call DebugPrintf()<CR>
 
 func! CurrentFunc()
   " c-type code have remarkable definitions from other OO code.
-	let l:line = line(".")
-	let l:colum = col(".")
+	let l:line_bak = line(".")
+	let l:colum_bak = col(".")
     let l:extension = expand("%:e")
-	if l:extension == "c" || l:extension == "cpp" || l:extension == "cc"
-		let l:filename = expand("%:r")
-		exec "normal ][%b%b"
-		exec "normal v$\"ky"
-		let l:funcname = @k
-		let l:linenum = line(".")
-		call cursor(l:line, l:colum)
-		let @p="printf(\"===".l:filename."::".l:funcname."(line ".l:linenum.")\\n\");"
+	let l:error = 0
 
-		exec "normal o"
-		exec "normal \"pp" 
-	 endif
+	echohl WarningMsg
+
+    if l:extension == "c" || l:extension == "cpp" || l:extension == "cc" || l:extension == "h" || l:extension == "hh"
+		let l:file_name = expand("%:r")
+		exec "normal ][%b"
+		let l:line_cur= line(".")
+		let l:is_class= stridx(getline("."),"::")
+
+		if l:is_class >= 0 "the function in the class
+			let l:is_destructor= stridx(getline("."),"~")
+			call cursor(l:line_cur, l:is_class)
+			let l:class_name=expand("<cword>")
+			call cursor(l:line_cur, l:is_class+3)
+			let l:func_name=expand("<cword>")
+
+			if l:is_destructor >= 0
+				let @d="printf(\"===".l:class_name."::~".l:func_name."(line:\"%d\")\\n\",__LINE__);"
+			else
+				let @d="printf(\"===".l:class_name."::".l:func_name."(line:\"%d\")\\n\",__LINE__);"
+			endif
+	
+		else
+			let l:is_function= stridx(getline("."),"(")
+
+			if l:is_function >= 0
+				call cursor(l:line_cur, l:is_function)
+				let l:func_name=expand("<cword>")
+				let @d="printf(\"===".l:func_name."(line:\"%d\")\\n\",__LINE__);"
+			else
+				echo "Error! Can not extract the function name"
+				let	l:error =1
+			endif
+		endif	
+
+		call cursor(l:line_bak, l:colum_bak)
+		if l:error == 0
+			exec "normal o"
+			exec "normal \"dp" 
+		endif
+
+	else
+		echo "Error! This type of file is not surpport yet"
+	endif
+	echohl None
 endfunc " CurrentFunc
 
 func! DebugPrintf()
-
-    let l:extension = expand("%:e")
-    if l:extension == "c" || l:extension == "cpp" || l:extension == "cc" || l:extension == "h" || l:extension == "hh"
-		exec "normal :TlistUpdate<CR>"
-		let l:filename = expand("%:r")
-		let l:funcname = Tlist_Get_Tagname_By_Line()
-		let l:linenum = line(".")
-		let @k="printf(\"===".l:filename."::".l:funcname."(line ".l:linenum.")\\n\");"
-		exec "normal o"
-		exec "normal \"kp" 
-	endif
-
+	let @d="printf(\"\\x1b[32m===%s (line: %d)\\x1b[0m\\n\",__PRETTY_FUNCTION__,__LINE__);"
+	exec "normal o"
+	exec "normal \"dp"
 endfunc "DebugPrintf()
+
+nmap <silent>  ;p :call DebugPrintf()<CR>
 
 function! TEST1()
 	echo "22"
@@ -673,3 +700,4 @@ nmap OB 10<C-W>-
 "current time
 "inoremap <F7> <C-R>=strftime("%y%m%d_%H%M%S")<CR>
 " :put a, :1, 5 yank a
+"	let l:split_word= split(getline("."), '::\zs')		
