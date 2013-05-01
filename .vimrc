@@ -53,7 +53,7 @@ filetype plugin indent on     " required! for vundle
 " NOTE: This Script Required Install VUNDLE Plugin
 " VUNDLE INSTALL :
 " git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
-"============ VUNDLE  =================================
+"------------------------------------------------------
 set rtp+=~/.vim/bundle/vundle/
 
 call vundle#rc()
@@ -82,7 +82,7 @@ if version >= 702
 endif
 
 if version >= 700
-"	Bundle 'OmniCppComplete'
+Bundle 'OmniCppComplete'
 Bundle 'DirDiff.vim'
 Bundle 'Align'
 Bundle 'DoxygenToolkit.vim'
@@ -106,12 +106,57 @@ endif
 "
 " see :h vundle for more details or wiki for FAQ
 " NOTE: comments after Bundle command are not allowed..
+
+"============ VUNDLE END  ==============================
+
+
 colorscheme tango
 let g:bg_tango = 1
+
+"--------- Omni --------------
+set completeopt-=preview
 "============ TEST ====================================
 function! TEST()
 	echo getcwd()	
 endfunction
+
+nmap <F8> :call CurrentFunc()<CR>
+"nmap <F8> :call DebugPrintf()<CR>
+
+func! CurrentFunc()
+  " c-type code have remarkable definitions from other OO code.
+	let l:line = line(".")
+	let l:colum = col(".")
+    let l:extension = expand("%:e")
+	if l:extension == "c" || l:extension == "cpp" || l:extension == "cc"
+		let l:filename = expand("%:r")
+		exec "normal ][%b%b"
+		exec "normal v$\"ky"
+		let l:funcname = @k
+		let l:linenum = line(".")
+		call cursor(l:line, l:colum)
+		let @p="printf(\"===".l:filename."::".l:funcname."(line ".l:linenum.")\\n\");"
+
+		exec "normal o"
+		exec "normal \"pp" 
+	 endif
+endfunc " CurrentFunc
+
+func! DebugPrintf()
+
+    let l:extension = expand("%:e")
+    if l:extension == "c" || l:extension == "cpp" || l:extension == "cc" || l:extension == "h" || l:extension == "hh"
+		exec "normal :TlistUpdate<CR>"
+		let l:filename = expand("%:r")
+		let l:funcname = Tlist_Get_Tagname_By_Line()
+		let l:linenum = line(".")
+		let @k="printf(\"===".l:filename."::".l:funcname."(line ".l:linenum.")\\n\");"
+		exec "normal o"
+		exec "normal \"kp" 
+	endif
+
+endfunc "DebugPrintf()
+
 function! TEST1()
 	echo "22"
 	let a =system('xclip -o')
@@ -125,7 +170,6 @@ function! TEST1()
 	endif
 	
 endfunction
-nmap <F8>  :call TEST1()<CR>
 
 
 
@@ -183,7 +227,6 @@ function! StartUpFunction()
 		"checking X connecton
 		if filereadable('/home2/jinhwan/bin/tmux_set_display.sh')
 			call system('source /home2/jinhwan/bin/tmux_set_display.sh')
-			echo "tddddddddd"
 		else
 			echo "cant read"
 		endif
@@ -324,8 +367,8 @@ function! CscopeDBLoad( NewDB, IsReload )
 			let g:DBPath ="/home2/jinhwan/xm4k/xm4k_cscope.out"
 			set tags=/home2/jinhwan/xm4k/xm4k_tags
 		elseif ( a:NewDB == "abr" || a:NewDB == "sd2k" )
-			let g:DBPath ="/home2/jinhwan/abr/cscope.out"
-			set tags=/home2/jinhwan/abr/tags
+			let g:DBPath ="/home2/jinhwan/abr/sd2k_cscope.out"
+			set tags=/home2/jinhwan/abr/sd2k_tags
 		elseif ( a:NewDB == "tp1k" )
 			let g:DBPath ="/home2/jinhwan/tp1k/cscope.out"
 			set tags=/home2/jinhwan/tp1k/tags
@@ -345,8 +388,8 @@ function! CscopeDBLoad( NewDB, IsReload )
 			let g:DBPath ="/home2/jinhwan/xm4k/sd4k_cscope.out"
 			set tags=/home2/jinhwan/xm4k/sd4k_tags
 		elseif stridx(g:CurrentDir, "abr" ) >= 1
-			let g:DBPath ="/home2/jinhwan/abr/cscope.out"
-			set tags=/home2/jinhwan/abr/tags
+			let g:DBPath ="/home2/jinhwan/abr/sd2k_cscope.out"
+			set tags=/home2/jinhwan/abr/sd2k_tags
 		elseif stridx(g:CurrentDir, "libmpeg2-0.5.1" ) >= 1
 			let g:DBPath ="/home2/jinhwan/work/libmpeg2-0.5.1/cscope.out"
 			set tags=/home2/jinhwan/work/libmpeg2-0.5.1/tags
@@ -455,7 +498,7 @@ function! AutoHighlightToggle()
 endfunction
 
 if version >= 702
-	nmap <silent> 1 :Mark <C-R>=expand("<cword>")<CR><CR>
+	nmap <silent> m :Mark <C-R>=expand("<cword>")<CR><CR>
 endif
 "========================DOXYGEN========================
 nmap <silent> ;da  :DoxAuthor<CR>                                                                                                                                                                                                                                                                                                                           
@@ -522,11 +565,9 @@ nmap <C-F9> <Down>[{<Down><Home>v]}<Up><End>zf
 "F10
 "F11
 nmap <C-F11> <Esc>:tabp<CR>
-nmap 9 <Esc>:tabp<CR>
 imap <C-F11> <Esc>:tabp<CR>
 "F12
 nmap <C-F12> <Esc>:tabn<CR>
-nmap 0 <Esc>:tabn<CR>
 imap <C-F12> <Esc>:tabn<CR>
 
 "------Meta + F? -------
