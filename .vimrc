@@ -36,7 +36,7 @@ set ts=4
 set sw=4
 set nobackup
 "current file directory 
-set autochdir
+"set autochdir
 " Add full file path to your existing statusline
 "set statusline+=%F
 set laststatus=2
@@ -59,7 +59,9 @@ set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 "------ let Vundle manage Vundle--------
 " required! 
-Bundle 'gmarik/vundle'
+if version >= 600
+	Bundle 'gmarik/vundle'
+endif
 "------ My Bundles here ----------------
 if version >= 702
 	Bundle 'howrujh/Mark.git'
@@ -87,6 +89,7 @@ Bundle 'DirDiff.vim'
 Bundle 'Align'
 Bundle 'DoxygenToolkit.vim'
 Bundle 'bufexplorer.zip'
+Bundle 'vcscommand.vim'
 endif
 
 
@@ -120,8 +123,8 @@ function! TEST()
 	echo getcwd()	
 endfunction
 
-"nmap <F8> :call CurrentFunc()<CR>
-nmap <F8> :call DebugPrintf()<CR>
+nmap <F5> :call CurrentFunc()<CR>
+"nmap <F8> :call DebugPrintf()<CR>
 
 func! CurrentFunc()
   " c-type code have remarkable definitions from other OO code.
@@ -146,9 +149,9 @@ func! CurrentFunc()
 			let l:func_name=expand("<cword>")
 
 			if l:is_destructor >= 0
-				let @d="printf(\"===".l:class_name."::~".l:func_name."(line:\"%d\")\\n\",__LINE__);"
+				let @d="printf(\"\\x1b[32m===".l:class_name."::~".l:func_name." (%d)\\x1b[0m\\n\",__LINE__);"
 			else
-				let @d="printf(\"===".l:class_name."::".l:func_name."(line:\"%d\")\\n\",__LINE__);"
+				let @d="printf(\"\\x1b[32m===".l:class_name."::".l:func_name." (%d)\\x1b[0m\\n\",__LINE__);"
 			endif
 	
 		else
@@ -157,7 +160,7 @@ func! CurrentFunc()
 			if l:is_function >= 0
 				call cursor(l:line_cur, l:is_function)
 				let l:func_name=expand("<cword>")
-				let @d="printf(\"===".l:func_name."(line:\"%d\")\\n\",__LINE__);"
+				let @d="printf(\"\\x1b[32m===".l:func_name." (%d)\\x1b[0m\\n\",__LINE__);"
 			else
 				echo "Error! Can not extract the function name"
 				let	l:error =1
@@ -430,7 +433,8 @@ function! CscopeDBLoad( NewDB, IsReload )
 	endif
 
 endfunction
-nmap <silent>  ;c  :call CscopeDBLoad('',1)<CR>
+
+"nmap <silent>  ;c  :call CscopeDBLoad('',1)<CR>
 
 command! -nargs=* LC call CscopeDBLoad( '<args>', 0 )
 command! -nargs=* RC call CscopeDBLoad( '<args>', 1 )
@@ -525,7 +529,7 @@ function! AutoHighlightToggle()
 endfunction
 
 if version >= 702
-	nmap <silent> m :Mark <C-R>=expand("<cword>")<CR><CR>
+	nmap <silent> ;1 :Mark <C-R>=expand("<cword>")<CR><CR>
 endif
 "========================DOXYGEN========================
 nmap <silent> ;da  :DoxAuthor<CR>                                                                                                                                                                                                                                                                                                                           
@@ -550,6 +554,20 @@ if !hasmapto('<Plug>DWMFocus')
   nmap <C-@> <Plug>DWMFocus
   nmap <C-Space> <Plug>DWMFocus
 endif
+if !hasmapto('<Plug>DWMNew')
+  nmap <C-W>n <Plug>DWMNew
+endif
+if !hasmapto('<Plug>DWMClose')
+  nmap <C-W>c <Plug>DWMClose
+endif
+
+"============== VCSCOMMAND =========================
+command! -nargs=* SVNDiff normal :VCSVimDiff <args><CR>
+command! -nargs=* SVNBlame normal :VCSBlame <args><CR>
+command! -nargs=* SVNLog normal :VCSLog <args><CR>
+command! -nargs=* SVNStatus normal :VCSStatus <args><CR>
+
+
 "============== TagList ============================
 nmap <silent> ;t :TlistToggle<CR>
 "========= DIR DIFF =====================================
@@ -566,6 +584,11 @@ let mapleader = '\'
 nmap <silent>  ;sv  :source ~/.vimrc<CR> :call UserMSG("Vimrc file reloaded!")<CR>
 nmap <silent>  ;ww  :w<CR>
 nmap <silent>  ;qq  :q!<CR>
+
+nmap <C-W>! :tab split<CR> :tabm 99<CR>
+command! TC exec "normal :tabclose<CR>"
+command! -nargs=* TM exec "normal :tabmove ".'<args>'."<CR>"
+
 command! -nargs=* SS call SessionManager('SAVE', '<args>' ) 
 command! -nargs=* LS call SessionManager('LOAD', '<args>' ) 
 command! -nargs=* LLS call SessionManager('LOAD', 'last_exit_backup' ) 

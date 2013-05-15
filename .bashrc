@@ -12,8 +12,10 @@ export XTERM=xterm
 
 ################ SVN ##############################################
 
-SVN_EDITOR=$HOME/local/bin/vim
+SVN_EDITOR="$HOME/local/bin/vim -X"
+GIT_EDITOR="$HOME/local/bin/vim -X"
 export SVN_EDITOR
+export GIT_EDITOR
 ############### CTRL + S command off ###########################
 stty ixany
 stty ixoff -ixon
@@ -25,6 +27,7 @@ stty ixoff -ixon
 ######### alias #############################################
 alias grep='grep --color=always'
 alias grepr='source ~/bin/grepr.sh'
+alias g='source ~/bin/grepr.sh'
 alias greprs='source ~/bin/greprs.sh'
 
 alias less='less -R'
@@ -74,7 +77,7 @@ alias mkcscope='source ~/bin/cscope_maker.sh'
 
 
 . ~/abr/bin/abr_bashrc
-. ~/xm4k/bin/abr_bashrc -d ~/xm4k -p "sd4k xm4k hd4k"
+. ~/xm4k/bin/abr_bashrc -d ~/xm4k -p "sd4k xm40 xm4k hd4k"
 
 #PROJECT_BASE=~/xm4k PROJECTS="xm40 xm41 hd4k sd4k" . ~/xm4k/bin/abr_bashrc
 #. ~/tp1k/bin/x3k_bashrc
