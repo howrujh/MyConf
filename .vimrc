@@ -123,6 +123,14 @@ function! TEST()
 	echo getcwd()	
 endfunction
 
+function! CscopeWM( FunctionName, option)
+	call DWM_Stack(1)
+	call IpcFuncDetector( a:FunctionName, a:option )
+	call DWM_Focus()
+
+endfunction
+nmap <F8> :call  TEST2( expand("<cword>") , "s")<CR>
+
 nmap <F5> :call CurrentFunc()<CR>
 "nmap <F8> :call DebugPrintf()<CR>
 
@@ -218,7 +226,7 @@ endfunction
 "=========== AUTOCMD =====================================
 if has("autocmd")
 	"autocmd SessionLoadPost * source ~/.vim/syntax/tango.vim
-	autocmd VimLeavePre * call SessionManager('SAVE', 'last_exit_backup')
+	autocmd VimLeave * call SessionManager('SAVE', 'last_exit_backup')
 	"autocmd CursorHold * call AutoSessionSave()
 	"autocmd CursorHoldI * call AutoSessionSave()
 	"autocmd VimEnter * call CscopeDBload(0)
@@ -368,15 +376,14 @@ function! IpcFuncDetector( FunctionName, option )
 	endif
 endfunction
 
-nmap <C-\>g :call IpcFuncDetector( expand("<cword>") , "g")<CR>
-nmap <C-\>s :call IpcFuncDetector( expand("<cword>") , "s")<CR>
-nmap <C-\>c :call IpcFuncDetector( expand("<cword>") , "c")<CR>
-nmap <C-\>t :call IpcFuncDetector( expand("<cword>") , "t")<CR>
-nmap <C-\>e :call IpcFuncDetector( expand("<cword>") , "e")<CR>
-nmap <C-\>f :call IpcFuncDetector( expand("<cword>") , "f")<CR>
-nmap <C-\>i :call IpcFuncDetector( expand("<cword>") , "i")<CR>
-nmap <C-\>d :call IpcFuncDetector( expand("<cword>") , "d")<CR>
-
+nmap <C-\>g :call CscopeWM( expand("<cword>") , "g")<CR>
+nmap <C-\>s :call CscopeWM( expand("<cword>") , "s")<CR>
+nmap <C-\>c :call CscopeWM( expand("<cword>") , "c")<CR>
+nmap <C-\>t :call CscopeWM( expand("<cword>") , "t")<CR>
+nmap <C-\>e :call CscopeWM( expand("<cword>") , "e")<CR>
+nmap <C-\>f :call CscopeWM( expand("<cword>") , "f")<CR>
+nmap <C-\>i :call CscopeWM( expand("<cword>") , "i")<CR>
+nmap <C-\>d :call CscopeWM( expand("<cword>") , "d")<CR>
 
 
 function! CscopeDBLoad( NewDB, IsReload )
@@ -566,6 +573,10 @@ command! -nargs=* SVNDiff normal :VCSVimDiff <args><CR>
 command! -nargs=* SVNBlame normal :VCSBlame <args><CR>
 command! -nargs=* SVNLog normal :VCSLog <args><CR>
 command! -nargs=* SVNStatus normal :VCSStatus <args><CR>
+ca svndiff VCSVimDiff
+ca svnblame VCSBlame
+ca svnblame VCSBLog
+ca svnstatus VCSStatus
 
 
 "============== TagList ============================
@@ -583,7 +594,8 @@ let mapleader = '\'
 "nnoremap * :keepjumps normal *''<CR>
 nmap <silent>  ;sv  :source ~/.vimrc<CR> :call UserMSG("Vimrc file reloaded!")<CR>
 nmap <silent>  ;ww  :w<CR>
-nmap <silent>  ;qq  :q!<CR>
+nmap <silent>  ;qq  :exec DWM_Close()<CR>
+nmap <silent>  ;nn  :call DWM_New()<CR>
 
 nmap <C-W>! :tab split<CR> :tabm 99<CR>
 command! TC exec "normal :tabclose<CR>"
@@ -724,3 +736,7 @@ nmap OB 10<C-W>-
 "inoremap <F7> <C-R>=strftime("%y%m%d_%H%M%S")<CR>
 " :put a, :1, 5 yank a
 "	let l:split_word= split(getline("."), '::\zs')		
+"	let l:buf2 = bufnr('%')
+"	let l:win2 = winnr()
+"	exec l:win1 . "wincmd w"
+"	echo l:buf1." ".l:win1." ".l:buf2." ".l:win2
