@@ -76,11 +76,14 @@ endif
 "Bundle 'tpope/vim-rails.git'
 if version >= 700
 	Bundle 'spolu/dwm.vim.git'
+	Bundle 'oplatek/Conque-Shell'
+	
 endif
 "-------vim-scripts repos--------------
 if version >= 702
 	Bundle 'L9'
 	Bundle 'FuzzyFinder'
+	Bundle 'ZoomWin'
 endif
 
 if version >= 700
@@ -123,13 +126,6 @@ function! TEST()
 	echo getcwd()	
 endfunction
 
-function! CscopeWM( FunctionName, option)
-	call DWM_Stack(1)
-	call IpcFuncDetector( a:FunctionName, a:option )
-	call DWM_Focus()
-
-endfunction
-nmap <F8> :call  TEST2( expand("<cword>") , "s")<CR>
 
 nmap <F5> :call CurrentFunc()<CR>
 "nmap <F8> :call DebugPrintf()<CR>
@@ -232,6 +228,7 @@ if has("autocmd")
 	"autocmd VimEnter * call CscopeDBload(0)
 "	autocmd VimEnter * call CscopeDBLoad('',0)
 	autocmd VimEnter * call StartUpFunction()
+	autocmd VimEnter * let g:StartPath= getcwd()
 endif
 "=========== StartUp Function =========================== 
 
@@ -357,22 +354,50 @@ command! -nargs=* DR call DiffRegs(@b,@a)
 command! -nargs=* ED call EndDiffs()
 "============ CSCOPE/ CTAGS===============================
 
+nmap <silent>  ;cd :call DirectoryChanger('0')<CR>
+command! -nargs=* CD call DirectoryChanger( '<args>' )
+function! DirectoryChanger( arg )
+
+	exe ':lcd %:h'
+
+endfunction
+
+function! CscopeWM( FunctionName, option)
+	let l:prev_win = winnr()
+	call DWM_Stack(1)
+	"call IpcFuncDetector( a:FunctionName, a:option )
+	let l:result= IpcFuncDetector( a:FunctionName, a:option )
+
+	call DWM_Focus()
+	if ( l:result == -1 )
+		exec l:prev_win . "wincmd w"
+	endif
+
+	return l:result
+endfunction
+
 function! IpcFuncDetector( FunctionName, option )
 
-	let g:IsIpc=strpart(a:FunctionName,0,3)
-	let g:IsOn=strpart(a:FunctionName,0,2)
-	
-	if ( g:IsIpc == "Ipc" && a:option == 'g' )
-		let g:IpcFunctionName = strpart(a:FunctionName,3)
-		echo ""
-		execute 'scs find 'a:option "On".g:IpcFunctionName	
-	elseif ( g:IsOn == "On" && a:option == 'c' )
-		let g:IpcFunctionName = strpart(a:FunctionName,2)
-		echo ""
-		execute 'scs find 'a:option "Ipc".g:IpcFunctionName	
+		
+	if ( a:FunctionName != "" )
+		let g:IsIpc=strpart(a:FunctionName,0,3)
+		let g:IsOn=strpart(a:FunctionName,0,2)
+		
+		if ( g:IsIpc == "Ipc" && a:option == 'g' )
+			let g:IpcFunctionName = strpart(a:FunctionName,3)
+			echo ""
+			execute 'scs find 'a:option "On".g:IpcFunctionName	
+		elseif ( g:IsOn == "On" && a:option == 'c' )
+			let g:IpcFunctionName = strpart(a:FunctionName,2)
+			echo ""
+			execute 'scs find 'a:option "Ipc".g:IpcFunctionName	
+		else
+			echo ""
+			execute 'scs find 'a:option a:FunctionName 	
+		endif
+		return 0
 	else
-		echo ""
-		execute 'scs find 'a:option a:FunctionName 	
+		return -1
 	endif
 endfunction
 
@@ -409,7 +434,7 @@ function! CscopeDBLoad( NewDB, IsReload )
 		elseif ( a:NewDB == "tp1k" )
 			let g:DBPath ="/home2/jinhwan/tp1k/cscope.out"
 			set tags=/home2/jinhwan/tp1k/tags
-		elseif ( a:NewDB == "tp1k" )
+		elseif ( a:NewDB == "libmpeg2" )
 			let g:DBPath ="/home2/jinhwan/work/libmpeg2-0.5.1/cscope.out"
 			set tags=/home2/jinhwan/work/libmpeg2-0.5.1/tags
 		else
@@ -418,15 +443,15 @@ function! CscopeDBLoad( NewDB, IsReload )
 
 	else
 		let g:CurrentDir = getcwd()
-		if stridx(g:CurrentDir, "tp1k") >= 1
-			let g:DBPath ="/home2/jinhwan/tp1k/cscope.out"
-			set tags"home2/jinhwan/tp1k/tags
-		elseif stridx(g:CurrentDir, "xm4k") >= 1
+		if stridx(g:CurrentDir, "xm4k") >= 1
 			let g:DBPath ="/home2/jinhwan/xm4k/sd4k_cscope.out"
 			set tags=/home2/jinhwan/xm4k/sd4k_tags
 		elseif stridx(g:CurrentDir, "abr" ) >= 1
 			let g:DBPath ="/home2/jinhwan/abr/sd2k_cscope.out"
 			set tags=/home2/jinhwan/abr/sd2k_tags
+		elseif stridx(g:CurrentDir, "tp1k") >= 1
+			let g:DBPath ="/home2/jinhwan/tp1k/cscope.out"
+			set tags="home2/jinhwan/tp1k/tags
 		elseif stridx(g:CurrentDir, "libmpeg2-0.5.1" ) >= 1
 			let g:DBPath ="/home2/jinhwan/work/libmpeg2-0.5.1/cscope.out"
 			set tags=/home2/jinhwan/work/libmpeg2-0.5.1/tags
@@ -539,7 +564,8 @@ if version >= 702
 	nmap <silent> ;1 :Mark <C-R>=expand("<cword>")<CR><CR>
 endif
 "========================DOXYGEN========================
-nmap <silent> ;da  :DoxAuthor<CR>                                                                                                                                                                                                                                                                                                                           
+nmap <silent> ;da  :DoxAuthor<CR>
+nmap <silent> ;dm  :call AddModifySection()<CR>
 nmap <silent> ;df  :Dox<CR>
 let g:DoxygenToolkit_briefTag_funcName = "yes"
 let g:DoxygenToolkit_authorName = "jinhwan <jinhwan@pinetron.com>"
@@ -573,6 +599,7 @@ command! -nargs=* SVNDiff normal :VCSVimDiff <args><CR>
 command! -nargs=* SVNBlame normal :VCSBlame <args><CR>
 command! -nargs=* SVNLog normal :VCSLog <args><CR>
 command! -nargs=* SVNStatus normal :VCSStatus <args><CR>
+
 ca svndiff VCSVimDiff
 ca svnblame VCSBlame
 ca svnblame VCSBLog
@@ -600,6 +627,8 @@ nmap <silent>  ;nn  :call DWM_New()<CR>
 nmap <C-W>! :tab split<CR> :tabm 99<CR>
 command! TC exec "normal :tabclose<CR>"
 command! -nargs=* TM exec "normal :tabmove ".'<args>'."<CR>"
+"command! -nargs=* TERM exec "normal :ConqueTerm ".'<args>'."<CR>"
+command! -nargs=* TERM exec "normal :ConqueTerm bash<CR>"
 
 command! -nargs=* SS call SessionManager('SAVE', '<args>' ) 
 command! -nargs=* LS call SessionManager('LOAD', '<args>' ) 
@@ -740,3 +769,5 @@ nmap OB 10<C-W>-
 "	let l:win2 = winnr()
 "	exec l:win1 . "wincmd w"
 "	echo l:buf1." ".l:win1." ".l:buf2." ".l:win2
+
+"com! -bang -range -nargs=* Align <line1>,<line2>call Align#Align(<bang>0,<q-args>)

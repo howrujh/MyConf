@@ -37,7 +37,8 @@ alias l='ls'
 alias p='pwd'
 alias sr='screen -S jh_session -X setenv DISPLAY "$DISPLAY"; screen -S jh_session -rd'
 
-alias ta='source ~/bin/tmux_get_display.sh; /usr/bin/tmux attach-session -t  orz_jh || /usr/bin/tmux new-session -s orz_jh'
+alias ta='source ~/bin/tmux_get_display.sh; ~/local/bin/tmux attach-session -t  orz_jh || ~/local/bin/tmux new-session -s orz_jh'
+#alias ta='source ~/bin/tmux_get_display.sh; /usr/bin/tmux attach-session -t  orz_jh || /usr/bin/tmux new-session -s orz_jh'
 alias td='source ~/bin/tmux_set_display.sh'
 
 alias sb='source ~/.bashrc'

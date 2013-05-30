@@ -64,7 +64,7 @@ xterm*color14:                #34E2E2
 xterm*color15:                #EEEEEC
 
 
-Xtf.antialias: true
+Xtf.antialias: false
 
 !XTerm*faceName: "Bitstream Vera Serif Mono"
 XTerm*faceName: "Bitstream Vera Sans Mono"
