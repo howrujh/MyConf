@@ -116,11 +116,15 @@ endif
 "============ VUNDLE END  ==============================
 
 
+"============ TANGO COLOR SCHEME ======================
 colorscheme tango
 let g:bg_tango = 1
+"============ TANGO COLOR SCHEME END ==================
 
-"--------- Omni --------------
+"============ OMNICPPCOMPLETE =========================
 set completeopt-=preview
+"============ OMNICPPCOMPLETE END =====================
+"
 "============ TEST ====================================
 function! TEST()
 	echo getcwd()	
