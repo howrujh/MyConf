@@ -1,9 +1,44 @@
-if filereadable("/etc/vimrc")
+"if filereadable("/etc/vimrc")
+if 0
 	source /etc/vimrc
 else
+	let g:os = "null"
+	let g:uname = "null"
+	if has("unix")
+		let g:os = "unix"
+		let g:uname = system("uname")
+	elseif has("win32")
+		let g:os = "win32"
+	else
+		let g:os = "unknown"
+	endif
+
 	if v:lang =~ "utf8$" || v:lang =~ "UTF-8$"
 	   set fileencodings=utf-8,latin1
 	endif
+
+	set nocompatible	" Use Vim defaults (much better!)
+	set bs=indent,eol,start		" allow backspacing over everything in insert mode
+	set viminfo='20,\"50	" read/write a .viminfo file, don't store more
+				" than 50 lines of registers
+	set history=50		" keep 50 lines of command line history
+	set ruler
+
+	if has("cscope") && filereadable("/usr/bin/cscope")
+		set csprg=/usr/bin/cscope
+		set csto=0
+		set cst
+		set nocsverb
+		" add any database in current directory
+		"    " else add database pointed to by environment
+		if $CSCOPE_DB != ""
+			cs add $CSCOPE_DB
+		elseif filereadable("cscope.out")
+			cs add cscope.out
+		endif
+		set csverb
+	endif
+
 	" Switch syntax highlighting on, when the terminal has colors
 	" Also switch on highlighting the last used search pattern. 
 	if &t_Co > 2 || has("gui_running")
@@ -17,12 +52,6 @@ else
 		 set t_Sf=[3%dm
 	endif
 
-	set nocompatible	" Use Vim defaults (much better!)
-	set bs=indent,eol,start		" allow backspacing over everything in insert mode
-	set viminfo='20,\"50	" read/write a .viminfo file, don't store more
-				" than 50 lines of registers
-	set history=50		" keep 50 lines of command line history
-	set ruler
 endif
 "======= VIM OPTION ====================================
 
@@ -34,7 +63,6 @@ set cursorline
 set tabstop=4
 set ts=4
 set sw=4
-set nobackup
 "current file directory 
 "set autochdir
 " Add full file path to your existing statusline
@@ -43,62 +71,79 @@ set laststatus=2
 
 
 
-
 filetype off "required for vundle
 filetype plugin on
 filetype plugin indent on     " required! for vundle
 
+if( g:os == "unix" )
+	let g:vundle_path = $HOME."/.vim/bundle/vundle"
+
+	let g:vim_tmp_path = $HOME."/.vim/tmp"
+elseif( g:os == "win32" )
+	let g:vim_tmp_path = $HOMEDRIVE.$HOMEPATH."\\Documents\\vim_tmp"
+endif
+
+if isdirectory( g:vim_tmp_path ) == 0
+	call system( "mkdir ".g:vim_tmp_path )
+endif
+
+exec("set dir =".g:vim_tmp_path)
+exec("set bdir =".g:vim_tmp_path)
 
 "============ VUNDLE  =================================
 " NOTE: This Script Required Install VUNDLE Plugin
 " VUNDLE INSTALL :
 " git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
 "------------------------------------------------------
-set rtp+=~/.vim/bundle/vundle/
+if isdirectory( g:vundle_path )
 
-call vundle#rc()
-"------ let Vundle manage Vundle--------
-" required! 
-if version >= 600
-	Bundle 'gmarik/vundle'
-endif
-"------ My Bundles here ----------------
-if version >= 702
-	Bundle 'howrujh/Mark.git'
-endif
-"------ original repos on github-------
-if version >= 703
-"	Bundle 'Valloric/YouCompleteMe.git'
-endif
-"Bundle 'tpope/vim-fugitive'
-"Bundle 'Lokaltog/vim-easymotion'
-"Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
-"Bundle 'tpope/vim-rails.git'
-if version >= 700
-	Bundle 'spolu/dwm.vim.git'
-	Bundle 'oplatek/Conque-Shell'
-	
-endif
-"-------vim-scripts repos--------------
-if version >= 702
-	Bundle 'L9'
-	Bundle 'FuzzyFinder'
-	Bundle 'ZoomWin'
-endif
+	set rtp+=~/.vim/bundle/vundle/
 
-if version >= 700
-Bundle 'OmniCppComplete'
-Bundle 'DirDiff.vim'
-Bundle 'Align'
-Bundle 'DoxygenToolkit.vim'
-Bundle 'bufexplorer.zip'
-Bundle 'vcscommand.vim'
-endif
+	call vundle#rc()
+	"------ let Vundle manage Vundle--------
+	" required! 
+	if version >= 600
+		Bundle 'gmarik/vundle'
+	endif
+	"------ My Bundles here ----------------
+	if version >= 702
+		Bundle 'howrujh/Mark.git'
+	endif
+	"------ original repos on github-------
+	if version >= 703
+	"	Bundle 'Valloric/YouCompleteMe.git'
+	endif
+	"Bundle 'tpope/vim-fugitive'
+	"Bundle 'Lokaltog/vim-easymotion'
+	"Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
+	"Bundle 'tpope/vim-rails.git'
+	if version >= 700
+		Bundle 'spolu/dwm.vim.git'
+		Bundle 'oplatek/Conque-Shell'
+		
+	endif
+	"-------vim-scripts repos--------------
+	if version >= 702
+		Bundle 'L9'
+		Bundle 'FuzzyFinder'
+		Bundle 'ZoomWin'
+	endif
+
+	if version >= 700
+	Bundle 'OmniCppComplete'
+	Bundle 'DirDiff.vim'
+	Bundle 'Align'
+	Bundle 'DoxygenToolkit.vim'
+	Bundle 'bufexplorer.zip'
+	Bundle 'vcscommand.vim'
+	endif
 
 
-if version >= 600
-Bundle 'taglist.vim'
-Bundle 'Tango-colour-scheme'
+	if version >= 600
+	Bundle 'taglist.vim'
+	Bundle 'Tango-colour-scheme'
+	endif
+
 endif
 "------ non github repos -------------
 "Bundle 'git://git.wincent.com/command-t.git'
@@ -119,17 +164,20 @@ endif
 "============ TANGO COLOR SCHEME ======================
 colorscheme tango
 let g:bg_tango = 1
+hi CursorLine term=none cterm=bold ctermbg=none
 "============ TANGO COLOR SCHEME END ==================
+
 
 "============ OMNICPPCOMPLETE =========================
 set completeopt-=preview
 "============ OMNICPPCOMPLETE END =====================
-"
+
+
 "============ TEST ====================================
 function! TEST()
 	echo getcwd()	
 endfunction
-
+"============ TEST END ================================
 
 nmap <F5> :call CurrentFunc()<CR>
 "nmap <F8> :call DebugPrintf()<CR>
@@ -264,25 +312,26 @@ function! StartUpFunction()
 "--------- Checking xclip is exist -----------------
 	if !CheckProgramExist('xclip')
 		"checking X connecton
-		if filereadable('/home2/jinhwan/bin/tmux_set_display.sh')
-			call system('source /home2/jinhwan/bin/tmux_set_display.sh')
+		if filereadable($HOME."/bin/tmux_set_display.sh")
+			call system('source $HOME."/bin/tmux_set_display.sh"')
 		else
 			echo "cant read"
 		endif
 		call system('xclip -o')
 		if !v:shell_error
-			vnoremap <C-c> "cy <esc>:call system('xclip', @c)<CR>
-			nnoremap <C-c> "cyy <esc>:call system('xclip', @c)<CR>
-			nnoremap <C-p> :r!xclip -o<CR>
+			vmap <C-c> "cy <esc>:call system('xclip', @c)<CR>
+			nmap <C-c> "cyy <esc>:call system('xclip', @c)<CR>
+			nmap <C-p> :r!xclip -o<CR>
 		else
-			vnoremap <C-c> "cy 
-			nnoremap <C-c> "cyy
-			nnoremap <C-p> "cp
+			vmap <C-c> "cy 
+			nmap <C-c> "cyy
+			nmap <C-p> "cp
+
 		endif
 	else
-		vnoremap <C-c> "cy 
-		nnoremap <C-c> "cyy
-		nnoremap <C-p> "cp
+		vmap <C-c> "cy 
+		nmap <C-c> "cyy
+		nmap <C-p> "cp
 	endif
 
 endfunction
@@ -420,27 +469,28 @@ function! CscopeDBLoad( NewDB, IsReload )
 		cs kill a
 	endif
 
-	let g:DBPath = ""
+	let l:DBPath = ""
+	let l:tag_path = ""
 
 	if( a:NewDB != "")
 		if ( a:NewDB == "sd4k" )
-			let g:DBPath ="/home2/jinhwan/xm4k/sd4k_cscope.out"
-			set tags=/home2/jinhwan/xm4k/sd4k_tags
+			let l:DBPath =$HOME."/xm4k/sd4k_cscope.out"
+			let l:tag_path=$HOME."/xm4k/sd4k_tags"
 		elseif ( a:NewDB == "hd4k" )
-			let g:DBPath ="/home2/jinhwan/xm4k/hd4k_cscope.out"
-			set tags=/home2/jinhwan/xm4k/hd4k_tags
+			let l:DBPath =$HOME."/xm4k/hd4k_cscope.out"
+			let l:tag_path=$HOME."/xm4k/hd4k_tags"
 		elseif ( a:NewDB == "xm4k" )
-			let g:DBPath ="/home2/jinhwan/xm4k/xm4k_cscope.out"
-			set tags=/home2/jinhwan/xm4k/xm4k_tags
+			let l:DBPath =$HOME."/xm4k/xm4k_cscope.out"
+			let l:tag_path=$HOME."/xm4k/xm4k_tags"
 		elseif ( a:NewDB == "abr" || a:NewDB == "sd2k" )
-			let g:DBPath ="/home2/jinhwan/abr/sd2k_cscope.out"
-			set tags=/home2/jinhwan/abr/sd2k_tags
+			let l:DBPath =$HOME."/abr/sd2k_cscope.out"
+			let l:tag_path=$HOME."/abr/sd2k_tags"
 		elseif ( a:NewDB == "tp1k" )
-			let g:DBPath ="/home2/jinhwan/tp1k/cscope.out"
-			set tags=/home2/jinhwan/tp1k/tags
+			let l:DBPath =$HOME."/tp1k/cscope.out"
+			let l:tag_path=$HOME."/tp1k/tags"
 		elseif ( a:NewDB == "libmpeg2" )
-			let g:DBPath ="/home2/jinhwan/work/libmpeg2-0.5.1/cscope.out"
-			set tags=/home2/jinhwan/work/libmpeg2-0.5.1/tags
+			let l:DBPath =$HOME."/work/libmpeg2-0.5.1/cscope.out"
+			let l:tag_path=$HOME."/work/libmpeg2-0.5.1/tags"
 		else
 			echo "Not supported option :".a:NewDB
 		endif
@@ -448,24 +498,26 @@ function! CscopeDBLoad( NewDB, IsReload )
 	else
 		let g:CurrentDir = getcwd()
 		if stridx(g:CurrentDir, "xm4k") >= 1
-			let g:DBPath ="/home2/jinhwan/xm4k/sd4k_cscope.out"
-			set tags=/home2/jinhwan/xm4k/sd4k_tags
+			let l:DBPath =$HOME."/xm4k/sd4k_cscope.out"
+			let l:tag_path=$HOME."/xm4k/sd4k_tags"
 		elseif stridx(g:CurrentDir, "abr" ) >= 1
-			let g:DBPath ="/home2/jinhwan/abr/sd2k_cscope.out"
-			set tags=/home2/jinhwan/abr/sd2k_tags
+			let l:DBPath =$HOME."/abr/sd2k_cscope.out"
+			let l:tag_path=$HOME."/abr/sd2k_tags"
 		elseif stridx(g:CurrentDir, "tp1k") >= 1
-			let g:DBPath ="/home2/jinhwan/tp1k/cscope.out"
-			set tags="home2/jinhwan/tp1k/tags
+			let l:DBPath =$HOME."/tp1k/cscope.out"
+			let l:tag_path="home2/jinhwan/tp1k/tags"
 		elseif stridx(g:CurrentDir, "libmpeg2-0.5.1" ) >= 1
-			let g:DBPath ="/home2/jinhwan/work/libmpeg2-0.5.1/cscope.out"
-			set tags=/home2/jinhwan/work/libmpeg2-0.5.1/tags
+			let l:DBPath =$HOME."/work/libmpeg2-0.5.1/cscope.out"
+			let l:tag_path=$HOME."/work/libmpeg2-0.5.1/tags"
 		endif
 	endif
 
-	if filereadable(g:DBPath)
-		execute 'cs add 'g:DBPath	
-	else
-		echo a:NewDB." cscope file is not exist!"
+	if filereadable(l:DBPath)
+		execute "cs add "l:DBPath	
+	endif
+
+	if filereadable(l:tag_path)
+		execute "set tags=".l:tag_path
 	endif
 
 endfunction
@@ -564,17 +616,17 @@ function! AutoHighlightToggle()
   endif
 endfunction
 
-if version >= 702
-	nmap <silent> ;1 :Mark <C-R>=expand("<cword>")<CR><CR>
-endif
-"========================DOXYGEN========================
+
+
+
+"======================= DOXYGEN =======================
 nmap <silent> ;da  :DoxAuthor<CR>
 nmap <silent> ;dm  :call AddModifySection()<CR>
 nmap <silent> ;df  :Dox<CR>
 let g:DoxygenToolkit_briefTag_funcName = "yes"
 let g:DoxygenToolkit_authorName = "jinhwan <jinhwan@pinetron.com>"
-"================= L9 LIB ==============================
-"
+"======================= DOXYGEN END ===================
+
 "============== FuzzyFinder ============================
 if version >= 702
 	let g:FuzzyFinderOptions = { 'Base':{}, 'Buffer':{}, 'File':{}, 'Dir':{}, 'MruFile':{}, 'MruCmd':{}, 'FavFile':{}, 'Tag':{}, 'TaggedFile':{}}
@@ -585,6 +637,8 @@ if version >= 702
 	nmap <silent>fb <ESC>:FufBuffer<CR>
 	nmap <silent>fd <ESC>:FufDir<CR>
 endif
+"============== FuzzyFinder END=========================
+
 "============== DWM ================================
 let g:dwm_map_keys=0
 if !hasmapto('<Plug>DWMFocus')
@@ -597,6 +651,7 @@ endif
 if !hasmapto('<Plug>DWMClose')
   nmap <C-W>c <Plug>DWMClose
 endif
+"============== DWM END ============================
 
 "============== VCSCOMMAND =========================
 command! -nargs=* SVNDiff normal :VCSVimDiff <args><CR>
@@ -608,29 +663,48 @@ ca svndiff VCSVimDiff
 ca svnblame VCSBlame
 ca svnblame VCSBLog
 ca svnstatus VCSStatus
+"============== VCSCOMMAND END =====================
 
 
 "============== TagList ============================
 nmap <silent> ;t :TlistToggle<CR>
+"============== TagList END ========================
+
+
 "========= DIR DIFF =====================================
 let g:DirDiffExcludes = ".svn,*.swap,*.swp,*.o,*.a"
 
-"=========== Mark =======================================
-nmap <silent>  ;mc  :MarkClear<CR>
-command! -nargs=* MC call mark#ClearAll() 
+"============ MARK =======================================
+if version >= 702
+	"nmap <silent> ;1 :Mark <C-R>=expand("<cword>")<CR><CR>
+	nmap <silent> ;1 :Mark \<<C-R>=expand("<cword>")<CR>\><CR>
+	nmap <silent>  ;mc  :MarkClear<CR>
+	command! -nargs=* MC call mark#ClearAll() 
+endif
+"============ MARK END ===================================
+
+
+
+
 "======== nmap ===========================================
 
 let mapleader = '\'
 "nnoremap * *``
 "nnoremap * :keepjumps normal *''<CR>
-nmap <silent>  ;sv  :source ~/.vimrc<CR> :call UserMSG("Vimrc file reloaded!")<CR>
+nmap <silent>  ;sv  :source $MYVIMRC<CR> :call UserMSG(".vimrc file reloaded!")<CR>
 nmap <silent>  ;ww  :w<CR>
 nmap <silent>  ;qq  :exec DWM_Close()<CR>
 nmap <silent>  ;nn  :call DWM_New()<CR>
+if version >= 700
+nmap - gT
+"nmap <C-[> <C-PageUp>
+nmap = gt
+"nmap <C-]> <C-PageDown>
 
 nmap <C-W>! :tab split<CR> :tabm 99<CR>
 command! TC exec "normal :tabclose<CR>"
 command! -nargs=* TM exec "normal :tabmove ".'<args>'."<CR>"
+endif
 "command! -nargs=* TERM exec "normal :ConqueTerm ".'<args>'."<CR>"
 command! -nargs=* TERM exec "normal :ConqueTerm bash<CR>"
 
@@ -661,6 +735,7 @@ nmap <C-F9> <Down>[{<Down><Home>v]}<Up><End>zf
 "F11
 nmap <C-F11> <Esc>:tabp<CR>
 imap <C-F11> <Esc>:tabp<CR>
+
 "F12
 nmap <C-F12> <Esc>:tabn<CR>
 imap <C-F12> <Esc>:tabn<CR>
@@ -693,14 +768,16 @@ imap <M-F12> <Esc>:bnext<CR>
 
 "-----Ctrl + KEY ------------
 "Ctrl+]
-imap ` <Esc>
-vmap ` <Esc>
+"imap ` <Esc>
+"vmap ` <Esc>
 "Ctrl+w s
-nmap <silent> =  <C-W>s
+"nmap <silent> =  <C-W>s
+nmap <silent> 2  <C-W>s
 "imap <silent> =  <C-W>s
 
 "Ctrl+w v
-nmap <silent> \ <C-W>v
+"nmap <silent> \ <C-W>v
+nmap <silent> 3 <C-W>v
 "imap <silent> \ <C-W>v
 
 "Ctrl+c
@@ -738,21 +815,22 @@ nmap OA 10<C-W>+
 nmap OB 10<C-W>-
 "imap OB 10<C-W>-\
 "------Meta + KEY -------
-
 "nmap <M-k> <C-W>k
 "nmap <M-j> <C-W>j
 "nmap <M-h> <C-W>h
 "nmap <M-l> <C-W>l
 "-----KEY Remap-------------\
+imap <C-u> <Undo>
+imap <M-u> <Undo>
 "emacs keymap
-"nmap <C-p> <Up>
-"imap <C-p> <Up>
-"nmap <C-n> <Down>
-"imap <C-n> <Down>
-"nmap <C-f> <Right>
-"imap <C-f> <Right>
-"nmap <C-b> <Left>
-"imap <C-b> <Left>
+nmap <C-p> <Up>
+imap <C-p> <Up>
+nmap <C-n> <Down>
+imap <C-n> <Down>
+nmap <C-f> <Right>
+imap <C-f> <Right>
+nmap <C-b> <Left>
+imap <C-b> <Left>
 "nmap <silent> <C-x><C-s> <Esc>:w<CR>
 "imap <silent> <C-x><C-s> <Esc>:w<CR>
 "nmap  <esc>u

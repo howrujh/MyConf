@@ -29,7 +29,29 @@ xterm*VT100*dynamicColors:      on
 XTerm*vt100.renderFont:			true
 XTerm*visualBell:              false
 XTerm*visualBellDelay:            0
-XTerm*fastScroll:				 True
+XTerm*fastScroll:				 true
+
+!XTerm*eightBitInput: 1
+! Normal
+! color0    black
+! color1    red
+! color2    green
+! color3    yellow
+! color4    blue
+! color5    purple
+! color6    cyan
+! color7    white
+! Light / Bold
+! color8    black
+! color9    red
+! color10    green
+! color11    yellow
+! color12    blue
+! color13    purple
+! color14    cyan
+! color15    white
+
+
 !XTerm*color0: black
 !XTerm*color1: light pink
 !XTerm*color2: light goldenrod

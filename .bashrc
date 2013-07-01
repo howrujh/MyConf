@@ -6,16 +6,17 @@ if [ -f /etc/bashrc ]; then
 fi
 
 # User specific aliases and functions
-############### TERM ###########################################
+############### BASH ENV EXPORT#################################
 export XTERM=xterm
 #export LANG=ko_KR.UTF-8
 
-################ SVN ##############################################
+export SVN_EDITOR="$HOME/local/bin/vim -X"
+export GIT_EDITOR="$HOME/local/bin/vim -X"
 
-SVN_EDITOR="$HOME/local/bin/vim -X"
-GIT_EDITOR="$HOME/local/bin/vim -X"
-export SVN_EDITOR
-export GIT_EDITOR
+export CSCOPE_EDITOR=$HOME/local/bin/vim
+
+export MANPATH=$HOME/local/share/man/
+
 ############### CTRL + S command off ###########################
 stty ixany
 stty ixoff -ixon
@@ -23,6 +24,8 @@ stty ixoff -ixon
 #export DISPLAY=$DISPLAY #:19.0 #screen X11, echo $DISPLAY than (screen->) export DISPLAY=:value
 
 
+######### VI Editing Mode ###################################
+set -o vi
 
 ######### alias #############################################
 alias grep='grep --color=always'
@@ -62,13 +65,6 @@ alias vir='vim -R'
 
 alias mkcscope='source ~/bin/cscope_maker.sh'
 
-########  cscope ##################################################################
-
-#CSCOPE_DB=/home/jinhwan/work/tp1k/cscope.out #define cscope.out location
-#CSCOPE_DB=$CSCOPE_DB
-
-#export CSCOPE_DB
-
 
 
 ############ PATH EXPORT ###########################################################
@@ -82,3 +78,4 @@ alias mkcscope='source ~/bin/cscope_maker.sh'
 
 #PROJECT_BASE=~/xm4k PROJECTS="xm40 xm41 hd4k sd4k" . ~/xm4k/bin/abr_bashrc
 #. ~/tp1k/bin/x3k_bashrc
+
