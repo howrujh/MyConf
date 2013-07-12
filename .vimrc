@@ -70,6 +70,8 @@ set sw=4
 set laststatus=2
 
 
+"use man page open in vim
+runtime ftplugin/man.vim
 
 filetype off "required for vundle
 filetype plugin on
@@ -281,6 +283,7 @@ if has("autocmd")
 "	autocmd VimEnter * call CscopeDBLoad('',0)
 	autocmd VimEnter * call StartUpFunction()
 	autocmd VimEnter * let g:StartPath= getcwd()
+	autocmd BufEnter *.txt setlocal ft=txt
 endif
 "=========== StartUp Function =========================== 
 
@@ -659,6 +662,7 @@ command! -nargs=* SVNBlame normal :VCSBlame <args><CR>
 command! -nargs=* SVNLog normal :VCSLog <args><CR>
 command! -nargs=* SVNStatus normal :VCSStatus <args><CR>
 
+
 ca svndiff VCSVimDiff
 ca svnblame VCSBlame
 ca svnblame VCSBLog
@@ -684,6 +688,8 @@ endif
 "============ MARK END ===================================
 
 
+"============ Man Page Open =======================================
+nmap <silent> ;hh :Man <C-R>=expand("<cword>")<CR><CR>
 
 
 "======== nmap ===========================================
@@ -820,17 +826,17 @@ nmap OB 10<C-W>-
 "nmap <M-h> <C-W>h
 "nmap <M-l> <C-W>l
 "-----KEY Remap-------------\
-imap <C-u> <Undo>
-imap <M-u> <Undo>
+"imap <C-u> <Undo>
+"imap <M-u> <Undo>
 "emacs keymap
-nmap <C-p> <Up>
-imap <C-p> <Up>
-nmap <C-n> <Down>
-imap <C-n> <Down>
-nmap <C-f> <Right>
-imap <C-f> <Right>
-nmap <C-b> <Left>
-imap <C-b> <Left>
+"nmap <C-p> <Up>
+"imap <C-p> <Up>
+"nmap <C-n> <Down>
+"imap <C-n> <Down>
+"nmap <C-f> <Right>
+"imap <C-f> <Right>
+"nmap <C-b> <Left>
+"imap <C-b> <Left>
 "nmap <silent> <C-x><C-s> <Esc>:w<CR>
 "imap <silent> <C-x><C-s> <Esc>:w<CR>
 "nmap  <esc>u

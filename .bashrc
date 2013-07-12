@@ -48,6 +48,7 @@ alias sb='source ~/.bashrc'
 
 alias home='cd ~/'
 alias '~'='cd ~/'
+alias test='cd $HOME/work/code_test'
 
 
 alias e='~/local/bin/emacs -nw'
@@ -72,10 +73,11 @@ alias mkcscope='source ~/bin/cscope_maker.sh'
 #export PATH=$PATH:$HOME/local/bin
 
 
-
+########### PROJECT #####################################################
 . ~/abr/bin/abr_bashrc
 . ~/xm4k/bin/abr_bashrc -d ~/xm4k -p "sd4k xm40 xm4k hd4k"
 
+alias sd4k.h='sd4k.a; cd src/hictrl2'
 #PROJECT_BASE=~/xm4k PROJECTS="xm40 xm41 hd4k sd4k" . ~/xm4k/bin/abr_bashrc
 #. ~/tp1k/bin/x3k_bashrc
 
