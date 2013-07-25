@@ -89,8 +89,8 @@ if isdirectory( g:vim_tmp_path ) == 0
 	call system( "mkdir ".g:vim_tmp_path )
 endif
 
-exec("set dir =".g:vim_tmp_path)
-exec("set bdir =".g:vim_tmp_path)
+"exec("set dir =".g:vim_tmp_path)
+"exec("set bdir =".g:vim_tmp_path)
 
 "============ VUNDLE  =================================
 " NOTE: This Script Required Install VUNDLE Plugin
@@ -142,6 +142,7 @@ if isdirectory( g:vundle_path )
 
 
 	if version >= 600
+	Bundle 'hexman.vim'
 	Bundle 'taglist.vim'
 	Bundle 'Tango-colour-scheme'
 	endif
