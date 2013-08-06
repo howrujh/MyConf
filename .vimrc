@@ -779,12 +779,12 @@ imap <M-F12> <Esc>:bnext<CR>
 "vmap ` <Esc>
 "Ctrl+w s
 "nmap <silent> =  <C-W>s
-nmap <silent> 2  <C-W>s
+"nmap <silent> 2  <C-W>s
 "imap <silent> =  <C-W>s
 
 "Ctrl+w v
 "nmap <silent> \ <C-W>v
-nmap <silent> 3 <C-W>v
+"nmap <silent> 3 <C-W>v
 "imap <silent> \ <C-W>v
 
 "Ctrl+c
