@@ -1,14 +1,8 @@
-# .bashrc
-
-# Source global definitions
-if [ -f /etc/bashrc ]; then
-	. /etc/bashrc
-fi
+# .my_bashrc
 
 # User specific aliases and functions
 ############### BASH ENV EXPORT#################################
 export XTERM=xterm
-#export LANG=ko_KR.UTF-8
 
 export SVN_EDITOR="$HOME/local/bin/vim -X"
 export GIT_EDITOR="$HOME/local/bin/vim -X"
@@ -20,9 +14,6 @@ export MANPATH=$HOME/local/share/man/
 ############### CTRL + S command off ###########################
 stty ixany
 stty ixoff -ixon
-############## SSH DISPLAY #######################################
-#export DISPLAY=$DISPLAY #:19.0 #screen X11, echo $DISPLAY than (screen->) export DISPLAY=:value
-
 
 ######### VI Editing Mode ###################################
 set -o vi
@@ -67,17 +58,4 @@ alias vir='vim -R'
 alias mkcscope='source ~/bin/cscope_maker.sh'
 
 
-
-############ PATH EXPORT ###########################################################
-
-#export PATH=$PATH:$HOME/local/bin
-
-
-########### PROJECT #####################################################
-. ~/abr/bin/abr_bashrc
-. ~/xm4k/bin/abr_bashrc -d ~/xm4k -p "sd4k xm40 xm4k hd4k"
-
-alias sd4k.h='sd4k.a; cd src/hictrl2'
-#PROJECT_BASE=~/xm4k PROJECTS="xm40 xm41 hd4k sd4k" . ~/xm4k/bin/abr_bashrc
-#. ~/tp1k/bin/x3k_bashrc
 
