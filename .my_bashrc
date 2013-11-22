@@ -9,14 +9,14 @@ export GIT_EDITOR="$HOME/local/bin/vim -X"
 
 export CSCOPE_EDITOR=$HOME/local/bin/vim
 
-export MANPATH=$HOME/local/share/man/
-
-############### CTRL + S command off ###########################
+export MANPATH=$MANPATH:$HOME/local/share/man/
+#export MANPAGER="col -b -x | vim -R -c 'set ft=man' -"
+############## #CTRL + S command off ###########################
 stty ixany
 stty ixoff -ixon
 
 ######### VI Editing Mode ###################################
-set -o vi
+#set -o vi
 
 ######### alias #############################################
 alias grep='grep --color=always'
@@ -55,7 +55,7 @@ alias vi='vim'
 alias vir='vim -R'
 #alias mkcscope='rm -rf cscope.files cscope.out; find $PWD \( -name '*.c' -o -name '*.cpp' -o -name '*.cc' -o -name '*.h' -o -name '*.hh' -o -name '*.s' -o -name '*.S' \) -print > cscope.files; cscope -i cscope.files'
 
-alias mkcscope='source ~/bin/cscope_maker.sh'
+alias mkcscope='source ~/scripts/cscope_maker.sh'
 
 
-
+alias tel='source ~/scripts/telnet_auto_login_for_dvr.sh'

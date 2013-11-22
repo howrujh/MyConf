@@ -64,7 +64,7 @@ set tabstop=4
 set ts=4
 set sw=4
 "current file directory 
-"set autochdir
+set autochdir
 " Add full file path to your existing statusline
 "set statusline+=%F
 set laststatus=2
@@ -132,19 +132,19 @@ if isdirectory( g:vundle_path )
 	endif
 
 	if version >= 700
-	Bundle 'OmniCppComplete'
-	Bundle 'DirDiff.vim'
-	Bundle 'Align'
-	Bundle 'DoxygenToolkit.vim'
-	Bundle 'bufexplorer.zip'
-	Bundle 'vcscommand.vim'
+		Bundle 'OmniCppComplete'
+		Bundle 'DirDiff.vim'
+		Bundle 'Align'
+		Bundle 'DoxygenToolkit.vim'
+		Bundle 'bufexplorer.zip'
+		Bundle 'vcscommand.vim'
 	endif
 
 
 	if version >= 600
-	Bundle 'hexman.vim'
-	Bundle 'taglist.vim'
-	Bundle 'Tango-colour-scheme'
+		Bundle 'hexman.vim'
+		Bundle 'taglist.vim'
+		Bundle 'Tango-colour-scheme'
 	endif
 
 endif
@@ -239,7 +239,7 @@ func! CurrentFunc()
 endfunc " CurrentFunc
 
 func! DebugPrintf()
-	let @d="printf(\"\\x1b[32m===%s (line: %d)\\x1b[0m\\n\",__PRETTY_FUNCTION__,__LINE__);"
+	let @d="pdr_error(\"=d=  (%s)\\n\",__FUNCTION__);"
 	exec "normal o"
 	exec "normal \"dp"
 endfunc "DebugPrintf()
@@ -483,6 +483,9 @@ function! CscopeDBLoad( NewDB, IsReload )
 		elseif ( a:NewDB == "hd4k" )
 			let l:DBPath =$HOME."/xm4k/hd4k_cscope.out"
 			let l:tag_path=$HOME."/xm4k/hd4k_tags"
+		elseif ( a:NewDB == "xm40" )
+			let l:DBPath =$HOME."/xm4k/xm40_cscope.out"
+			let l:tag_path=$HOME."/xm4k/xm40_tags"
 		elseif ( a:NewDB == "xm4k" )
 			let l:DBPath =$HOME."/xm4k/xm4k_cscope.out"
 			let l:tag_path=$HOME."/xm4k/xm4k_tags"
@@ -692,6 +695,11 @@ endif
 "============ Man Page Open =======================================
 nmap <silent> ;hh :Man <C-R>=expand("<cword>")<CR><CR>
 
+"======== My Alias========================================
+
+
+nmap <silent> ;dt  :diffthis<CR>
+nmap <silent> ;do  :diffoff<CR>
 
 "======== nmap ===========================================
 
@@ -702,6 +710,10 @@ nmap <silent>  ;sv  :source $MYVIMRC<CR> :call UserMSG(".vimrc file reloaded!")<
 nmap <silent>  ;ww  :w<CR>
 nmap <silent>  ;qq  :exec DWM_Close()<CR>
 nmap <silent>  ;nn  :call DWM_New()<CR>
+
+
+nmap <silent> ;/ ^i//<Esc>
+
 if version >= 700
 nmap - gT
 "nmap <C-[> <C-PageUp>
