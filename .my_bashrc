@@ -1,16 +1,6 @@
 # .my_bashrc
 
 # User specific aliases and functions
-############### BASH ENV EXPORT#################################
-export XTERM=xterm
-
-export SVN_EDITOR="$HOME/local/bin/vim -X"
-export GIT_EDITOR="$HOME/local/bin/vim -X"
-
-export CSCOPE_EDITOR=$HOME/local/bin/vim
-
-export MANPATH=$MANPATH:$HOME/local/share/man/
-#export MANPAGER="col -b -x | vim -R -c 'set ft=man' -"
 ############## #CTRL + S command off ###########################
 stty ixany
 stty ixoff -ixon
@@ -20,9 +10,9 @@ stty ixoff -ixon
 
 ######### alias #############################################
 alias grep='grep --color=always'
-alias grepr='source ~/bin/grepr.sh'
-alias g='source ~/bin/grepr.sh'
-alias greprs='source ~/bin/greprs.sh'
+alias grepr='source grepr.sh'
+alias g='source grepr.sh'
+alias greprs='source greprs.sh'
 
 alias less='less -R'
 
@@ -31,20 +21,18 @@ alias l='ls'
 alias p='pwd'
 alias sr='screen -S jh_session -X setenv DISPLAY "$DISPLAY"; screen -S jh_session -rd'
 
-alias ta='source ~/bin/tmux_get_display.sh; ~/local/bin/tmux attach-session -t  orz_jh || ~/local/bin/tmux new-session -s orz_jh'
+alias ta='tmux attach-session -t  orz_jh || tmux new-session -s orz_jh'
 #alias ta='source ~/bin/tmux_get_display.sh; /usr/bin/tmux attach-session -t  orz_jh || /usr/bin/tmux new-session -s orz_jh'
-alias td='source ~/bin/tmux_set_display.sh'
+#alias td='source ~/bin/tmux_set_display.sh'
 
 alias sb='source ~/.bashrc'
 
-alias home='cd ~/'
-alias '~'='cd ~/'
 alias test='cd $HOME/work/code_test'
 
 
-alias e='~/local/bin/emacs -nw'
-alias em='~/local/bin/emacs -nw'
-alias emacs='~/local/bin/emacs -nw'
+alias e='emacs -nw'
+alias em='emacs -nw'
+alias emacs='emacs -nw'
 alias t1='cd ~/tp1k'
 alias t1.b='cd ~/tp1k/bios/u-boot'
 alias t1.k='cd ~/tp1k/kernel'
@@ -55,7 +43,7 @@ alias vi='vim'
 alias vir='vim -R'
 #alias mkcscope='rm -rf cscope.files cscope.out; find $PWD \( -name '*.c' -o -name '*.cpp' -o -name '*.cc' -o -name '*.h' -o -name '*.hh' -o -name '*.s' -o -name '*.S' \) -print > cscope.files; cscope -i cscope.files'
 
-alias mkcscope='source ~/scripts/cscope_maker.sh'
+alias mkcscope='source cscope_maker.sh'
 
 
-alias tel='source ~/scripts/telnet_auto_login_for_dvr.sh'
+alias tel='source telnet_auto_login_for_dvr.sh'

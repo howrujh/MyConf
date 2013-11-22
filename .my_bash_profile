@@ -1,0 +1,16 @@
+
+############### BASH ENV EXPORT#################################
+export XTERM=xterm
+
+export SVN_EDITOR="vim -X"
+export GIT_EDITOR="vim -X"
+
+export CSCOPE_EDITOR=vim
+export PATH=$HOME/bin:$HOME/local/bin:$HOME/scripts:$PATH
+#export MANPATH=$HOME/local/share/man/:$MANPATH
+
+export LD_LIBRARY_PATH=$HOME/local/lib:$HOME/local/lib64:/usr/lib:/usr/lib64:$LD_LIBRARY_PATH
+export LIBRARY_PATH=$HOME/local/lib:$HOME/local/lib64:$LIBRARY_PATH
+export C_INCLUDE_PATH=$HOME/local/include:$C_INCLUDE_PATH
+export CPLUS_INCLUDE_PATH=$HOME/local/include:$CPLUS_INCLUDE_PATH
+
