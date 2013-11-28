@@ -1,5 +1,8 @@
 
 ############### BASH ENV EXPORT#################################
+
+export LANG=ko_KR.UTF-8
+
 export XTERM=xterm
 
 export SVN_EDITOR="vim -X"

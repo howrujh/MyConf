@@ -238,13 +238,18 @@ func! CurrentFunc()
 	echohl None
 endfunc " CurrentFunc
 
-func! DebugPrintf()
-	let @d="pdr_error(\"=d=  (%s)\\n\",__FUNCTION__);"
+func! DebugPrintf(mode)
+	if ( a:mode == 0 )
+		let @d="printf(\"\\x1b[32m===%s(%d)  \\x1b[0m\\n\",__PRETTY_FUNCTION__,__LINE__);"
+	else
+		let @d="printk(\"\\x1b[32m===%s(%d)  \\x1b[0m\\n\",__PRETTY_FUNCTION__,__LINE__);"
+	endif
 	exec "normal o"
 	exec "normal \"dp"
 endfunc "DebugPrintf()
 
-nmap <silent>  ;p :call DebugPrintf()<CR>
+nmap <silent>  ;p :call DebugPrintf(0)<CR>
+nmap <silent>  ;k :call DebugPrintf(1)<CR>
 
 function! TEST1()
 	echo "22"
@@ -425,7 +430,8 @@ function! CscopeWM( FunctionName, option)
 	"call IpcFuncDetector( a:FunctionName, a:option )
 	let l:result= IpcFuncDetector( a:FunctionName, a:option )
 
-	call DWM_Focus()
+"	call DWM_Focus()
+	wincmd H
 	if ( l:result == -1 )
 		exec l:prev_win . "wincmd w"
 	endif
@@ -538,6 +544,9 @@ command! -nargs=* CC call CscopeDBLoad( '<args>', 1 )
 
 let g:SessionPath=$HOME."/.vim/session/"
 
+if isdirectory( g:SessionPath ) == 0
+	call system( "mkdir ".g:SessionPath )
+endif
 let g:AutoSaveTime=7200
 
 let g:LastSessionSavedTime = localtime()
