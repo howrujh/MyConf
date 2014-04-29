@@ -167,7 +167,10 @@ endif
 "============ TANGO COLOR SCHEME ======================
 colorscheme tango
 let g:bg_tango = 1
-hi CursorLine term=none cterm=bold ctermbg=none
+hi CursorLine term=none cterm=bold ctermfg=4
+hi TabLineSel term=UnderLine cterm=bold,UnderLine guifg=DarkGreen guibg=Black ctermfg=DarkGreen ctermbg=Black
+hi TabLine term=UnderLine cterm=bold,UnderLine ctermfg=White
+hi TabLineFill term=UnderLine cterm=bold,UnderLine ctermfg=White ctermbg=Black gui=none guibg=Black
 "============ TANGO COLOR SCHEME END ==================
 
 
@@ -486,6 +489,9 @@ function! CscopeDBLoad( NewDB, IsReload )
 		if ( a:NewDB == "sd4k" )
 			let l:DBPath =$HOME."/xm4k/sd4k_cscope.out"
 			let l:tag_path=$HOME."/xm4k/sd4k_tags"
+		elseif ( a:NewDB == "sd4kktt" )
+			let l:DBPath =$HOME."/xm4k/sd4kktt_cscope.out"
+			let l:tag_path=$HOME."/xm4k/sd4kktt_tags"
 		elseif ( a:NewDB == "hd4k" )
 			let l:DBPath =$HOME."/xm4k/hd4k_cscope.out"
 			let l:tag_path=$HOME."/xm4k/hd4k_tags"
@@ -510,9 +516,9 @@ function! CscopeDBLoad( NewDB, IsReload )
 
 	else
 		let g:CurrentDir = getcwd()
-		if stridx(g:CurrentDir, "xm4k") >= 1
-			let l:DBPath =$HOME."/xm4k/sd4k_cscope.out"
-			let l:tag_path=$HOME."/xm4k/sd4k_tags"
+		if stridx(g:CurrentDir, "xm4k" ) >= 1
+			let l:DBPath =$HOME."/xm4k/hd4k_cscope.out"
+			let l:tag_path=$HOME."/xm4k/hd4k_tags"
 		elseif stridx(g:CurrentDir, "abr" ) >= 1
 			let l:DBPath =$HOME."/abr/sd2k_cscope.out"
 			let l:tag_path=$HOME."/abr/sd2k_tags"
@@ -793,8 +799,10 @@ imap <M-F12> <Esc>:bnext<CR>
 "nmap <F12> :tabn<CR>
 "nmap [1;5H :tabfirst<CR>
 "nmap [1;5F :tablast<CR>
-
 "-----Ctrl + KEY ------------
+nnoremap <C-a> <Nop>
+nnoremap <C-x> <Nop>
+
 "Ctrl+]
 "imap ` <Esc>
 "vmap ` <Esc>

@@ -5,10 +5,13 @@ export LANG=ko_KR.UTF-8
 
 export XTERM=xterm
 
-export SVN_EDITOR="vim -X"
-export GIT_EDITOR="vim -X"
+#export SVN_EDITOR="vim -X"
+#export GIT_EDITOR="vim -X"
+#export CSCOPE_EDITOR=vim
+export SVN_EDITOR="emacs -nw"
+export GIT_EDITOR="emacs -nw"
+export CSCOPE_EDITOR=emacs
 
-export CSCOPE_EDITOR=vim
 export PATH=$HOME/bin:$HOME/local/bin:$HOME/scripts:$PATH
 #export MANPATH=$HOME/local/share/man/:$MANPATH
 
