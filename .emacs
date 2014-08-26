@@ -22,6 +22,7 @@
 (add-to-list 'pkg-list 'cl)
 (add-to-list 'pkg-list 'ecb)
 (add-to-list 'pkg-list 'psvn)
+(add-to-list 'pkg-list 'evil)
 
 
 (require 'package)
@@ -46,9 +47,14 @@
 ;; <CSCOPE>
 ;;(add-to-list 'load-path "/usr/share/cscope")
 (require 'xcscope)
-(setq cscope-initial-directory "~/xm4k")
-(setq cscope-database-file "sd4k_cscope.out")
+;;(setq cscope-initial-directory "~/github/opengles2-book-sample/LinuxX11/")
+;;(setq cscope-database-file "cscope.out")
+
+(global-set-key (kbd "C-c s s") 'cscope-find-called-functions)
+(global-set-key (kbd "C-c s g") 'cscope-find-global-definition)
+(global-set-key (kbd "C-c s c") 'cscope-find-functions-calling-this-function)
 ;; <HIGHLIGHT>
+
 (require 'highlight-symbol)
 (global-set-key (kbd "ESC 1") 'highlight-symbol-at-point)
 (global-set-key (kbd "ESC *") 'highlight-symbol-next)
@@ -56,10 +62,6 @@
 
 
 ;; <IDO-MODE>
-(global-set-key (kbd "C-c s s") 'cscope-find-called-functions)
-(global-set-key (kbd "C-c s g") 'cscope-find-global-definition)
-(global-set-key (kbd "C-c s c") 'cscope-find-functions-calling-this-function)
-
 (setq confirm-nonexistent-file-or-buffer nil)
 (require 'ido)
 (ido-mode 1)
@@ -73,7 +75,8 @@
 ;(setq ido-use-filename-at-point t) ;; prefer file names near point
 
 ;; <EVIL-MODE>
-;;(evil-mode)
+(require 'evil)
+(evil-mode)
 
 ;; <PSVN)
 (require 'psvn)
