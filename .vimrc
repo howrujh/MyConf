@@ -171,6 +171,7 @@ hi CursorLine term=none cterm=bold ctermfg=4
 hi TabLineSel term=UnderLine cterm=bold,UnderLine guifg=DarkGreen guibg=Black ctermfg=DarkGreen ctermbg=Black
 hi TabLine term=UnderLine cterm=bold,UnderLine ctermfg=White
 hi TabLineFill term=UnderLine cterm=bold,UnderLine ctermfg=White ctermbg=Black gui=none guibg=Black
+hi ModeMsg ctermfg=darkgreen
 "============ TANGO COLOR SCHEME END ==================
 
 
