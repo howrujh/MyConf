@@ -1,0 +1,44 @@
+[global_config]
+  title_hide_sizetext = True
+  enabled_plugins = LaunchpadCodeURLHandler, APTURLHandler, LaunchpadBugURLHandler
+  geometry_hinting = False
+  title_transmit_bg_color = "#018018"
+  tab_position = hidden
+  inactive_color_offset = 1.0
+[keybindings]
+  switch_to_tab_10 = None
+  paste = <Primary><Shift>v
+  next_tab = <Primary><Shift>n
+  split_horiz = <Primary><Shift>s
+  switch_to_tab_5 = <Alt>5
+  prev_tab = <Primary><Shift>p
+  switch_to_tab_4 = <Alt>4
+  close_term = None
+  split_vert = <Primary><Shift>v
+  switch_to_tab_3 = <Alt>3
+  switch_to_tab_1 = <Alt>1
+  switch_to_tab_2 = <Alt>2
+  hide_window = F1
+[profiles]
+  [[default]]
+    palette = "#000000:#cc0000:#4e9a06:#c4a000:#3465a4:#75507b:#06989a:#d3d7cf:#555753:#ef2929:#8ae234:#fce94f:#729fcf:#ad7fa8:#34e2e2:#eeeeec"
+    font = DejaVu Sans Mono 12
+    background_image = None
+    scrollback_lines = 2000
+    use_system_font = False
+    foreground_color = "#ebebeb"
+    icon_bell = False
+    show_titlebar = False
+    copy_on_selection = True
+[layouts]
+  [[default]]
+    [[[child1]]]
+      type = Terminal
+      parent = window0
+      profile = None
+    [[[window0]]]
+      type = Window
+      parent = ""
+      size = 1700, 1420
+      profile = None
+[plugins]
