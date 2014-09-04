@@ -89,11 +89,12 @@ xterm*color15:                #EEEEEC
 Xtf.antialias: false
 
 !XTerm*faceName: "Bitstream Vera Serif Mono"
-XTerm*faceName: "Bitstream Vera Sans Mono"
+!XTerm*faceName: "Bitstream Vera Sans Mono"
+!XTerm*faceName: "DejaVu Sans Mono"
 !XTerm*faceName: "NanumGothicCoding"
-!XTerm*faceName: "Luxi Mono"
+XTerm*faceName: "Luxi Mono"
 
-XTerm*faceSize:	11 
+XTerm*faceSize:	12 
 !XTerm*faceName: Monospace:size=14
 !xterm*font:                 -misc-*-medium-r-*-*-14-*-*-*-*-*-iso10646-1
 !xterm*boldfont:             -misc-*-bold-r-*-*-14-*-*-*-*-*-iso10646-1

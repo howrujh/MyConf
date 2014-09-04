@@ -1,17 +1,20 @@
 [global_config]
   title_hide_sizetext = True
-  enabled_plugins = LaunchpadCodeURLHandler, APTURLHandler, LaunchpadBugURLHandler
+  enabled_plugins = ,
   geometry_hinting = False
   title_transmit_bg_color = "#018018"
   tab_position = hidden
   inactive_color_offset = 1.0
 [keybindings]
+  zoom_in = None
   switch_to_tab_10 = None
   paste = <Primary><Shift>v
   next_tab = <Primary><Shift>n
   split_horiz = <Primary><Shift>s
   switch_to_tab_5 = <Alt>5
+  zoom_normal = None
   prev_tab = <Primary><Shift>p
+  zoom_out = None
   switch_to_tab_4 = <Alt>4
   close_term = None
   split_vert = <Primary><Shift>v
@@ -30,6 +33,7 @@
     icon_bell = False
     show_titlebar = False
     copy_on_selection = True
+    cursor_blink = False
 [layouts]
   [[default]]
     [[[child1]]]
@@ -39,6 +43,6 @@
     [[[window0]]]
       type = Window
       parent = ""
-      size = 1700, 1420
+      size = 1700, 1400
       profile = None
 [plugins]
