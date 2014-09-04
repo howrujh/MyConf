@@ -121,14 +121,14 @@ if isdirectory( g:vundle_path )
 	"Bundle 'tpope/vim-rails.git'
 	if version >= 700
 		Bundle 'spolu/dwm.vim.git'
-		Bundle 'oplatek/Conque-Shell'
+		"Bundle 'oplatek/Conque-Shell'
 		
 	endif
 	"-------vim-scripts repos--------------
 	if version >= 702
 		Bundle 'L9'
 		Bundle 'FuzzyFinder'
-		Bundle 'ZoomWin'
+		"Bundle 'ZoomWin'
 	endif
 
 	if version >= 700
@@ -136,14 +136,14 @@ if isdirectory( g:vundle_path )
 		Bundle 'DirDiff.vim'
 		Bundle 'Align'
 		Bundle 'DoxygenToolkit.vim'
-		Bundle 'bufexplorer.zip'
+		"Bundle 'bufexplorer.zip'
 		Bundle 'vcscommand.vim'
 	endif
 
 
 	if version >= 600
-		Bundle 'hexman.vim'
-		Bundle 'taglist.vim'
+		"Bundle 'hexman.vim'
+		"Bundle 'taglist.vim'
 		Bundle 'Tango-colour-scheme'
 	endif
 

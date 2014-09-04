@@ -23,7 +23,7 @@
 (add-to-list 'pkg-list 'ecb)
 (add-to-list 'pkg-list 'psvn)
 (add-to-list 'pkg-list 'evil)
-
+(add-to-list 'pkg-list 'undo-tree)
 
 (require 'package)
 (setq package-archives '(
@@ -50,9 +50,12 @@
 ;;(setq cscope-initial-directory "~/github/opengles2-book-sample/LinuxX11/")
 ;;(setq cscope-database-file "cscope.out")
 
-(global-set-key (kbd "C-c s s") 'cscope-find-called-functions)
+
+
+(global-set-key (kbd "C-c s s") 'cscope-find-this-symbol)
 (global-set-key (kbd "C-c s g") 'cscope-find-global-definition)
 (global-set-key (kbd "C-c s c") 'cscope-find-functions-calling-this-function)
+(global-set-key (kbd "C-c s u") 'cscope-pop-mark)
 ;; <HIGHLIGHT>
 
 (require 'highlight-symbol)
@@ -74,9 +77,16 @@
 (setq ido-show-dot-for-dired t) ;; put . as the first item
 ;(setq ido-use-filename-at-point t) ;; prefer file names near point
 
+;; <UNDO-TREE>
+(global-undo-tree-mode 1)
+
+(global-set-key (kbd "C-z") 'undo-tree-undo) ; 【Ctrl+z】
+(global-set-key (kbd "C-S-z") 'undo-tree-redo) ; 【Ctrl+Shift+z】; Mac style
+
+
 ;; <EVIL-MODE>
 (require 'evil)
-(evil-mode)
+;;(evil-mode)
 
 ;; <PSVN)
 (require 'psvn)
@@ -109,12 +119,49 @@ This command is similar to `find-file-at-point' but without prompting for confir
 
 (global-set-key (kbd "ESC f") 'open-file-at-cursor)
 
+;; <MOVE BETWEEN '{' and '}'>
+(defun match-paren ()
+ "% command of vi"
+ (interactive)
+ (let ((char (char-after (point))))
+   (cond ((memq char '(?\( ?\{ ?\[))
+          (forward-sexp 1)
+          (backward-char 1))
+         ((memq char '(?\) ?\} ?\]))
+          (forward-char 1)
+          (backward-sexp 1))
+         (t (call-interactively 'self-insert-command)))))
+ 
+(global-set-key (kbd "ESC %") 'match-paren)
+
+;; <PRINTF DEBUG MESSAGE>
+(defun printf-debug-message()
+  "printf debug message"
+  (interactive)
+  (insert "printf(\"\\x1b[32m===%s(%d)  \\x1b[0m\\n\",__PRETTY_FUNCTION__,__LINE__);"))
+
+(global-set-key (kbd "ESC p") 'printf-debug-message)
+
+;; <PRINTK DEBUG MESSAGE>
+(defun printk-debug-message()
+  "printk debug message"
+  (interactive)
+  (insert "printk(\"\\x1b[32m===%s(%d)  \\x1b[0m\\n\",__PRETTY_FUNCTION__,__LINE__);"))
+
+(global-set-key (kbd "ESC k") 'printk-debug-message)
+
+;; <DISABLE AUTO RECENTERING>
+(setq scroll-step 1)
+(setq scroll-conservatively 10000)
+(setq auto-window-vscroll nil)
 
 
+;; <RELOAD .emacs >
+(defun reload-emacs-config()
+  (interactive)
+  (load-file "~/.emacs"))
 
-
-
-
+(global-set-key (kbd "C-c C-r") 'reload-emacs-config)
 
 ;; <KEY BINDING>
 (windmove-default-keybindings 'meta)
@@ -127,17 +174,17 @@ This command is similar to `find-file-at-point' but without prompting for confir
 ;; <MEMO>
 ;;(dolist (key '("\C-a" "\C-b" "\C-c" "\C-t" "\C-u" "\C-v" "\C-x" "\C-z" "\e"))
 ;;  (global-unset-key key))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes (quote ("bad832ac33fcbce342b4d69431e7393701f0823a3820f6030ccc361edd2a4be4" default)))
- '(ecb-options-version "2.40")
- '(inhibit-startup-screen t))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+;;(custom-set-variables
+;; custom-set-variables was added by Custom.
+;; If you edit it by hand, you could mess it up, so be careful.
+;; Your init file should contain only one such instance.
+;; If there is more than one, they won't work right.
+;; '(custom-safe-themes (quote ("bad832ac33fcbce342b4d69431e7393701f0823a3820f6030ccc361edd2a4be4" default)))
+;;'(ecb-options-version "2.40")
+;;'(inhibit-startup-screen t))
+;;(custom-set-faces
+;; custom-set-faces was added by Custom.
+;; If you edit it by hand, you could mess it up, so be careful.
+;; Your init file should contain only one such instance.
+;; If there is more than one, they won't work right.
+;;)
