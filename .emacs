@@ -24,6 +24,9 @@
 (add-to-list 'pkg-list 'psvn)
 (add-to-list 'pkg-list 'evil)
 (add-to-list 'pkg-list 'undo-tree)
+(add-to-list 'pkg-list 'php-mode)
+
+
 
 (require 'package)
 (setq package-archives '(
@@ -39,6 +42,10 @@
     (when (not (package-installed-p p))
 	      (package-install p)))
 
+;; <PHP MODE>
+(require 'php-mode)
+
+
 ;; <COLOR THEME>
 (require 'color-theme)
 ;;(require 'tango-2-theme)
@@ -49,19 +56,34 @@
 (require 'xcscope)
 ;;(setq cscope-initial-directory "~/github/opengles2-book-sample/LinuxX11/")
 ;;(setq cscope-database-file "cscope.out")
+(add-hook 'c++-mode-hook 
+  '(lambda ()
+	 (cscope-minor-mode t)))
+
+;;(global-set-key (kbd "C-c s s") 'cscope-find-this-symbol)
+;;(global-set-key (kbd "C-c s g") 'cscope-find-global-definition)
+;;(global-set-key (kbd "C-c s c") 'cscope-find-functions-calling-this-function)
+;;(global-set-key (kbd "C-c s u") 'cscope-pop-mark)
 
 
-
-(global-set-key (kbd "C-c s s") 'cscope-find-this-symbol)
-(global-set-key (kbd "C-c s g") 'cscope-find-global-definition)
-(global-set-key (kbd "C-c s c") 'cscope-find-functions-calling-this-function)
-(global-set-key (kbd "C-c s u") 'cscope-pop-mark)
 ;; <HIGHLIGHT>
 
 (require 'highlight-symbol)
-(global-set-key (kbd "ESC 1") 'highlight-symbol-at-point)
-(global-set-key (kbd "ESC *") 'highlight-symbol-next)
-(global-set-key (kbd "ESC #") 'highlight-symbol-prev)
+(global-set-key (kbd "C-c 1") 'highlight-symbol-at-point)
+(global-set-key (kbd "C-c *") 'highlight-symbol-next)
+(global-set-key (kbd "C-c #") 'highlight-symbol-prev)
+
+
+;; <HIDE-IFDEF-MODE>
+(add-hook 'c++-mode-hook 
+   '(lambda () 
+      (hide-ifdef-mode t) 
+	   (setq hide-ifdef-initially t)
+	   (setq hide-ifdef-shadow t)
+    )) 
+
+;; <GOTO LINE>
+(global-set-key (kbd "C-c j") 'goto-line)
 
 
 ;; <IDO-MODE>
@@ -117,7 +139,7 @@ This command is similar to `find-file-at-point' but without prompting for confir
             (when (y-or-n-p (format "file doesn't exist: 「%s」. Create?" path) )
               (find-file path )) ) ) ) ) ))
 
-(global-set-key (kbd "ESC f") 'open-file-at-cursor)
+(global-set-key (kbd "C-c f") 'open-file-at-cursor)
 
 ;; <MOVE BETWEEN '{' and '}'>
 (defun match-paren ()
@@ -132,7 +154,7 @@ This command is similar to `find-file-at-point' but without prompting for confir
           (backward-sexp 1))
          (t (call-interactively 'self-insert-command)))))
  
-(global-set-key (kbd "ESC %") 'match-paren)
+(global-set-key (kbd "C-c %") 'match-paren)
 
 ;; <PRINTF DEBUG MESSAGE>
 (defun printf-debug-message()
@@ -140,7 +162,7 @@ This command is similar to `find-file-at-point' but without prompting for confir
   (interactive)
   (insert "printf(\"\\x1b[32m===%s(%d)  \\x1b[0m\\n\",__PRETTY_FUNCTION__,__LINE__);"))
 
-(global-set-key (kbd "ESC p") 'printf-debug-message)
+(global-set-key (kbd "C-c p") 'printf-debug-message)
 
 ;; <PRINTK DEBUG MESSAGE>
 (defun printk-debug-message()
@@ -148,7 +170,7 @@ This command is similar to `find-file-at-point' but without prompting for confir
   (interactive)
   (insert "printk(\"\\x1b[32m===%s(%d)  \\x1b[0m\\n\",__PRETTY_FUNCTION__,__LINE__);"))
 
-(global-set-key (kbd "ESC k") 'printk-debug-message)
+(global-set-key (kbd "C-c k") 'printk-debug-message)
 
 ;; <DISABLE AUTO RECENTERING>
 (setq scroll-step 1)
@@ -161,14 +183,16 @@ This command is similar to `find-file-at-point' but without prompting for confir
   (interactive)
   (load-file "~/.emacs"))
 
+
+
 (global-set-key (kbd "C-c C-r") 'reload-emacs-config)
 
 ;; <KEY BINDING>
 (windmove-default-keybindings 'meta)
-(global-set-key (kbd "C-c b") 'windmove-left)          ; move to left windnow
-(global-set-key (kbd "C-c f") 'windmove-right)        ; move to right window
-(global-set-key (kbd "C-c p") 'windmove-up)              ; move to upper window
-(global-set-key (kbd "C-c n") 'windmove-down)          ; move to downer window
+;;(global-set-key (kbd "C-c b") 'windmove-left)          ; move to left windnow
+;;(global-set-key (kbd "C-c f") 'windmove-right)        ; move to right window
+;;(global-set-key (kbd "C-c p") 'windmove-up)              ; move to upper window
+;;(global-set-key (kbd "C-c n") 'windmove-down)          ; move to downer window
 
 
 ;; <MEMO>
@@ -188,3 +212,16 @@ This command is similar to `find-file-at-point' but without prompting for confir
 ;; Your init file should contain only one such instance.
 ;; If there is more than one, they won't work right.
 ;;)
+;;(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+;; '(custom-safe-themes (quote ("bad832ac33fcbce342b4d69431e7393701f0823a3820f6030ccc361edd2a4be4" default)))
+;; '(inhibit-startup-screen t))
+;;(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+;; )
