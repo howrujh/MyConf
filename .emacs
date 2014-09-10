@@ -19,13 +19,19 @@
 (add-to-list 'pkg-list 'color-theme)
 ;;(add-to-list 'pkg-list 'tango-2-theme)
 (add-to-list 'pkg-list 'highlight-symbol)
-(add-to-list 'pkg-list 'cl)
-(add-to-list 'pkg-list 'ecb)
+;(add-to-list 'pkg-list 'cl)
+;(add-to-list 'pkg-list 'ecb)
+;(add-to-list 'pkg-list 'cedet)
 (add-to-list 'pkg-list 'psvn)
 (add-to-list 'pkg-list 'evil)
 (add-to-list 'pkg-list 'undo-tree)
 (add-to-list 'pkg-list 'php-mode)
-
+(add-to-list 'pkg-list 'auto-complete)
+(add-to-list 'pkg-list 'yasnippet)
+(add-to-list 'pkg-list 'iedit)
+(add-to-list 'pkg-list 'flymake-google-cpplint)
+(add-to-list 'pkg-list 'flymake-cursor)
+(add-to-list 'pkg-list 'google-c-style)
 
 
 (require 'package)
@@ -37,19 +43,61 @@
 (package-initialize)
 
 (when (not package-archive-contents)
-    (package-refresh-contents))
+    (package-refresh-contents)
+)
 (dolist (p pkg-list)
     (when (not (package-installed-p p))
-	      (package-install p)))
+	      (package-install p))
+)
 
 ;; <PHP MODE>
 (require 'php-mode)
 
+;; <IEDIT MODE>
+(require 'iedit)
+(define-key global-map (kbd "C-c ;") 'iedit-mode)
 
 ;; <COLOR THEME>
 (require 'color-theme)
 ;;(require 'tango-2-theme)
 (load-theme 'tango-dark t)
+
+;; <CEDET MODE>
+;; turn on Semantic
+;(require 'cedet)
+;(semantic-mode t)
+;(defun my:add-semantic-to-autocomplete()
+
+ ; (add-to-list 'ac-sources 'ac-source-semantic)
+;)
+;(add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
+
+
+;; <AUTO COMPLETE>
+(require 'auto-complete)
+(require 'auto-complete-config)
+(ac-config-default)
+
+;; <YASNIPPET>
+(require 'yasnippet)
+(yas-global-mode 1)
+
+;; <FLYMAKE GOOGLE CPPLINT>
+;; wget http://google-styleguide.googlecode.com/svn/trunk/cpplint/cpplint.py
+(defun my:flymake-google-init()
+  (require 'flymake-google-cpplint)
+  (require 'flymake-cursor)
+;  (custom-set-variables
+ ;  '(flymake-google-cpplint-command "~/scripts/cpplint.py"))
+  (flymake-google-cpplint-load)
+)
+(add-hook 'c-mode-hook 'my:flymake-google-init)
+(add-hook 'c++-mode-hook 'my:flymake-google-init)
+
+;; <GOOGLE C STYLE>
+(require 'google-c-style)
+(add-hook 'c-mode-common-hook 'google-set-c-style)
+(add-hook 'c-mode-common-hook 'google-make-newline-indent)
 
 ;; <CSCOPE>
 ;;(add-to-list 'load-path "/usr/share/cscope")
@@ -114,8 +162,10 @@
 (require 'psvn)
 
 ;; <ECB>
-(require 'cl)
-(require 'ecb)
+;(require 'cl)
+;(require 'ecb)
+
+
 
 ;; <OPEN FILE AT CURSOR>
 (defun open-file-at-cursor ()
