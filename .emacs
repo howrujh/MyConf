@@ -9,9 +9,11 @@
 
 ;; <LAYOUT>
 
-(setq-default c-basic-offset 4 
-                  tab-width 4
-                  indent-tabs-mode t)
+(setq-default c-default-style "linux"
+			  c-basic-offset 4 
+			  tab-width 4
+			  indent-tabs-mode t)
+
 ;; <PACKAGE MANAGEMENT>
 (setq pkg-list)
 (add-to-list 'pkg-list 'xcscope)
@@ -22,7 +24,7 @@
 ;(add-to-list 'pkg-list 'cl)
 ;(add-to-list 'pkg-list 'ecb)
 ;(add-to-list 'pkg-list 'cedet)
-(add-to-list 'pkg-list 'psvn)
+;(add-to-list 'pkg-list 'psvn)
 (add-to-list 'pkg-list 'evil)
 (add-to-list 'pkg-list 'undo-tree)
 (add-to-list 'pkg-list 'php-mode)
@@ -65,12 +67,12 @@
 ;; <CEDET MODE>
 ;; turn on Semantic
 ;(require 'cedet)
-;(semantic-mode t)
-;(defun my:add-semantic-to-autocomplete()
+(semantic-mode t)
+(defun my:add-semantic-to-autocomplete()
 
- ; (add-to-list 'ac-sources 'ac-source-semantic)
-;)
-;(add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
+  (add-to-list 'ac-sources 'ac-source-semantic)
+)
+(add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
 
 
 ;; <AUTO COMPLETE>
@@ -91,13 +93,13 @@
  ;  '(flymake-google-cpplint-command "~/scripts/cpplint.py"))
   (flymake-google-cpplint-load)
 )
-(add-hook 'c-mode-hook 'my:flymake-google-init)
-(add-hook 'c++-mode-hook 'my:flymake-google-init)
+;(add-hook 'c-mode-hook 'my:flymake-google-init)
+;(add-hook 'c++-mode-hook 'my:flymake-google-init)
 
 ;; <GOOGLE C STYLE>
 (require 'google-c-style)
-(add-hook 'c-mode-common-hook 'google-set-c-style)
-(add-hook 'c-mode-common-hook 'google-make-newline-indent)
+;(add-hook 'c-mode-common-hook 'google-set-c-style)
+;(add-hook 'c-mode-common-hook 'google-make-newline-indent)
 
 ;; <CSCOPE>
 ;;(add-to-list 'load-path "/usr/share/cscope")
@@ -126,8 +128,8 @@
 (add-hook 'c++-mode-hook 
    '(lambda () 
       (hide-ifdef-mode t) 
-	   (setq hide-ifdef-initially t)
-	   (setq hide-ifdef-shadow t)
+;	   (setq hide-ifdef-initially t)
+;	   (setq hide-ifdef-shadow t)
     )) 
 
 ;; <GOTO LINE>
@@ -150,8 +152,8 @@
 ;; <UNDO-TREE>
 (global-undo-tree-mode 1)
 
-(global-set-key (kbd "C-z") 'undo-tree-undo) ; 【Ctrl+z】
-(global-set-key (kbd "C-S-z") 'undo-tree-redo) ; 【Ctrl+Shift+z】; Mac style
+;(global-set-key (kbd "C-z") 'undo-tree-undo) ; 【Ctrl+z】
+;(global-set-key (kbd "C-S-z") 'undo-tree-redo) ; 【Ctrl+Shift+z】; Mac style
 
 
 ;; <EVIL-MODE>
@@ -159,7 +161,11 @@
 ;;(evil-mode)
 
 ;; <PSVN)
-(require 'psvn)
+;(require 'psvn)
+
+;; <EDIFF>
+(setq ediff-split-window-function 'split-window-horizontally)
+(setq ediff-merge-split-window-function 'split-window-horizontally)
 
 ;; <ECB>
 ;(require 'cl)
@@ -275,3 +281,15 @@ This command is similar to `find-file-at-point' but without prompting for confir
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
 ;; )
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes (quote ("bad832ac33fcbce342b4d69431e7393701f0823a3820f6030ccc361edd2a4be4" default))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
