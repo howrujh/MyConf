@@ -34,7 +34,7 @@
 (add-to-list 'pkg-list 'flymake-google-cpplint)
 (add-to-list 'pkg-list 'flymake-cursor)
 (add-to-list 'pkg-list 'google-c-style)
-
+(add-to-list 'pkg-list 'cc-mode)
 
 (require 'package)
 (setq package-archives '(
@@ -51,6 +51,9 @@
     (when (not (package-installed-p p))
 	      (package-install p))
 )
+
+;; <CC MODE>
+(require 'cc-mode)
 
 ;; <PHP MODE>
 (require 'php-mode)
@@ -106,9 +109,16 @@
 (require 'xcscope)
 ;;(setq cscope-initial-directory "~/github/opengles2-book-sample/LinuxX11/")
 ;;(setq cscope-database-file "cscope.out")
-(add-hook 'c++-mode-hook 
-  '(lambda ()
-	 (cscope-minor-mode t)))
+(defun my:cscope-init()
+  (cscope-minor-mode t)
+)
+
+(add-hook 'c++-mode-hook 'my:cscope-init)
+(add-hook 'c-mode-hook 'my:cscope-init)
+(add-hook 'makefile-mode-hook 'my:cscope-init)
+
+;  '(lambda ()
+;	 (cscope-minor-mode t)))
 
 ;;(global-set-key (kbd "C-c s s") 'cscope-find-this-symbol)
 ;;(global-set-key (kbd "C-c s g") 'cscope-find-global-definition)

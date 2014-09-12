@@ -17,6 +17,7 @@ alias greprs='source greprs.sh'
 alias less='less -R'
 
 alias c='clear'
+alias ls='ls --color=always'
 alias l='ls'
 alias p='pwd'
 alias sr='screen -S jh_session -X setenv DISPLAY "$DISPLAY"; screen -S jh_session -rd'
