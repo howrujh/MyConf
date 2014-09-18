@@ -14,6 +14,10 @@
 			  tab-width 4
 			  indent-tabs-mode t)
 
+;; <INDENT>
+(setq c-offsets-alist '((case-label . 4)))
+
+
 ;; <PACKAGE MANAGEMENT>
 (setq pkg-list)
 (add-to-list 'pkg-list 'xcscope)
@@ -35,6 +39,7 @@
 (add-to-list 'pkg-list 'flymake-cursor)
 (add-to-list 'pkg-list 'google-c-style)
 (add-to-list 'pkg-list 'cc-mode)
+(add-to-list 'pkg-list 'multi-term)
 
 (require 'package)
 (setq package-archives '(
@@ -157,11 +162,13 @@
 ;(setq ido-enable-last-directory-history nil)
 (setq ido-confirm-unique-completion nil) ;; wait for RET, even for unique?
 (setq ido-show-dot-for-dired t) ;; put . as the first item
-;(setq ido-use-filename-at-point t) ;; prefer file names near point
-
+;(setq Ido-use-filename-at-point t) ;; prefer file names near point
+;(setq ido-ignore-buffers '("*scratch*" "*Messages*"))
+(setq ido-ignore-buffers '("^ " "*Completions*" "*Shell Command Output*"
+						   "*Messages*" "*scratch*" "Async Shell Command"))
 ;; <UNDO-TREE>
 (global-undo-tree-mode 1)
-
+(global-set-key (kbd "M-/") 'undo-tree-redo)
 ;(global-set-key (kbd "C-z") 'undo-tree-undo) ; 【Ctrl+z】
 ;(global-set-key (kbd "C-S-z") 'undo-tree-redo) ; 【Ctrl+Shift+z】; Mac style
 
@@ -179,9 +186,11 @@
 
 ;; <ECB>
 ;(require 'cl)
-;(require 'ecb)
+;(require 'ecb)
 
-
+;; <MULTI-TERM>
+(require 'multi-term)
+(setq multi-term-program "/bin/bash")
 
 ;; <OPEN FILE AT CURSOR>
 (defun open-file-at-cursor ()
@@ -206,6 +215,40 @@ This command is similar to `find-file-at-point' but without prompting for confir
               (find-file path )) ) ) ) ) ))
 
 (global-set-key (kbd "C-c f") 'open-file-at-cursor)
+
+;; <SCROLL WITHOUT CURSOR MOVE>
+(defun scroll-in-place (scroll-up)
+  "Scroll window up (or down) without moving point (if possible). 
+SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
+  (interactive)
+  (let ((pos (point))
+                (col (current-column))
+                (up-or-down (if scroll-up 1 -1)))
+        (scroll-up up-or-down)
+        (if (pos-visible-in-window-p pos)
+                (goto-char pos)
+          (if (or (eq last-command 'next-line)
+                          (eq last-command 'previous-line))
+                  (move-to-column temporary-goal-column)
+                (move-to-column col)
+                (setq temporary-goal-column col))
+          (setq this-command 'next-line))))
+
+
+(defun scroll-up-in-place ()
+  "Scroll window up without moving point (if possible)."
+  (interactive)
+  (scroll-in-place t))
+
+
+(defun scroll-down-in-place ()
+  "Scroll window up without moving point (if possible)."
+  (interactive)
+  (scroll-in-place nil))
+
+(global-set-key (read-kbd-macro "M-n") 'scroll-up-in-place)
+(global-set-key (read-kbd-macro "M-p") 'scroll-down-in-place)
+
 
 ;; <MOVE BETWEEN '{' and '}'>
 (defun match-paren ()
@@ -243,6 +286,9 @@ This command is similar to `find-file-at-point' but without prompting for confir
 (setq scroll-conservatively 10000)
 (setq auto-window-vscroll nil)
 
+;; <CHANGE BUFFER IN CURRENT WINDOW>
+(global-set-key (kbd "C-c -") 'previous-buffer)
+(global-set-key (kbd "C-c =") 'next-buffer)
 
 ;; <RELOAD .emacs >
 (defun reload-emacs-config()
@@ -296,7 +342,8 @@ This command is similar to `find-file-at-point' but without prompting for confir
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-safe-themes (quote ("bad832ac33fcbce342b4d69431e7393701f0823a3820f6030ccc361edd2a4be4" default))))
+ '(custom-safe-themes (quote ("bad832ac33fcbce342b4d69431e7393701f0823a3820f6030ccc361edd2a4be4" default)))
+ '(ecb-options-version "2.40"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
