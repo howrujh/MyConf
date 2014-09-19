@@ -40,6 +40,7 @@
 (add-to-list 'pkg-list 'google-c-style)
 (add-to-list 'pkg-list 'cc-mode)
 (add-to-list 'pkg-list 'multi-term)
+(add-to-list 'pkg-list 'multiple-cursors)
 
 (require 'package)
 (setq package-archives '(
@@ -66,6 +67,10 @@
 ;; <IEDIT MODE>
 (require 'iedit)
 (define-key global-map (kbd "C-c ;") 'iedit-mode)
+
+;; <MULTIPLE CURSORS>
+(require 'multiple-cursors)
+(global-set-key (kbd "C-c m") 'mc/edit-lines)
 
 ;; <COLOR THEME>
 (require 'color-theme)
@@ -234,12 +239,10 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
                 (setq temporary-goal-column col))
           (setq this-command 'next-line))))
 
-
 (defun scroll-up-in-place ()
   "Scroll window up without moving point (if possible)."
   (interactive)
   (scroll-in-place t))
-
 
 (defun scroll-down-in-place ()
   "Scroll window up without moving point (if possible)."
@@ -249,6 +252,29 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (global-set-key (read-kbd-macro "M-n") 'scroll-up-in-place)
 (global-set-key (read-kbd-macro "M-p") 'scroll-down-in-place)
 
+;; <TOGGLE WINDOW DEDICATION>
+
+(defun toggle-window-dedicated ()
+
+"Toggle whether the current active window is dedicated or not"
+
+(interactive)
+
+(message 
+
+ (if (let (window (get-buffer-window (current-buffer)))
+
+       (set-window-dedicated-p window 
+
+        (not (window-dedicated-p window))))
+
+    "Window '%s' is dedicated"
+
+    "Window '%s' is normal")
+
+ (current-buffer)))
+
+(global-set-key (kbd "C-c l") 'toggle-window-dedicated)
 
 ;; <MOVE BETWEEN '{' and '}'>
 (defun match-paren ()
@@ -295,12 +321,12 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
   (interactive)
   (load-file "~/.emacs"))
 
-
-
 (global-set-key (kbd "C-c C-r") 'reload-emacs-config)
 
-;; <KEY BINDING>
+;; <MOVE WINDOW>
 (windmove-default-keybindings 'meta)
+
+
 ;;(global-set-key (kbd "C-c b") 'windmove-left)          ; move to left windnow
 ;;(global-set-key (kbd "C-c f") 'windmove-right)        ; move to right window
 ;;(global-set-key (kbd "C-c p") 'windmove-up)              ; move to upper window
