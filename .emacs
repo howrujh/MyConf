@@ -71,6 +71,9 @@
 ;; <MULTIPLE CURSORS>
 (require 'multiple-cursors)
 (global-set-key (kbd "C-c m") 'mc/edit-lines)
+(global-set-key (kbd "C-c <") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c >") 'mc/mark-next-like-this)
+
 
 ;; <COLOR THEME>
 (require 'color-theme)
@@ -154,6 +157,15 @@
 
 ;; <GOTO LINE>
 (global-set-key (kbd "C-c j") 'goto-line)
+
+;; <WHICH FUNCTION MODE>
+(defun my:which-func()
+  (which-function-mode 1)
+)
+
+(add-hook 'c++-mode-hook 'my:which-func)
+(add-hook 'c-mode-hook 'my:which-func)
+
 
 
 ;; <IDO-MODE>
