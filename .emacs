@@ -15,7 +15,7 @@
 			  indent-tabs-mode t)
 
 ;; <INDENT>
-(setq c-offsets-alist '((case-label . 4)))
+;(setq c-offsets-alist '((case-label . 4)))
 
 
 ;; <PACKAGE MANAGEMENT>
@@ -35,12 +35,13 @@
 (add-to-list 'pkg-list 'auto-complete)
 (add-to-list 'pkg-list 'yasnippet)
 (add-to-list 'pkg-list 'iedit)
-(add-to-list 'pkg-list 'flymake-google-cpplint)
-(add-to-list 'pkg-list 'flymake-cursor)
-(add-to-list 'pkg-list 'google-c-style)
-(add-to-list 'pkg-list 'cc-mode)
+;(add-to-list 'pkg-list 'flymake-google-cpplint)
+;(add-to-list 'pkg-list 'flymake-cursor)
+;(add-to-list 'pkg-list 'google-c-style)
+;(add-to-list 'pkg-list 'cc-mode)
 (add-to-list 'pkg-list 'multi-term)
 (add-to-list 'pkg-list 'multiple-cursors)
+
 
 (require 'package)
 (setq package-archives '(
@@ -58,6 +59,8 @@
 	      (package-install p))
 )
 
+;; <WINNER MODE>
+(winner-mode 1)
 ;; <CC MODE>
 (require 'cc-mode)
 
@@ -67,6 +70,13 @@
 ;; <IEDIT MODE>
 (require 'iedit)
 (define-key global-map (kbd "C-c ;") 'iedit-mode)
+
+;; <DESKTOP SAVE MODE>
+(desktop-save-mode 1)
+
+;; <SHOW PAREN MODE>
+;; highlight pare charecters
+(show-paren-mode 1)
 
 ;; <MULTIPLE CURSORS>
 (require 'multiple-cursors)
@@ -113,7 +123,7 @@
 ;(add-hook 'c++-mode-hook 'my:flymake-google-init)
 
 ;; <GOOGLE C STYLE>
-(require 'google-c-style)
+;(require 'google-c-style)
 ;(add-hook 'c-mode-common-hook 'google-set-c-style)
 ;(add-hook 'c-mode-common-hook 'google-make-newline-indent)
 
@@ -148,19 +158,53 @@
 
 
 ;; <HIDE-IFDEF-MODE>
-(add-hook 'c++-mode-hook 
-   '(lambda () 
-      (hide-ifdef-mode t) 
+;(add-hook 'c++-mode-hook 
+;   '(lambda () 
+;      (hide-ifdef-mode t) 
 ;	   (setq hide-ifdef-initially t)
 ;	   (setq hide-ifdef-shadow t)
-    )) 
+;    )) 
+
+(defun my-c-mode-font-lock-if0 (limit)
+  (save-restriction
+    (widen)
+    (save-excursion
+      (goto-char (point-min))
+      (let ((depth 0) str start start-depth)
+        (while (re-search-forward "^\\s-*#\\s-*\\(if\\|else\\|endif\\)" limit 'move)
+          (setq str (match-string 1))
+          (if (string= str "if")
+              (progn
+                (setq depth (1+ depth))
+                (when (and (null start) (looking-at "\\s-+0"))
+                  (setq start (match-end 0)
+                        start-depth depth)))
+            (when (and start (= depth start-depth))
+              (c-put-font-lock-face start (match-beginning 0) 'font-lock-comment-face)
+              (setq start nil))
+            (when (string= str "endif")
+              (setq depth (1- depth)))))
+        (when (and start (> depth 0))
+          (c-put-font-lock-face start (point) 'font-lock-comment-face)))))
+  nil)
+
+(defun my-c-mode-if0-hook ()
+  (font-lock-add-keywords
+   nil
+   '((my-c-mode-font-lock-if0 (0 font-lock-comment-face prepend))) 'add-to-end))
+
+(add-hook 'c-mode-common-hook 'my-c-mode-if0-hook)
+
+
+
+
 
 ;; <GOTO LINE>
 (global-set-key (kbd "C-c j") 'goto-line)
 
 ;; <WHICH FUNCTION MODE>
 (defun my:which-func()
-  (which-function-mode 1)
+  (which-func-mode 1)
 )
 
 (add-hook 'c++-mode-hook 'my:which-func)
@@ -325,8 +369,24 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (setq auto-window-vscroll nil)
 
 ;; <CHANGE BUFFER IN CURRENT WINDOW>
-(global-set-key (kbd "C-c -") 'previous-buffer)
-(global-set-key (kbd "C-c =") 'next-buffer)
+;;(global-set-key (kbd "C-c -") 'previous-buffer)
+;;(global-set-key (kbd "C-c =") 'next-buffer)
+
+;; <CHANGE TO PREV/NEXT FRAME>
+(defun move-cursor-next-frame ()
+  "Move cursor to the next frame."
+  (interactive)
+  (other-frame 1))
+
+(defun move-cursor-previous-frame ()
+  "Move cursor to the previous frame."
+  (interactive)
+  (other-frame -1))
+
+(global-set-key (kbd "C-c -") 'move-cursor-previous-frame)
+(global-set-key (kbd "C-c =") 'move-cursor-next-frame)
+
+
 
 ;; <RELOAD .emacs >
 (defun reload-emacs-config()
@@ -381,7 +441,8 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes (quote ("bad832ac33fcbce342b4d69431e7393701f0823a3820f6030ccc361edd2a4be4" default)))
- '(ecb-options-version "2.40"))
+ '(ecb-options-version "2.40")
+ '(inhibit-startup-screen t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
