@@ -32,9 +32,10 @@ alias sb='source ~/.bashrc'
 alias test='cd $HOME/work/code_test'
 
 
-alias e='~/scripts/emacs_start.sh'
+#alias e='~/scripts/emacs_start.sh'
+alias e='emacs -t'
 #alias em='emacsclient -t'
-alias es='emacs --daemon'
+#alias es='emacs --daemon'
 alias emacs='emacs'
 alias t1='cd ~/tp1k'
 alias t1.b='cd ~/tp1k/bios/u-boot'

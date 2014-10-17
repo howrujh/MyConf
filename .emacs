@@ -28,7 +28,7 @@
 ;(add-to-list 'pkg-list 'cl)
 ;(add-to-list 'pkg-list 'ecb)
 ;(add-to-list 'pkg-list 'cedet)
-;(add-to-list 'pkg-list 'psvn)
+(add-to-list 'pkg-list 'psvn)
 (add-to-list 'pkg-list 'evil)
 (add-to-list 'pkg-list 'undo-tree)
 (add-to-list 'pkg-list 'php-mode)
@@ -38,7 +38,7 @@
 ;(add-to-list 'pkg-list 'flymake-google-cpplint)
 ;(add-to-list 'pkg-list 'flymake-cursor)
 ;(add-to-list 'pkg-list 'google-c-style)
-;(add-to-list 'pkg-list 'cc-mode)
+(add-to-list 'pkg-list 'cc-mode)
 (add-to-list 'pkg-list 'multi-term)
 (add-to-list 'pkg-list 'multiple-cursors)
 
@@ -72,7 +72,7 @@
 (define-key global-map (kbd "C-c ;") 'iedit-mode)
 
 ;; <DESKTOP SAVE MODE>
-(desktop-save-mode 1)
+;(desktop-save-mode 1)
 
 ;; <SHOW PAREN MODE>
 ;; highlight pare charecters
@@ -195,6 +195,34 @@
 
 (add-hook 'c-mode-common-hook 'my-c-mode-if0-hook)
 
+;; <DOXYGEN STYLE FUNCTION COMMENT>
+(add-to-list 'load-path "~/share/emacs/site-lisp")
+(require 'doxymacs)
+(defun my:doxy-func-comment()
+ "Write doxygen style comment"
+ (interactive)
+ (let* ((next-func-alist (doxymacs-find-next-func))
+        (func-name (cdr (assoc 'func next-func-alist)))
+        (params-list (cdr (assoc 'args next-func-alist)))
+        (return-name (cdr (assoc 'return next-func-alist)))
+        (snippet-text "")
+        (idx 1))
+   (setq snippet-text (format "/**\n * \@brief ${1:%s}\n * \n" func-name))
+   (setq idx 2)
+   (dolist (param params-list)
+     (unless (string= param "this")
+       (setq snippet-text (concat snippet-text
+                                  (format " * \@param %s ${%d:}\n" param idx)))
+       (setq idx (+ 1 idx))))
+   (when (and return-name (not (string= return-name "void")))
+     (setq snippet-text (concat snippet-text
+                                (format " * \@return ${%d:%s}\n" idx return-name))))
+   (setq snippet-text (concat snippet-text " */"))
+   (yas/expand-snippet snippet-text))
+)
+
+(global-set-key (kbd "C-c d f") 'my:doxy-func-comment)
+
 
 
 
@@ -239,7 +267,7 @@
 ;;(evil-mode)
 
 ;; <PSVN)
-;(require 'psvn)
+(require 'psvn)
 
 ;; <EDIFF>
 (setq ediff-split-window-function 'split-window-horizontally)
@@ -385,7 +413,7 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 
 (global-set-key (kbd "C-c -") 'move-cursor-previous-frame)
 (global-set-key (kbd "C-c =") 'move-cursor-next-frame)
-
+(global-set-key (kbd "C-c !") 'new-frame)
 
 
 ;; <RELOAD .emacs >
