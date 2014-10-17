@@ -33,7 +33,7 @@ alias test='cd $HOME/work/code_test'
 
 
 #alias e='~/scripts/emacs_start.sh'
-alias e='emacs -t'
+alias e='emacs -nw'
 #alias em='emacsclient -t'
 #alias es='emacs --daemon'
 alias emacs='emacs'
