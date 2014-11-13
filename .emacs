@@ -25,7 +25,7 @@
 (add-to-list 'pkg-list 'ido)
 (add-to-list 'pkg-list 'color-theme)
 ;;(add-to-list 'pkg-list 'tango-2-theme)
-(add-to-list 'pkg-list 'lush-theme)
+;;(add-to-list 'pkg-list 'lush-theme)
 (add-to-list 'pkg-list 'highlight-symbol)
 ;(add-to-list 'pkg-list 'cl)
 ;(add-to-list 'pkg-list 'ecb)
