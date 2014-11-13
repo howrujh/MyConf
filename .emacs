@@ -42,7 +42,6 @@
 (add-to-list 'pkg-list 'multi-term)
 (add-to-list 'pkg-list 'multiple-cursors)
 
-
 (require 'package)
 (setq package-archives '(
 						 ("ELPA" . "http://tromey.com/elpa/")
@@ -280,6 +279,36 @@
 ;; <MULTI-TERM>
 (require 'multi-term)
 (setq multi-term-program "/bin/bash")
+
+;; <SATELLITE WINDOW>
+(defun mark-this-window-as-satellite ()
+  "Mark the current window as the satellite window."
+  (interactive)
+  (mapc (lambda (win) (set-window-parameter win 'satellite nil))
+    (window-list))
+  (set-window-parameter nil 'satellite t)
+  (message "Window: %s is now the satellite window." (selected-window)))
+
+(defun get-satellite-window ()
+  "Find and return the satellite window or nil if non exists."
+  (find-if (lambda (win) (window-parameter win 'satellite)) (window-list)))
+
+(defun display-buffer-in-satellite (buffer ignore)
+  "Display the buffer in the satellite window, or the first window \
+    it finds if there is no satellite."
+  (let ((satellite-window (or (get-satellite-window)
+                              (first (window-list)))))
+    (select-window satellite-window)
+    (display-buffer-same-window buffer nil)
+    (display-buffer-record-window 'reuse satellite-window buffer)
+    satellite-window))
+
+(push '("\\*" display-buffer-in-satellite) display-buffer-alist)
+
+
+(global-set-key (kbd "C-c s") 'mark-this-window-as-satellite)
+
+
 
 ;; <OPEN FILE AT CURSOR>
 (defun open-file-at-cursor ()
