@@ -14,6 +14,7 @@
 			  tab-width 4
 			  indent-tabs-mode t)
 
+
 ;; <INDENT>
 ;(setq c-offsets-alist '((case-label . 4)))
 
@@ -24,6 +25,7 @@
 (add-to-list 'pkg-list 'ido)
 (add-to-list 'pkg-list 'color-theme)
 ;;(add-to-list 'pkg-list 'tango-2-theme)
+(add-to-list 'pkg-list 'lush-theme)
 (add-to-list 'pkg-list 'highlight-symbol)
 ;(add-to-list 'pkg-list 'cl)
 ;(add-to-list 'pkg-list 'ecb)
@@ -59,6 +61,9 @@
 	      (package-install p))
 )
 
+;; <GDB>
+(setq gdb-many-windows 1)
+
 ;; <WINNER MODE>
 (winner-mode 1)
 ;; <CC MODE>
@@ -72,7 +77,7 @@
 (define-key global-map (kbd "C-c ;") 'iedit-mode)
 
 ;; <DESKTOP SAVE MODE>
-;(desktop-save-mode 1)
+;;(desktop-save-mode 1)
 
 ;; <SHOW PAREN MODE>
 ;; highlight pare charecters
@@ -89,6 +94,8 @@
 (require 'color-theme)
 ;;(require 'tango-2-theme)
 (load-theme 'tango-dark t)
+;;(load-theme 'lush t)
+
 
 ;; <CEDET MODE>
 ;; turn on Semantic
@@ -280,6 +287,9 @@
 ;; <MULTI-TERM>
 (require 'multi-term)
 (setq multi-term-program "/bin/bash")
+(global-set-key (kbd "C-c t n") 'multi-term)
+(global-set-key (kbd "C-c t -") 'multi-term-prev)
+(global-set-key (kbd "C-c t =") 'multi-term-next)
 
 ;; <OPEN FILE AT CURSOR>
 (defun open-file-at-cursor ()
@@ -468,7 +478,7 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-safe-themes (quote ("bad832ac33fcbce342b4d69431e7393701f0823a3820f6030ccc361edd2a4be4" default)))
+ '(custom-safe-themes (quote ("c7cd81771525ff66c105413134cdf0330b0b5b88fd8096e5d56b0256872ba6c7" "bad832ac33fcbce342b4d69431e7393701f0823a3820f6030ccc361edd2a4be4" default)))
  '(ecb-options-version "2.40")
  '(inhibit-startup-screen t))
 (custom-set-faces
