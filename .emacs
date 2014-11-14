@@ -16,12 +16,16 @@
 
 
 ;; <INDENT>
-;(setq c-offsets-alist '((case-label . 4)))
+;;(setq c-offsets-alist '((case-label . 4)))
 
 
 ;; <PACKAGE MANAGEMENT>
+;; -- using package.el for install popular packages --
+
 (setq pkg-list)
-(add-to-list 'pkg-list 'xcscope)
+(add-to-list 'pkg-list 'el-get)
+;;(add-to-list 'pkg-list 'xcscope)
+;;(add-to-list 'pkg-list 'ascope)
 (add-to-list 'pkg-list 'ido)
 (add-to-list 'pkg-list 'color-theme)
 ;;(add-to-list 'pkg-list 'tango-2-theme)
@@ -43,38 +47,105 @@
 (add-to-list 'pkg-list 'cc-mode)
 (add-to-list 'pkg-list 'multi-term)
 (add-to-list 'pkg-list 'multiple-cursors)
+(add-to-list 'pkg-list 'buffer-move)
 
-(require 'package)
-(setq package-archives '(
-						 ("ELPA" . "http://tromey.com/elpa/")
-						 ("melpa" . "http://melpa.milkbox.net/packages/")
-						 ("gnu" . "http://elpa.gnu.org/packages/")
-						 ("marmalade" . "http://marmalade-repo.org/packages/")))
-(package-initialize)
+(when (require 'package nil 'noerror)
 
-(when (not package-archive-contents)
+  (package-initialize)
+
+  (setq package-archives '(
+						   ("ELPA" . "http://tromey.com/elpa/")
+						   ("melpa" . "http://melpa.milkbox.net/packages/")
+						   ("gnu" . "http://elpa.gnu.org/packages/")
+						   ("marmalade" . "http://marmalade-repo.org/packages/")))
+
+
+
+  (when (not package-archive-contents)
     (package-refresh-contents)
-)
-(dolist (p pkg-list)
+	)
+
+  (dolist (p pkg-list)
     (when (not (package-installed-p p))
-	      (package-install p))
-)
+	  (package-install p))
+	)
+
+  )
+
+;; -- using el-get for install from github, svn, etc..--
+(when (require 'el-get nil 'noerror)
+
+  ;; Set up packages
+  (setq el-get-sources
+		'(
+		  (:name rscope
+				 :description "another interface to cscope tool."
+				 :type github
+				 :pkgname "rjarzmik/rscope")
+
+		;(:name multiple-cursors
+		;	   :description "An experiment in adding multiple cursors to emacs"
+		;	   :type github
+		;	   :pkgname "magnars/multiple-cursors.el"
+		;	   :features multiple-cursors)
+		;(:name scala-mode
+		;	   :description "Major mode for editing Scala code."
+		;	   :type git
+		;	   :url "https://github.com/scala/scala-dist.git"
+		;	   :build `(("make -C tool-support/src/emacs" ,(concat "ELISP_COMMAND=" el-get-emacs)))
+		;	   :load-path ("tool-support/src/emacs")
+		;	   :features scala-mode-auto)
+		;(:name rainbow-mode :type elpa)
+		;(:name js2-mode
+		;	   :website "https://github.com/mooz/js2-mode#readme"
+		;	   :description "An improved JavaScript editing mode"
+		;	   :type github
+		;	   :pkgname "mooz/js2-mode"
+		;	   :prepare (autoload 'js2-mode "js2-mode" nil t))
+		  ))
+
+
+  ;; install any packages not installed yet
+  (mapc (lambda (f)
+		  (let ((name (plist-get f :name)))
+			(when (not (require name nil t)) (el-get-install name))))
+		el-get-sources)
+
+  )
 
 ;; <GDB>
 (setq gdb-many-windows 1)
 
 ;; <WINNER MODE>
-(winner-mode 1)
+(setq winner-dont-bind-my-keys t)
+(when (require 'winner nil 'noerror)
+  (global-set-key (kbd "C-c w p") 'winner-undo)
+  (global-set-key (kbd "C-c w n") 'winner-redo)
+  (winner-mode t)
+)
+
+;; <MOVE BUFFER>
+(when (require 'buffer-move nil 'noerror)
+
+  (global-set-key (kbd "C-c b <up>")     'buf-move-up)
+  (global-set-key (kbd "C-c b <down>")   'buf-move-down)
+  (global-set-key (kbd "C-c b <left>")   'buf-move-left)
+  (global-set-key (kbd "C-c b <right>")  'buf-move-right)
+  )
+
 ;; <CC MODE>
-(require 'cc-mode)
+(when (require 'cc-mode nil 'noerror)
+  )
+
 
 ;; <PHP MODE>
-(require 'php-mode)
+(when (require 'php-mode nil 'noerror)
+  )
 
 ;; <IEDIT MODE>
-(require 'iedit)
-(define-key global-map (kbd "C-c ;") 'iedit-mode)
-
+(when (require 'iedit nil 'noerror)
+  (define-key global-map (kbd "C-c ;") 'iedit-mode)
+  )
 ;; <DESKTOP SAVE MODE>
 ;;(desktop-save-mode 1)
 
@@ -83,18 +154,18 @@
 (show-paren-mode 1)
 
 ;; <MULTIPLE CURSORS>
-(require 'multiple-cursors)
-(global-set-key (kbd "C-c m") 'mc/edit-lines)
-(global-set-key (kbd "C-c <") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c >") 'mc/mark-next-like-this)
-
+(when (require 'multiple-cursors nil 'noerror)
+  (global-set-key (kbd "C-c c m") 'mc/edit-lines)
+  (global-set-key (kbd "C-c c p") 'mc/mark-previous-like-this)
+  (global-set-key (kbd "C-c c n") 'mc/mark-next-like-this)
+  )
 
 ;; <COLOR THEME>
-(require 'color-theme)
+(when (require 'color-theme nil 'noerror)
 ;;(require 'tango-2-theme)
 (load-theme 'tango-dark t)
 ;;(load-theme 'lush t)
-
+)
 
 ;; <CEDET MODE>
 ;; turn on Semantic
@@ -108,23 +179,26 @@
 
 
 ;; <AUTO COMPLETE>
-(require 'auto-complete)
-(require 'auto-complete-config)
-(ac-config-default)
-
+(when (require 'auto-complete nil 'noerror)
+  (when (require 'auto-complete-config nil 'noerror)
+	(ac-config-default)
+	)
+  )
 ;; <YASNIPPET>
-(require 'yasnippet)
-(yas-global-mode 1)
-
+(when (require 'yasnippet nil 'noerror)
+  (yas-global-mode 1)
+)
 ;; <FLYMAKE GOOGLE CPPLINT>
 ;; wget http://google-styleguide.googlecode.com/svn/trunk/cpplint/cpplint.py
 (defun my:flymake-google-init()
-  (require 'flymake-google-cpplint)
-  (require 'flymake-cursor)
-;  (custom-set-variables
- ;  '(flymake-google-cpplint-command "~/scripts/cpplint.py"))
-  (flymake-google-cpplint-load)
-)
+  (when (require 'flymake-google-cpplint nil 'noerror)
+	(when (require 'flymake-cursor nil 'noerror)
+	;  (custom-set-variables
+	;  '(flymake-google-cpplint-command "~/scripts/cpplint.py"))
+	  (flymake-google-cpplint-load)
+	  )
+	)
+  )
 ;(add-hook 'c-mode-hook 'my:flymake-google-init)
 ;(add-hook 'c++-mode-hook 'my:flymake-google-init)
 
@@ -135,33 +209,59 @@
 
 ;; <CSCOPE>
 ;;(add-to-list 'load-path "/usr/share/cscope")
-(require 'xcscope)
+;;(require 'xcscope)
+;;(require 'ascope)
+
+
 ;;(setq cscope-initial-directory "~/github/opengles2-book-sample/LinuxX11/")
 ;;(setq cscope-database-file "cscope.out")
-(defun my:cscope-init()
-  (cscope-minor-mode t)
-)
 
-(add-hook 'c++-mode-hook 'my:cscope-init)
-(add-hook 'c-mode-hook 'my:cscope-init)
-(add-hook 'makefile-mode-hook 'my:cscope-init)
+;( setq pwd  ( getenv "PWD" )) 
+
+;( cond (( file-exists-p ( expand-file-name "cscope.out"  pwd )) 
+;  ( ascope-init ( concat pwd  "/" )))
+  ;TODO: select cscope file by current path.
+;  ( t (ascope-init "~/xm4k/" )))
+
+(when (require 'rscope nil 'noerror)
+  (defun my:cscope-init()
+
+	)
+  (defun my:cscope-kill()
+
+	)
+
+  (add-hook 'c++-mode-hook 'my:cscope-init)
+  (add-hook 'c-mode-hook 'my:cscope-init)
+  (add-hook 'makefile-mode-hook 'my:cscope-init)
+  )
+;(add-hook 'kill-emacs-hook 'my:cscope-kill)
 
 ;  '(lambda ()
 ;	 (cscope-minor-mode t)))
+
+;(set-process-query-on-exit-flag (get-process "ascope") nil)
+
 
 ;;(global-set-key (kbd "C-c s s") 'cscope-find-this-symbol)
 ;;(global-set-key (kbd "C-c s g") 'cscope-find-global-definition)
 ;;(global-set-key (kbd "C-c s c") 'cscope-find-functions-calling-this-function)
 ;;(global-set-key (kbd "C-c s u") 'cscope-pop-mark)
 
+;(global-set-key (kbd "C-c s s") 'ascope-find-this-symbol)
+;(global-set-key (kbd "C-c s g") 'ascope-find-global-definition)
+;(global-set-key (kbd "C-c s c") 'ascope-find-functions-calling-this-function)
+;(global-set-key (kbd "C-c s u") 'ascope-pop-mark)
+
+
 
 ;; <HIGHLIGHT>
+(when (require 'highlight-symbol nil 'noerror)
 
-(require 'highlight-symbol)
-(global-set-key (kbd "C-c 1") 'highlight-symbol-at-point)
-(global-set-key (kbd "C-c *") 'highlight-symbol-next)
-(global-set-key (kbd "C-c #") 'highlight-symbol-prev)
-
+  (global-set-key (kbd "C-c 1") 'highlight-symbol-at-point)
+  (global-set-key (kbd "C-c *") 'highlight-symbol-next)
+  (global-set-key (kbd "C-c #") 'highlight-symbol-prev)
+  )
 
 ;; <HIDE-IFDEF-MODE>
 ;(add-hook 'c++-mode-hook 
@@ -203,33 +303,34 @@
 
 ;; <DOXYGEN STYLE FUNCTION COMMENT>
 (add-to-list 'load-path "~/share/emacs/site-lisp")
-(require 'doxymacs)
-(defun my:doxy-func-comment()
- "Write doxygen style comment"
- (interactive)
- (let* ((next-func-alist (doxymacs-find-next-func))
-        (func-name (cdr (assoc 'func next-func-alist)))
-        (params-list (cdr (assoc 'args next-func-alist)))
-        (return-name (cdr (assoc 'return next-func-alist)))
-        (snippet-text "")
-        (idx 1))
-   (setq snippet-text (format "/**\n * \@brief ${1:%s}\n * \n" func-name))
-   (setq idx 2)
-   (dolist (param params-list)
-     (unless (string= param "this")
-       (setq snippet-text (concat snippet-text
-                                  (format " * \@param %s ${%d:}\n" param idx)))
-       (setq idx (+ 1 idx))))
-   (when (and return-name (not (string= return-name "void")))
-     (setq snippet-text (concat snippet-text
-                                (format " * \@return ${%d:%s}\n" idx return-name))))
-   (setq snippet-text (concat snippet-text " */"))
-   (yas/expand-snippet snippet-text))
-)
+(when (require 'doxymacs nil 'noerror)
 
-(global-set-key (kbd "C-c d f") 'my:doxy-func-comment)
+  (defun my:doxy-func-comment()
+	"Write doxygen style comment"
+	(interactive)
+	(let* ((next-func-alist (doxymacs-find-next-func))
+		   (func-name (cdr (assoc 'func next-func-alist)))
+		   (params-list (cdr (assoc 'args next-func-alist)))
+		   (return-name (cdr (assoc 'return next-func-alist)))
+		   (snippet-text "")
+		   (idx 1))
+	  (setq snippet-text (format "/**\n * \@brief ${1:%s}\n * \n" func-name))
+	  (setq idx 2)
+	  (dolist (param params-list)
+		(unless (string= param "this")
+		  (setq snippet-text (concat snippet-text
+									 (format " * \@param %s ${%d:}\n" param idx)))
+		  (setq idx (+ 1 idx))))
+	  (when (and return-name (not (string= return-name "void")))
+		(setq snippet-text (concat snippet-text
+								   (format " * \@return ${%d:%s}\n" idx return-name))))
+	  (setq snippet-text (concat snippet-text " */"))
+	  (yas/expand-snippet snippet-text))
+	)
 
+  (global-set-key (kbd "C-c d f") 'my:doxy-func-comment)
 
+  )
 
 
 
@@ -248,33 +349,37 @@
 
 ;; <IDO-MODE>
 (setq confirm-nonexistent-file-or-buffer nil)
-(require 'ido)
-(ido-mode 1)
-(ido-everywhere 1)
-(setq ido-enable-flex-matching t)
-(setq ido-create-new-buffer 'always)
-(setq ido-enable-tramp-completion nil)
+(when (require 'ido nil 'noerror)
+
+  (ido-mode 1)
+  (ido-everywhere 1)
+  (setq ido-enable-flex-matching t)
+  (setq ido-create-new-buffer 'always)
+  (setq ido-enable-tramp-completion nil)
 ;(setq ido-enable-last-directory-history nil)
-(setq ido-confirm-unique-completion nil) ;; wait for RET, even for unique?
-(setq ido-show-dot-for-dired t) ;; put . as the first item
+  (setq ido-confirm-unique-completion nil) ;; wait for RET, even for unique?
+  (setq ido-show-dot-for-dired t) ;; put . as the first item
 ;(setq Ido-use-filename-at-point t) ;; prefer file names near point
 ;(setq ido-ignore-buffers '("*scratch*" "*Messages*"))
-(setq ido-ignore-buffers '("^ " "*Completions*" "*Shell Command Output*"
-						   "*Messages*" "*scratch*" "Async Shell Command"))
+  (setq ido-ignore-buffers '("^ " "*Completions*" "*Shell Command Output*"
+							 "*Messages*" "*scratch*" "Async Shell Command"))
+)
 ;; <UNDO-TREE>
-(global-undo-tree-mode 1)
-(global-set-key (kbd "M-/") 'undo-tree-redo)
+(when (require 'undo-tree nil 'noerror)
+  (global-undo-tree-mode 1)
+  (global-set-key (kbd "M-/") 'undo-tree-redo)
 ;(global-set-key (kbd "C-z") 'undo-tree-undo) ; 【Ctrl+z】
 ;(global-set-key (kbd "C-S-z") 'undo-tree-redo) ; 【Ctrl+Shift+z】; Mac style
-
+  )
 
 ;; <EVIL-MODE>
-(require 'evil)
+(when (require 'evil nil 'noerror)
 ;;(evil-mode)
-
+)
 ;; <PSVN)
-(require 'psvn)
+(when (require 'psvn nil 'noerror)
 
+)
 ;; <EDIFF>
 (setq ediff-split-window-function 'split-window-horizontally)
 (setq ediff-merge-split-window-function 'split-window-horizontally)
@@ -284,12 +389,13 @@
 ;(require 'ecb)
 
 ;; <MULTI-TERM>
-(require 'multi-term)
-(setq multi-term-program "/bin/bash")
-(global-set-key (kbd "C-c t n") 'multi-term)
-(global-set-key (kbd "C-c t -") 'multi-term-prev)
-(global-set-key (kbd "C-c t =") 'multi-term-next)
+(when (require 'multi-term nil 'noerror)
 
+  (setq multi-term-program "/bin/bash")
+  (global-set-key (kbd "C-c t n") 'multi-term)
+  (global-set-key (kbd "C-c t -") 'multi-term-prev)
+  (global-set-key (kbd "C-c t =") 'multi-term-next)
+  )
 ;; <SATELLITE WINDOW>
 (defun mark-this-window-as-satellite ()
   "Mark the current window as the satellite window."
@@ -303,6 +409,8 @@
   "Find and return the satellite window or nil if non exists."
   (find-if (lambda (win) (window-parameter win 'satellite)) (window-list)))
 
+(push '("\\*Result*" display-buffer-in-satellite) display-buffer-alist)
+
 (defun display-buffer-in-satellite (buffer ignore)
   "Display the buffer in the satellite window, or the first window \
     it finds if there is no satellite."
@@ -313,36 +421,11 @@
     (display-buffer-record-window 'reuse satellite-window buffer)
     satellite-window))
 
-(push '("\\*" display-buffer-in-satellite) display-buffer-alist)
 
 
-(global-set-key (kbd "C-c s") 'mark-this-window-as-satellite)
+(global-set-key (kbd "C-c w s") 'mark-this-window-as-satellite)
 
 
-
-;; <OPEN FILE AT CURSOR>
-(defun open-file-at-cursor ()
-  "Open the file path under cursor.
-If there is text selection, uses the text selection for path.
-If the path is starts with “http://”, open the URL in browser.
-Input path can be {relative, full path, URL}.
-This command is similar to `find-file-at-point' but without prompting for confirmation.
-"
-  (interactive)
-  (let ( (path (if (region-active-p)
-                   (buffer-substring-no-properties (region-beginning) (region-end))
-                 (thing-at-point 'filename) ) ))
-    (if (string-match-p "\\`https?://" path)
-        (browse-url path)
-      (progn ; not starting “http://”
-        (if (file-exists-p path)
-            (find-file path)
-          (if (file-exists-p (concat path ".el"))
-              (find-file (concat path ".el"))
-            (when (y-or-n-p (format "file doesn't exist: 「%s」. Create?" path) )
-              (find-file path )) ) ) ) ) ))
-
-(global-set-key (kbd "C-c f") 'open-file-at-cursor)
 
 ;; <SCROLL WITHOUT CURSOR MOVE>
 (defun scroll-in-place (scroll-up)
@@ -397,7 +480,7 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 
  (current-buffer)))
 
-(global-set-key (kbd "C-c l") 'toggle-window-dedicated)
+(global-set-key (kbd "C-c w l") 'toggle-window-dedicated)
 
 ;; <MOVE BETWEEN '{' and '}'>
 (defun match-paren ()
@@ -420,7 +503,7 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
   (interactive)
   (insert "printf(\"\\x1b[32m===%s(%d)  \\x1b[0m\\n\",__PRETTY_FUNCTION__,__LINE__);"))
 
-(global-set-key (kbd "C-c p") 'printf-debug-message)
+(global-set-key (kbd "C-c m p") 'printf-debug-message)
 
 ;; <PRINTK DEBUG MESSAGE>
 (defun printk-debug-message()
@@ -428,7 +511,7 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
   (interactive)
   (insert "printk(\"\\x1b[32m===%s(%d)  \\x1b[0m\\n\",__PRETTY_FUNCTION__,__LINE__);"))
 
-(global-set-key (kbd "C-c k") 'printk-debug-message)
+(global-set-key (kbd "C-c m k") 'printk-debug-message)
 
 ;; <DISABLE AUTO RECENTERING>
 (setq scroll-step 1)
@@ -470,6 +553,8 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 ;;(global-set-key (kbd "C-c f") 'windmove-right)        ; move to right window
 ;;(global-set-key (kbd "C-c p") 'windmove-up)              ; move to upper window
 ;;(global-set-key (kbd "C-c n") 'windmove-down)          ; move to downer window
+
+
 
 
 ;; <MEMO>
@@ -516,3 +601,46 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+
+;; KEY MAPPING RULE
+;;========================
+;; [C-x] : window
+;;
+;;========================
+;; [C-c] : custom
+;;------------------------
+;;  f : frame
+;;------------------------
+;;  w : window
+;;  w s : satellite window
+;;  w l : window dedicate
+;;  w p,n : window layout prev/next
+;;------------------------
+;;  b : buffer
+;;  b arrow : buffer move 
+;;  b p,n : buffer prev/next
+;;-----------------------
+;;  m : message
+;;  m p : printf dbg msg
+;;  m k : printk dbg msg
+;;-----------------------
+;;  t : terminal
+;;  t n : new terminal
+;;  t - : prev terminal
+;;  t = : next terminal
+;;-----------------------
+;;  d : doxygen
+;;  d f : doxygen function
+;;----------------------
+;;  s : cscope
+;;  s s : find this symbol
+;;  s g : find golobal definition
+;;  s c : find funtions-colling-this-function
+;;  s u : pop-mark
+;;-----------------------
+;;  c : cursor
+;;  c m : multi cursor
+;;  c p : previous like this
+;;  c n : next like this
+;;-----------------------
