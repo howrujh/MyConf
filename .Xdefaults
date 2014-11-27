@@ -90,9 +90,9 @@ Xtf.antialias: false
 
 !XTerm*faceName: "Bitstream Vera Serif Mono"
 !XTerm*faceName: "Bitstream Vera Sans Mono"
-!XTerm*faceName: "DejaVu Sans Mono"
+XTerm*faceName: "DejaVu Sans Mono"
 !XTerm*faceName: "NanumGothicCoding"
-XTerm*faceName: "Luxi Mono"
+!XTerm*faceName: "Terminus"
 
 XTerm*faceSize:	12 
 !XTerm*faceName: Monospace:size=14
@@ -137,7 +137,7 @@ uxterm*color12:                #729FCF
 uxterm*color13:                #AD7FA8
 uxterm*color14:                #34E2E2
 uxterm*color15:                #EEEEEC
-UXTerm*faceName: "Bitstream Vera Sans Mono"
+!UXTerm*faceName: "Bitstream Vera Sans Mono"
 UXTerm*faceSize:	12 
 
 rxvt*background:  #000000
@@ -158,3 +158,129 @@ rxvt*color12:     #4186be
 rxvt*color13:     #cf9ebe
 rxvt*color14:     #71bebe
 rxvt*color15:     #ffffff
+
+
+
+
+
+
+
+
+! transparency - true or false (default)
+urxvt*transparent: false
+
+urxvt*depth: 32
+
+! tint with any color; i.e., blue, red, tomato4, olivedrab2, etc.
+!   some nice listings are at:
+!     http://www.nisrv.com/drupal/?q=node/11
+!     http://www.htmlgoodies.com/tutorials/colors/article.php/3478921
+!urxvt*tintColor: Blue
+
+! shading - 0 to 99 darkens, 101 to 200 lightens.
+!   Do nott use with tintColor; just use a darker or lighter color instead.
+urxvt*shading: 20
+
+! scrollback buffer lines - 65535 is max on most machines (64 is default)
+urxvt*saveLines: 12000
+
+! font color (default is black)
+urxvt*foreground: White
+
+! background color (prior to tinting) (default is white)
+!urxvt*background: Black
+urxvt*background: rgba:1111/1111/1111/dddd
+
+! Xft (X FreeType) with Bitstream, DejaVu, Liberation, or Terminus fonts:
+!  Fedora/debian packages: libXft/libxft2 
+!  An anti-aliased font setup with Xft looks fantastic; it can be a bit choppy 
+!  on older systems. You can always turn off anti-aliasing (antialias=false) if
+!  your terminal is sluggish. Use only ONE of the Xft pairs below:
+!
+! Xft: Bitstream fonts
+!  Fedora/debian packages: bitstream-vera-sans-mono-fonts/ttf-bitstream-vera 
+!urxvt*font: xft:Bitstream Vera Sans Mono:pixelsize=12:antialias=true:hinting=true
+!urxvt*boldFont: xft:Bitstream Vera Sans Mono:bold:pixelsize=12:antialias=true:hinting=true
+!
+! Xft: DejaVu fonts
+!  Fedora/debian packages: dejavu-sans-mono-fonts/ttf-dejavu 
+!urxvt*font: xft:DejaVu Sans Mono:pixelsize=14:antialias=true:hinting=true
+!urxvt*boldFont: xft:DejaVu Sans Mono:bold:pixelsize=14:antialias=true:hinting=true
+!
+! Xft: Liberation fonts
+!  Fedora/debian packages: liberation-mono-fonts/ttf-liberation
+!urxvt*font: xft:Liberation Mono:pixelsize=13:antialias=true:hinting=true
+!urxvt*boldFont: xft:Liberation Mono:bold:pixelsize=13:antialias=true:hinting=true
+!
+! Xft: Terminus fonts
+!  Fedora/debian packages: terminus-fonts/xfonts-terminus
+urxvt*font: xft:terminus:pixelsize=17
+urxvt*boldFont: xft:terminus:bold:pixelsize=17
+
+!urxvt.letterSpace: -1
+
+! Traditional fonts - a more traditional font setup in lieu of xft
+!urxvt*font:-*-courier-medium-r-normal-*-14-*-*-*-*-*-iso8859-1
+!urxvt*boldFont:-*-courier-bold-r-normal-*-14-*-*-*-*-*-iso8859-1
+
+! Replace blue folder colors with a lighter shade for clarity. To
+!  set colored folders and files within urxvt, xterm, and aterm, add
+!  the following line to your ~/.bashrc ($HOME/.bashrc) file under
+!  the heading "# User specific aliases and functions":
+!   alias ls="ls -h --color=auto"
+!urxvt*color4: RoyalBlue
+!urxvt*color12: RoyalBlue
+
+urxvt*color0:                 #2E3436
+urxvt*color1:                 #CC0000
+urxvt*color2:                 #4E9A06
+urxvt*color3:                 #C4A000
+urxvt*color4:                 #3465A4
+urxvt*color5:                 #75507B
+urxvt*color6:                 #06989A
+urxvt*color7:                 #D3D7CF
+urxvt*color8:                 #555753
+urxvt*color9:                 #EF2929
+urxvt*color10:                #8AE234
+urxvt*color11:                #FCE94F
+urxvt*color12:                #729FCF
+urxvt*color13:                #AD7FA8
+urxvt*color14:                #34E2E2
+urxvt*color15:                #EEEEEC
+
+
+! scrollbar - true (default) or false
+urxvt*scrollBar: false
+
+! scrollbar position - left=false (default) or right=true
+urxvt*scrollBar_right: true
+
+! scrollbar style - rxvt (default), plain, next, or xterm
+urxvt*scrollstyle: rxvt
+
+! enable tabbar
+!urxvt*perl-ext-common: default,critabbed
+urxvt*perl-ext-common: default,tabbedex
+!urxvt*perl-ext-common: default,tabbed,-selection
+
+! tabbedex option
+urxvt*tabbed.no-tabbedex-keys: true
+urxvt*tabbed.autohide: true
+urxvt*keysym.Control-T: perl:tabbedex:new_tab
+urxvt*keysym.Control-N: perl:tabbedex:next_tab
+urxvt*keysym.Control-P: perl:tabbedex:prev_tab
+
+urxvt*tabbed.tabbar-fg: 2
+urxvt*tabbed.tabbar-bg: 0
+urxvt*tabbed.tab-fg: 3
+urxvt*tabbed.tab-bg: 0
+urxvt*tabbed*transparent:true
+urxvt*tabbed.new-button:false
+urxvt*tabbed.title:true
+urxvt*tabbed.autohide:true
+urxvt*tabbed.title-fg:7
+urxvt*tabbed.title-bg:0
+urxvt*tabbed.tabbar-fg:8
+urxvt*tabbed.tabbar-bg:0
+urxvt*tabbed.tab-fg:7
+urxvt*tabbed.tab-bg:0
