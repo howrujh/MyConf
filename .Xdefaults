@@ -167,19 +167,19 @@ rxvt*color15:     #ffffff
 
 
 ! transparency - true or false (default)
-urxvt*transparent: false
+urxvt*transparent: true
 
-urxvt*depth: 32
+!urxvt*depth: 32
 
 ! tint with any color; i.e., blue, red, tomato4, olivedrab2, etc.
 !   some nice listings are at:
 !     http://www.nisrv.com/drupal/?q=node/11
 !     http://www.htmlgoodies.com/tutorials/colors/article.php/3478921
-!urxvt*tintColor: Blue
+urxvt*tintColor: White
 
 ! shading - 0 to 99 darkens, 101 to 200 lightens.
 !   Do nott use with tintColor; just use a darker or lighter color instead.
-urxvt*shading: 20
+urxvt*shading: 10
 
 ! scrollback buffer lines - 65535 is max on most machines (64 is default)
 urxvt*saveLines: 12000
@@ -190,6 +190,7 @@ urxvt*foreground: White
 ! background color (prior to tinting) (default is white)
 !urxvt*background: Black
 urxvt*background: rgba:1111/1111/1111/dddd
+
 
 ! Xft (X FreeType) with Bitstream, DejaVu, Liberation, or Terminus fonts:
 !  Fedora/debian packages: libXft/libxft2 
@@ -214,8 +215,13 @@ urxvt*background: rgba:1111/1111/1111/dddd
 !
 ! Xft: Terminus fonts
 !  Fedora/debian packages: terminus-fonts/xfonts-terminus
-urxvt*font: xft:terminus:pixelsize=17
-urxvt*boldFont: xft:terminus:bold:pixelsize=17
+!urxvt*font: xft:terminus:pixelsize=17
+!urxvt*boldFont: xft:terminus:bold:pixelsize=17
+
+! Xft: INCONSOLATA fonts
+urxvt*font: xft:inconsolata:pixelsize=16:antialias=true:hinting=true
+urxvt*boldFont: xft:inconsolata:bold:pixelsize=16:antialias=true:hinting=true
+
 
 !urxvt.letterSpace: -1
 
@@ -258,6 +264,8 @@ urxvt*scrollBar_right: true
 ! scrollbar style - rxvt (default), plain, next, or xterm
 urxvt*scrollstyle: rxvt
 
+! ISO14755 mode
+urxvt*iso14755: False
 ! enable tabbar
 !urxvt*perl-ext-common: default,critabbed
 urxvt*perl-ext-common: default,tabbedex
@@ -270,13 +278,13 @@ urxvt*keysym.Control-T: perl:tabbedex:new_tab
 urxvt*keysym.Control-N: perl:tabbedex:next_tab
 urxvt*keysym.Control-P: perl:tabbedex:prev_tab
 
-urxvt*tabbed.tabbar-fg: 2
-urxvt*tabbed.tabbar-bg: 0
-urxvt*tabbed.tab-fg: 3
-urxvt*tabbed.tab-bg: 0
-urxvt*tabbed*transparent:true
+!urxvt*tabbed.tabbar-fg: 2
+!urxvt*tabbed.tabbar-bg: 0
+!urxvt*tabbed.tab-fg: 3
+!urxvt*tabbed.tab-bg: 0
+urxvt*tabbed*transparent:false
 urxvt*tabbed.new-button:false
-urxvt*tabbed.title:true
+urxvt*tabbed.title:false
 urxvt*tabbed.autohide:true
 urxvt*tabbed.title-fg:7
 urxvt*tabbed.title-bg:0
