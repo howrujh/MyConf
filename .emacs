@@ -48,6 +48,9 @@
 (add-to-list 'pkg-list 'multi-term)
 (add-to-list 'pkg-list 'multiple-cursors)
 (add-to-list 'pkg-list 'buffer-move)
+(add-to-list 'pkg-list 'ace-jump-mode)
+(add-to-list 'pkg-list 'smart-mode-line)
+(add-to-list 'pkg-list 'visual-regexp)
 
 (when (require 'package nil 'noerror)
 
@@ -122,7 +125,7 @@
   (global-set-key (kbd "C-c w p") 'winner-undo)
   (global-set-key (kbd "C-c w n") 'winner-redo)
   (winner-mode t)
-)
+  )
 
 ;; <MOVE BUFFER>
 (when (require 'buffer-move nil 'noerror)
@@ -146,6 +149,19 @@
 (when (require 'iedit nil 'noerror)
   (define-key global-map (kbd "C-c ;") 'iedit-mode)
   )
+
+;; <VISUAL REGEXP>
+(when (require 'visual-regexp nil 'noerror)
+;;  (global-set-key (kbd "C-s") 'vr/isearch-forward)
+;;  (global-set-key (kbd "C-r") 'vr/isearch-backward)
+  (define-key global-map (kbd "C-c r") 'vr/replace)
+  (define-key global-map (kbd "C-c q") 'vr/query-replace)
+  ;; if you use multiple-cursors, this is for you:
+  (when (require 'multiple-cursors nil 'noerror)
+	(define-key global-map (kbd "C-c c r") 'vr/mc-mark))
+  )
+
+
 ;; <DESKTOP SAVE MODE>
 ;;(desktop-save-mode 1)
 
@@ -162,10 +178,66 @@
 
 ;; <COLOR THEME>
 (when (require 'color-theme nil 'noerror)
-;;(require 'tango-2-theme)
-(load-theme 'tango-dark t)
-;;(load-theme 'lush t)
-)
+  ;;(require 'tango-2-theme)
+  (load-theme 'tango-dark t)
+  ;;(load-theme 'lush t)
+  )
+
+;; TRANSPARENT BG COLOR
+
+(defun on-after-init ()
+  (unless (display-graphic-p (selected-frame))
+    (set-face-background 'default "unspecified-bg" (selected-frame))))
+
+(add-hook 'window-setup-hook 'on-after-init)
+
+
+;; <SMART MODE LINE>
+(when (require 'smart-mode-line nil 'noerror)
+  (setq sml/no-confirm-load-theme t)
+  (when (require 'rich-minority nil 'noerror)
+	;; hide minor modes
+	(add-to-list 'rm-excluded-modes " Undo-Tree")
+	(add-to-list 'rm-excluded-modes " yas")
+	(add-to-list 'rm-excluded-modes " Abbrev")
+
+	)
+
+  ;; directory replace
+  (add-to-list 'sml/replacer-regexp-list '("^~/xm4k/" ":ABR:") t)
+  (add-to-list 'sml/replacer-regexp-list '("^~/github/" ":GIT:") t)
+  ;; Added in the right order, they even work sequentially:
+  ;(add-to-list 'sml/replacer-regexp-list '("^:ABR:app/dvr_app_v2" ":ABR:APPV2:") t)
+
+  (add-to-list 'sml/replacer-regexp-list '("^:ABR:\\(.*\\)/dvr_app_v\\(.?\\)/" ":A\\2:") t)
+  (add-to-list 'sml/replacer-regexp-list '("^:A\\(.?\\):\\(.*\\)/hictrl\\(.?\\)/" ":A\\1:HI\\3:") t)
+  (add-to-list 'sml/replacer-regexp-list '("^:A\\(.?\\):\\(.*\\)/osd/" ":A\\1:OSD:") t)
+  (add-to-list 'sml/replacer-regexp-list '("^:A\\(.?\\):OSD:windows/" ":A\\1:OSD:W:") t)
+
+  (add-to-list 'sml/replacer-regexp-list '("^:A\\(.?\\):\\(.*\\)/diskman/" ":A\\1:DISK:") t)
+  (add-to-list 'sml/replacer-regexp-list '("^:A\\(.?\\):\\(.*\\)/ioman/" ":A\\1:IO:") t)
+  (add-to-list 'sml/replacer-regexp-list '("^:A\\(.?\\):\\(.*\\)/monitor/" ":A\\1:MON:") t)
+  (add-to-list 'sml/replacer-regexp-list '("^:A\\(.?\\):\\(.*\\)/ipreceiver/" ":A\\1:IP:") t)
+  (add-to-list 'sml/replacer-regexp-list '("^:A\\(.?\\):\\(.*\\)/network/" ":A\\1:NET:") t)
+  (add-to-list 'sml/replacer-regexp-list '("^:A\\(.?\\):\\(.*\\)/playback/" ":A\\1:PB:") t)
+  (add-to-list 'sml/replacer-regexp-list '("^:A\\(.?\\):\\(.*\\)/recorder/" ":A\\1:REC:") t)
+
+  (add-to-list 'sml/replacer-regexp-list '("^:A\\(.?\\):util/" ":A\\1:U:") t)
+  (add-to-list 'sml/replacer-regexp-list '("^:A\\(.?\\):include/" ":A\\1:INC:") t)
+
+  (add-to-list 'sml/replacer-regexp-list '("^:ABR:\\(.*\\)/font/" ":F:") t)
+  (add-to-list 'sml/replacer-regexp-list '("^:F:res_v\\(.?\\)/" ":F:RES\\1:") t)
+
+  ;(setq sml/shorten-directory nil)
+  ;(setq sml/shorten-modes nil)
+  (setq sml/name-width 34)
+  (setq sml/mode-width 12)
+  (sml/setup)
+  (sml/apply-theme 'automatic)
+  )
+
+
+
 
 ;; <CEDET MODE>
 ;; turn on Semantic
@@ -174,7 +246,8 @@
 (defun my:add-semantic-to-autocomplete()
 
   (add-to-list 'ac-sources 'ac-source-semantic)
-)
+  )
+
 (add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
 
 
@@ -184,10 +257,12 @@
 	(ac-config-default)
 	)
   )
+
 ;; <YASNIPPET>
 (when (require 'yasnippet nil 'noerror)
   (yas-global-mode 1)
-)
+  )
+
 ;; <FLYMAKE GOOGLE CPPLINT>
 ;; wget http://google-styleguide.googlecode.com/svn/trunk/cpplint/cpplint.py
 (defun my:flymake-google-init()
@@ -254,7 +329,10 @@
 ;(global-set-key (kbd "C-c s u") 'ascope-pop-mark)
 
 
-
+;; <ACE JUMP MODE>
+(when (require 'ace-jump-mode nil 'noerror)
+  (global-set-key (kbd "C-c SPC") 'ace-jump-mode)
+  )
 ;; <HIGHLIGHT>
 (when (require 'highlight-symbol nil 'noerror)
 
@@ -340,7 +418,7 @@
 ;; <WHICH FUNCTION MODE>
 (defun my:which-func()
   (which-func-mode 1)
-)
+  )
 
 (add-hook 'c++-mode-hook 'my:which-func)
 (add-hook 'c-mode-hook 'my:which-func)
@@ -363,7 +441,7 @@
 ;(setq ido-ignore-buffers '("*scratch*" "*Messages*"))
   (setq ido-ignore-buffers '("^ " "*Completions*" "*Shell Command Output*"
 							 "*Messages*" "*scratch*" "Async Shell Command"))
-)
+  )
 ;; <UNDO-TREE>
 (when (require 'undo-tree nil 'noerror)
   (global-undo-tree-mode 1)
@@ -375,11 +453,11 @@
 ;; <EVIL-MODE>
 (when (require 'evil nil 'noerror)
 ;;(evil-mode)
-)
+  )
 ;; <PSVN)
 (when (require 'psvn nil 'noerror)
 
-)
+  )
 ;; <EDIFF>
 (setq ediff-split-window-function 'split-window-horizontally)
 (setq ediff-merge-split-window-function 'split-window-horizontally)
@@ -462,23 +540,23 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 
 (defun toggle-window-dedicated ()
 
-"Toggle whether the current active window is dedicated or not"
+  "Toggle whether the current active window is dedicated or not"
 
-(interactive)
+  (interactive)
 
-(message 
+  (message 
 
- (if (let (window (get-buffer-window (current-buffer)))
+   (if (let (window (get-buffer-window (current-buffer)))
 
-       (set-window-dedicated-p window 
+		 (set-window-dedicated-p window 
 
-        (not (window-dedicated-p window))))
+								 (not (window-dedicated-p window))))
 
-    "Window '%s' is dedicated"
+	   "Window '%s' is dedicated"
 
-    "Window '%s' is normal")
+	 "Window '%s' is normal")
 
- (current-buffer)))
+   (current-buffer)))
 
 (global-set-key (kbd "C-c w l") 'toggle-window-dedicated)
 
@@ -513,10 +591,37 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 
 (global-set-key (kbd "C-c m k") 'printk-debug-message)
 
+;; <PDR_ERROR DEBUG MESSAGE>
+(defun pdrerror-debug-message()
+  "pdr_error debug message"
+  (interactive)
+  (insert "pdr_error(\"\\x1b[32m===  \\x1b[0m\\n\");"))
+
+(global-set-key (kbd "C-c m e") 'pdrerror-debug-message)
+
+;; <PDR_INFO DEBUG MESSAGE>
+(defun pdrinfo-debug-message()
+  "pdr_info debug message"
+  (interactive)
+  (insert "pdr_info(\"\\x1b[32m===  \\x1b[0m\\n\");"))
+
+(global-set-key (kbd "C-c m i") 'pdrinfo-debug-message)
+
+;; <ONVIF_INFO DEBUG MESSAGE>
+(defun onvifinfo-debug-message()
+  "onvif_info debug message"
+  (interactive)
+  (insert "onvif_info(\"\\x1b[32m===  \\x1b[0m\\n\");"))
+
+(global-set-key (kbd "C-c m o") 'onvifinfo-debug-message)
+
 ;; <DISABLE AUTO RECENTERING>
 (setq scroll-step 1)
 (setq scroll-conservatively 10000)
 (setq auto-window-vscroll nil)
+
+;; <DISPLAY PERFORMANCE>
+;;(setq redisplay-dont-pause t)
 
 ;; <CHANGE BUFFER IN CURRENT WINDOW>
 ;;(global-set-key (kbd "C-c -") 'previous-buffer)
@@ -541,7 +646,9 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 ;; <RELOAD .emacs >
 (defun reload-emacs-config()
   (interactive)
-  (load-file "~/.emacs"))
+  (load-file "~/.emacs")
+  (on-after-init)
+)
 
 (global-set-key (kbd "C-c C-r") 'reload-emacs-config)
 
@@ -558,49 +665,6 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 
 
 ;; <MEMO>
-;;(dolist (key '("\C-a" "\C-b" "\C-c" "\C-t" "\C-u" "\C-v" "\C-x" "\C-z" "\e"))
-;;  (global-unset-key key))
-;;(custom-set-variables
-;; custom-set-variables was added by Custom.
-;; If you edit it by hand, you could mess it up, so be careful.
-;; Your init file should contain only one such instance.
-;; If there is more than one, they won't work right.
-;; '(custom-safe-themes (quote ("bad832ac33fcbce342b4d69431e7393701f0823a3820f6030ccc361edd2a4be4" default)))
-;;'(ecb-options-version "2.40")
-;;'(inhibit-startup-screen t))
-;;(custom-set-faces
-;; custom-set-faces was added by Custom.
-;; If you edit it by hand, you could mess it up, so be careful.
-;; Your init file should contain only one such instance.
-;; If there is more than one, they won't work right.
-;;)
-;;(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
-;; '(custom-safe-themes (quote ("bad832ac33fcbce342b4d69431e7393701f0823a3820f6030ccc361edd2a4be4" default)))
-;; '(inhibit-startup-screen t))
-;;(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
-;; )
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes (quote ("c7cd81771525ff66c105413134cdf0330b0b5b88fd8096e5d56b0256872ba6c7" "bad832ac33fcbce342b4d69431e7393701f0823a3820f6030ccc361edd2a4be4" default)))
- '(ecb-options-version "2.40")
- '(inhibit-startup-screen t))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
 
 
 ;; KEY MAPPING RULE
@@ -643,4 +707,20 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 ;;  c m : multi cursor
 ;;  c p : previous like this
 ;;  c n : next like this
+;;  c r : multi curosr reg xp
 ;;-----------------------
+
+
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(which-function-mode t))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(which-func ((t (:foreground "color-92")))))
