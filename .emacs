@@ -668,10 +668,11 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (define-key input-decode-map "\e\e[B" [(meta down)])
 (define-key input-decode-map "\e\e[D" [(meta left)])
 (define-key input-decode-map "\e\e[C" [(meta right)])
-(define-key input-decode-map "\e\eOA" [(meta up)])
-(define-key input-decode-map "\e\eOB" [(meta down)])
-(define-key input-decode-map "\e\eOD" [(meta left)])
-(define-key input-decode-map "\e\eOC" [(meta right)])
+
+(define-key input-decode-map "\eOa" [(ctrl up)])
+(define-key input-decode-map "\eOb" [(ctrl down)])
+(define-key input-decode-map "\eOd" [(ctrl left)])
+(define-key input-decode-map "\eOc" [(ctrl right)])
 
 
 ;;(global-set-key (kbd "C-c b") 'windmove-left)          ; move to left windnow
