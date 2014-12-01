@@ -86,6 +86,11 @@
 				 :type github
 				 :pkgname "rjarzmik/rscope")
 
+		; (:name rxvt
+		;		 :description "define function key sequences for rxvt"
+		;		 :type http
+		;		 :url "http://www.emacswiki.org/emacs/download/rxvt.el")
+
 		;(:name multiple-cursors
 		;	   :description "An experiment in adding multiple cursors to emacs"
 		;	   :type github
@@ -115,6 +120,10 @@
 		el-get-sources)
 
   )
+
+;; <RXVT>
+;(when (require 'rxvt nil 'noerror)
+;  )
 
 ;; <GDB>
 (setq gdb-many-windows 1)
@@ -186,8 +195,9 @@
 ;; TRANSPARENT BG COLOR
 
 (defun on-after-init ()
-  (unless (display-graphic-p (selected-frame))
-    (set-face-background 'default "unspecified-bg" (selected-frame))))
+;  (unless (display-graphic-p (selected-frame))
+;    (set-face-background 'default "unspecified-bg" (selected-frame)))
+)
 
 (add-hook 'window-setup-hook 'on-after-init)
 
@@ -653,7 +663,7 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (global-set-key (kbd "C-c C-r") 'reload-emacs-config)
 
 ;; <MOVE WINDOW>
-(windmove-default-keybindings 'meta)
+(windmove-default-keybindings 'ctrl)
 
 
 ;;(global-set-key (kbd "C-c b") 'windmove-left)          ; move to left windnow
