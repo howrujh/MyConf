@@ -663,7 +663,15 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (global-set-key (kbd "C-c C-r") 'reload-emacs-config)
 
 ;; <MOVE WINDOW>
-(windmove-default-keybindings 'ctrl)
+(windmove-default-keybindings 'meta)
+(define-key input-decode-map "\e\e[A" [(meta up)])
+(define-key input-decode-map "\e\e[B" [(meta down)])
+(define-key input-decode-map "\e\e[D" [(meta left)])
+(define-key input-decode-map "\e\e[C" [(meta right)])
+(define-key input-decode-map "\e\eOA" [(meta up)])
+(define-key input-decode-map "\e\eOB" [(meta down)])
+(define-key input-decode-map "\e\eOD" [(meta left)])
+(define-key input-decode-map "\e\eOC" [(meta right)])
 
 
 ;;(global-set-key (kbd "C-c b") 'windmove-left)          ; move to left windnow
