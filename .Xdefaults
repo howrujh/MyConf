@@ -255,6 +255,8 @@ urxvt*color14:                #34E2E2
 urxvt*color15:                #EEEEEC
 
 
+*urxvt*meta8: false
+
 ! scrollbar - true (default) or false
 urxvt*scrollBar: false
 
@@ -266,6 +268,8 @@ urxvt*scrollstyle: rxvt
 
 ! ISO14755 mode
 urxvt*iso14755: False
+urxvt*iso14755_52: False
+
 ! enable tabbar
 !urxvt*perl-ext-common: default,critabbed
 urxvt*perl-ext-common: default,tabbedex
@@ -292,3 +296,7 @@ urxvt*tabbed.tabbar-fg:8
 urxvt*tabbed.tabbar-bg:0
 urxvt*tabbed.tab-fg:7
 urxvt*tabbed.tab-bg:0
+
+urxvt*termName: rxvt-unicode-256color
+
+
