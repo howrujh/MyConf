@@ -497,7 +497,7 @@
   "Find and return the satellite window or nil if non exists."
   (find-if (lambda (win) (window-parameter win 'satellite)) (window-list)))
 
-(push '("\\*Result*" display-buffer-in-satellite) display-buffer-alist)
+
 
 (defun display-buffer-in-satellite (buffer ignore)
   "Display the buffer in the satellite window, or the first window \
@@ -510,10 +510,25 @@
     satellite-window))
 
 
+;(push '("\\*Result*" display-buffer-in-satellite) display-buffer-alist)
+;(global-set-key (kbd "C-c w s") 'mark-this-window-as-satellite)
 
-(global-set-key (kbd "C-c w s") 'mark-this-window-as-satellite)
+;(defun display-buffer-in-current-window (buffer ignore)
+;  "Display the buffer in the current window."
+;
+;  (let ((satellite-window (selected-window)))
+;    (select-window satellite-window)
+;    (display-buffer-same-window buffer nil)
+;    (display-buffer-record-window 'reuse satellite-window buffer)
+;    satellite-window))
 
 
+(push '("\\*Result*" display-buffer-in-side-window) display-buffer-alist)
+
+;(push '("\\.[cChH]" display-buffer-in-current-window) display-buffer-alist)
+;(push '("\\.el" display-buffer-in-current-window) display-buffer-alist)
+;(push '("\\.mk" display-buffer-in-current-window) display-buffer-alist)
+;(push '("[Mm]akefile" display-buffer-in-current-window) display-buffer-alist)
 
 ;; <SCROLL WITHOUT CURSOR MOVE>
 (defun scroll-in-place (scroll-up)
