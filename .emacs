@@ -24,7 +24,7 @@
 
 (setq pkg-list)
 (add-to-list 'pkg-list 'el-get)
-;;(add-to-list 'pkg-list 'xcscope)
+(add-to-list 'pkg-list 'xcscope)
 ;;(add-to-list 'pkg-list 'ascope)
 (add-to-list 'pkg-list 'ido)
 (add-to-list 'pkg-list 'color-theme)
@@ -308,18 +308,55 @@
   ;TODO: select cscope file by current path.
 ;  ( t (ascope-init "~/xm4k/" )))
 
-(when (require 'rscope nil 'noerror)
+;(when (require 'rscope nil 'noerror)
+(when (require 'xcscope nil 'noerror)
   (defun my:cscope-init()
-
-	)
-  (defun my:cscope-kill()
-
+	(setq cscope-close-window-after-select t)
+	(cscope-minor-mode t)
 	)
 
   (add-hook 'c++-mode-hook 'my:cscope-init)
   (add-hook 'c-mode-hook 'my:cscope-init)
   (add-hook 'makefile-mode-hook 'my:cscope-init)
+
+  (defun my:cscope-kill()
+	)
+
+  (defun my:cscope-select-entry-specified-window()
+	;"Open in specific window"
+	(interactive)
+	;(setq prev_win (previous-window))
+	(setq list_win (selected-window))
+	(setq prev_win cscope-marker-window)
+	(select-window prev_win)
+	(split-window-vertically)
+	(select-window list_win)
+	(cscope-select-entry-specified-window prev_win)
+	
+	(if cscope-close-window-after-select
+		(delete-windows-on cscope-output-buffer-name))
+
   )
+
+  (defvar my:cscope-local-keymap
+	(let ((map (make-keymap)))
+	  (suppress-keymap map)
+	  ;; The following section does not appear in the "Cscope" menu.
+	  
+	  (define-key map (kbd "n") 'cscope-help)
+
+	  (define-key map (kbd "\r") 'my:cscope-select-entry-specified-window)
+
+	  map)
+	"The custom *cscope* buffer keymap")
+
+  (defun my:cscope-local-map()
+	(use-local-map my:cscope-local-keymap)
+	)
+
+  ;(add-hook 'cscope-list-entry-hook 'my:cscope-local-map)
+)
+
 ;(add-hook 'kill-emacs-hook 'my:cscope-kill)
 
 ;  '(lambda ()
@@ -523,12 +560,36 @@
 ;    satellite-window))
 
 
-(push '("\\*Result*" display-buffer-in-side-window) display-buffer-alist)
 
-;(push '("\\.[cChH]" display-buffer-in-current-window) display-buffer-alist)
-;(push '("\\.el" display-buffer-in-current-window) display-buffer-alist)
-;(push '("\\.mk" display-buffer-in-current-window) display-buffer-alist)
-;(push '("[Mm]akefile" display-buffer-in-current-window) display-buffer-alist)
+(defun my:display-buffer-in-top-window (buffer ignore)
+;  "Display the buffer in the top window."
+;  (display-buffer-in-side-window buffer '((side . top)))
+)
+
+(defun my:display-buffer-in-bottom-window (buffer ignore)
+;  "Display the buffer in the bottom window."
+  (display-buffer-in-side-window buffer '((side . bottom)))
+)
+
+(defun my:display-buffer-in-left-window (buffer ignore)
+;  "Display the buffer in the left window."
+  (display-buffer-in-side-window buffer '((side . left)))
+)
+
+
+(defun my:display-buffer-in-right-window (buffer ignore)
+;  "Display the buffer in the right window."
+  (display-buffer-in-side-window buffer '((side . right)))
+)
+(push '("\\*[+]*" my:display-buffer-in-bottom-window) display-buffer-alist)
+;(push '("\\*Result*" my:display-buffer-in-bottom-window) display-buffer-alist)
+;(push '("\\*cscope*" my:display-buffer-in-bottom-window) display-buffer-alist)
+
+;(add-to-list 'display-buffer-alist  '("\\.[cChH]" my:display-buffer-in-top-window))
+(push '("\\.[cChH]" my:display-buffer-in-top-window) display-buffer-alist)
+(push '("\\.el" my:display-buffer-in-top-window) display-buffer-alist)
+(push '("\\.mk" my:display-buffer-in-top-window) display-buffer-alist)
+(push '("[Mm]akefile" my:display-buffer-in-top-window) display-buffer-alist)
 
 ;; <SCROLL WITHOUT CURSOR MOVE>
 (defun scroll-in-place (scroll-up)
