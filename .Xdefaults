@@ -165,9 +165,9 @@ rxvt*color15:     #ffffff
 
 
 
-
+urxvt*termName: rxvt-unicode-256color
 ! transparency - true or false (default)
-urxvt*transparent: true
+urxvt*transparent: flase
 
 !urxvt*depth: 32
 
@@ -175,11 +175,11 @@ urxvt*transparent: true
 !   some nice listings are at:
 !     http://www.nisrv.com/drupal/?q=node/11
 !     http://www.htmlgoodies.com/tutorials/colors/article.php/3478921
-urxvt*tintColor: White
+!urxvt*tintColor: White
 
 ! shading - 0 to 99 darkens, 101 to 200 lightens.
 !   Do nott use with tintColor; just use a darker or lighter color instead.
-urxvt*shading: 10
+!urxvt*shading: 10
 
 ! scrollback buffer lines - 65535 is max on most machines (64 is default)
 urxvt*saveLines: 12000
@@ -188,8 +188,8 @@ urxvt*saveLines: 12000
 urxvt*foreground: White
 
 ! background color (prior to tinting) (default is white)
-!urxvt*background: Black
-urxvt*background: rgba:1111/1111/1111/dddd
+urxvt*background: Black
+!urxvt*background: rgba:1111/1111/1111/eeee
 
 
 ! Xft (X FreeType) with Bitstream, DejaVu, Liberation, or Terminus fonts:
@@ -205,24 +205,24 @@ urxvt*background: rgba:1111/1111/1111/dddd
 !
 ! Xft: DejaVu fonts
 !  Fedora/debian packages: dejavu-sans-mono-fonts/ttf-dejavu 
-!urxvt*font: xft:DejaVu Sans Mono:pixelsize=14:antialias=true:hinting=true
-!urxvt*boldFont: xft:DejaVu Sans Mono:bold:pixelsize=14:antialias=true:hinting=true
-!
-! Xft: Liberation fonts
-!  Fedora/debian packages: liberation-mono-fonts/ttf-liberation
-!urxvt*font: xft:Liberation Mono:pixelsize=13:antialias=true:hinting=true
-!urxvt*boldFont: xft:Liberation Mono:bold:pixelsize=13:antialias=true:hinting=true
-!
+!urxvt*font: xft:DejaVu Sans Mono:pixelsize=13:antialias=true:hinting=true
+!urxvt*boldFont: xft:DejaVu Sans Mono:bold:pixelsize=13:antialias=true:hinting=true
+
+
 ! Xft: Terminus fonts
 !  Fedora/debian packages: terminus-fonts/xfonts-terminus
 !urxvt*font: xft:terminus:pixelsize=17
 !urxvt*boldFont: xft:terminus:bold:pixelsize=17
 
 ! Xft: INCONSOLATA fonts
-urxvt*font: xft:inconsolata:pixelsize=16:antialias=true:hinting=true
-urxvt*boldFont: xft:inconsolata:bold:pixelsize=16:antialias=true:hinting=true
+urxvt*font: xft:inconsolata,xft:GulimChe:pixelsize=16:antialias=true:hinting=true
+urxvt*boldFont: xft:inconsolata,xft:GulimChe:bold:pixelsize=16:antialias=true:hinting=true
 
+! Xft: MONOFUR fonts
+!urxvt*font: xft:monofur:pixelsize=16:antialias=true:hinting=true
+!urxvt*boldFont: xft:monofur:bold:pixelsize=16:antialias=true:hinting=true
 
+urxvt*imLocale:ko_KR.UTF-8
 !urxvt.letterSpace: -1
 
 ! Traditional fonts - a more traditional font setup in lieu of xft
@@ -297,6 +297,6 @@ urxvt*tabbed.tabbar-bg:0
 urxvt*tabbed.tab-fg:7
 urxvt*tabbed.tab-bg:0
 
-urxvt*termName: rxvt-unicode-256color
+
 
 
