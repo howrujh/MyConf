@@ -10,7 +10,7 @@
 ;; <LAYOUT>
 
 (setq-default c-default-style "linux"
-			  c-basic-offset 4 
+			  c-basic-offset 4
 			  tab-width 4
 			  indent-tabs-mode t)
 
@@ -65,11 +65,11 @@
 
 
   (when (not package-archive-contents)
-    (package-refresh-contents)
+	(package-refresh-contents)
 	)
 
   (dolist (p pkg-list)
-    (when (not (package-installed-p p))
+	(when (not (package-installed-p p))
 	  (package-install p))
 	)
 
@@ -195,11 +195,20 @@
 ;; TRANSPARENT BG COLOR
 
 (defun on-after-init ()
-;  (unless (display-graphic-p (selected-frame))
-;    (set-face-background 'default "unspecified-bg" (selected-frame)))
+
+  ;; for terminal using
+  (unless (display-graphic-p (selected-frame))
+	(set-face-background 'default "unspecified-bg" (selected-frame)))
+
+
+  ;; for gui using
+  ;;(set-frame-parameter (selected-frame) 'alpha '(<active> [<inactive>]))
+  (set-frame-parameter (selected-frame) 'alpha '(85 50))
+  (add-to-list 'default-frame-alist '(alpha 85 50))
 )
 
-(add-hook 'window-setup-hook 'on-after-init)
+;(add-hook 'window-setup-hook 'on-after-init)
+
 
 
 ;; <SMART MODE LINE>
@@ -292,24 +301,25 @@
 ;(add-hook 'c-mode-common-hook 'google-set-c-style)
 ;(add-hook 'c-mode-common-hook 'google-make-newline-indent)
 
+
 ;; <CSCOPE>
 ;;(add-to-list 'load-path "/usr/share/cscope")
 ;;(require 'xcscope)
 ;;(require 'ascope)
 
-
 ;;(setq cscope-initial-directory "~/github/opengles2-book-sample/LinuxX11/")
 ;;(setq cscope-database-file "cscope.out")
 
-;( setq pwd  ( getenv "PWD" )) 
+;( setq pwd  ( getenv "PWD" ))
 
-;( cond (( file-exists-p ( expand-file-name "cscope.out"  pwd )) 
+;( cond (( file-exists-p ( expand-file-name "cscope.out"  pwd ))
 ;  ( ascope-init ( concat pwd  "/" )))
   ;TODO: select cscope file by current path.
 ;  ( t (ascope-init "~/xm4k/" )))
 
 ;(when (require 'rscope nil 'noerror)
 (when (require 'xcscope nil 'noerror)
+
   (defun my:cscope-init()
 	(setq cscope-close-window-after-select t)
 	(cscope-minor-mode t)
@@ -332,7 +342,7 @@
 	(split-window-vertically)
 	(select-window list_win)
 	(cscope-select-entry-specified-window prev_win)
-	
+
 	(if cscope-close-window-after-select
 		(delete-windows-on cscope-output-buffer-name))
 
@@ -342,7 +352,7 @@
 	(let ((map (make-keymap)))
 	  (suppress-keymap map)
 	  ;; The following section does not appear in the "Cscope" menu.
-	  
+
 	  (define-key map (kbd "n") 'cscope-help)
 
 	  (define-key map (kbd "\r") 'my:cscope-select-entry-specified-window)
@@ -388,35 +398,36 @@
   (global-set-key (kbd "C-c #") 'highlight-symbol-prev)
   )
 
+
 ;; <HIDE-IFDEF-MODE>
-;(add-hook 'c++-mode-hook 
-;   '(lambda () 
-;      (hide-ifdef-mode t) 
+;(add-hook 'c++-mode-hook
+;   '(lambda ()
+;      (hide-ifdef-mode t)
 ;	   (setq hide-ifdef-initially t)
 ;	   (setq hide-ifdef-shadow t)
-;    )) 
+;    ))
 
 (defun my-c-mode-font-lock-if0 (limit)
   (save-restriction
-    (widen)
-    (save-excursion
-      (goto-char (point-min))
-      (let ((depth 0) str start start-depth)
-        (while (re-search-forward "^\\s-*#\\s-*\\(if\\|else\\|endif\\)" limit 'move)
-          (setq str (match-string 1))
-          (if (string= str "if")
-              (progn
-                (setq depth (1+ depth))
-                (when (and (null start) (looking-at "\\s-+0"))
-                  (setq start (match-end 0)
-                        start-depth depth)))
-            (when (and start (= depth start-depth))
-              (c-put-font-lock-face start (match-beginning 0) 'font-lock-comment-face)
-              (setq start nil))
-            (when (string= str "endif")
-              (setq depth (1- depth)))))
-        (when (and start (> depth 0))
-          (c-put-font-lock-face start (point) 'font-lock-comment-face)))))
+	(widen)
+	(save-excursion
+	  (goto-char (point-min))
+	  (let ((depth 0) str start start-depth)
+		(while (re-search-forward "^\\s-*#\\s-*\\(if\\|else\\|endif\\)" limit 'move)
+		  (setq str (match-string 1))
+		  (if (string= str "if")
+			  (progn
+				(setq depth (1+ depth))
+				(when (and (null start) (looking-at "\\s-+0"))
+				  (setq start (match-end 0)
+						start-depth depth)))
+			(when (and start (= depth start-depth))
+			  (c-put-font-lock-face start (match-beginning 0) 'font-lock-comment-face)
+			  (setq start nil))
+			(when (string= str "endif")
+			  (setq depth (1- depth)))))
+		(when (and start (> depth 0))
+		  (c-put-font-lock-face start (point) 'font-lock-comment-face)))))
   nil)
 
 (defun my-c-mode-if0-hook ()
@@ -526,7 +537,7 @@
   "Mark the current window as the satellite window."
   (interactive)
   (mapc (lambda (win) (set-window-parameter win 'satellite nil))
-    (window-list))
+	(window-list))
   (set-window-parameter nil 'satellite t)
   (message "Window: %s is now the satellite window." (selected-window)))
 
@@ -538,13 +549,13 @@
 
 (defun display-buffer-in-satellite (buffer ignore)
   "Display the buffer in the satellite window, or the first window \
-    it finds if there is no satellite."
+	it finds if there is no satellite."
   (let ((satellite-window (or (get-satellite-window)
-                              (first (window-list)))))
-    (select-window satellite-window)
-    (display-buffer-same-window buffer nil)
-    (display-buffer-record-window 'reuse satellite-window buffer)
-    satellite-window))
+							  (first (window-list)))))
+	(select-window satellite-window)
+	(display-buffer-same-window buffer nil)
+	(display-buffer-record-window 'reuse satellite-window buffer)
+	satellite-window))
 
 
 ;(push '("\\*Result*" display-buffer-in-satellite) display-buffer-alist)
@@ -563,7 +574,7 @@
 
 (defun my:display-buffer-in-top-window (buffer ignore)
 ;  "Display the buffer in the top window."
-;  (display-buffer-in-side-window buffer '((side . top)))
+  (display-buffer-in-side-window buffer '((side . top)))
 )
 
 (defun my:display-buffer-in-bottom-window (buffer ignore)
@@ -593,21 +604,21 @@
 
 ;; <SCROLL WITHOUT CURSOR MOVE>
 (defun scroll-in-place (scroll-up)
-  "Scroll window up (or down) without moving point (if possible). 
+  "Scroll window up (or down) without moving point (if possible).
 SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
   (interactive)
   (let ((pos (point))
-                (col (current-column))
-                (up-or-down (if scroll-up 1 -1)))
-        (scroll-up up-or-down)
-        (if (pos-visible-in-window-p pos)
-                (goto-char pos)
-          (if (or (eq last-command 'next-line)
-                          (eq last-command 'previous-line))
-                  (move-to-column temporary-goal-column)
-                (move-to-column col)
-                (setq temporary-goal-column col))
-          (setq this-command 'next-line))))
+				(col (current-column))
+				(up-or-down (if scroll-up 1 -1)))
+		(scroll-up up-or-down)
+		(if (pos-visible-in-window-p pos)
+				(goto-char pos)
+		  (if (or (eq last-command 'next-line)
+						  (eq last-command 'previous-line))
+				  (move-to-column temporary-goal-column)
+				(move-to-column col)
+				(setq temporary-goal-column col))
+		  (setq this-command 'next-line))))
 
 (defun scroll-up-in-place ()
   "Scroll window up without moving point (if possible)."
@@ -630,11 +641,11 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 
   (interactive)
 
-  (message 
+  (message
 
    (if (let (window (get-buffer-window (current-buffer)))
 
-		 (set-window-dedicated-p window 
+		 (set-window-dedicated-p window
 
 								 (not (window-dedicated-p window))))
 
@@ -652,13 +663,13 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
  (interactive)
  (let ((char (char-after (point))))
    (cond ((memq char '(?\( ?\{ ?\[))
-          (forward-sexp 1)
-          (backward-char 1))
-         ((memq char '(?\) ?\} ?\]))
-          (forward-char 1)
-          (backward-sexp 1))
-         (t (call-interactively 'self-insert-command)))))
- 
+		  (forward-sexp 1)
+		  (backward-char 1))
+		 ((memq char '(?\) ?\} ?\]))
+		  (forward-char 1)
+		  (backward-sexp 1))
+		 (t (call-interactively 'self-insert-command)))))
+
 (global-set-key (kbd "C-c %") 'match-paren)
 
 ;; <PRINTF DEBUG MESSAGE>
@@ -733,7 +744,7 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (defun reload-emacs-config()
   (interactive)
   (load-file "~/.emacs")
-  (on-after-init)
+  ;(on-after-init)
 )
 
 (global-set-key (kbd "C-c C-r") 'reload-emacs-config)
@@ -744,6 +755,12 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (define-key input-decode-map "\e\e[B" [(meta down)])
 (define-key input-decode-map "\e\e[D" [(meta left)])
 (define-key input-decode-map "\e\e[C" [(meta right)])
+
+(define-key input-decode-map (kbd "ESC M-O A") [(meta up)])
+(define-key input-decode-map (kbd "ESC M-O B") [(meta down)])
+(define-key input-decode-map (kbd "ESC M-O D") [(meta left)])
+(define-key input-decode-map (kbd "ESC M-O C") [(meta right)])
+
 
 (define-key input-decode-map "\eOa" [(ctrl up)])
 (define-key input-decode-map "\eOb" [(ctrl down)])
@@ -777,7 +794,7 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 ;;  w p,n : window layout prev/next
 ;;------------------------
 ;;  b : buffer
-;;  b arrow : buffer move 
+;;  b arrow : buffer move
 ;;  b p,n : buffer prev/next
 ;;-----------------------
 ;;  m : message
