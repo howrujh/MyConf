@@ -3,6 +3,17 @@
 ;;     (add-to-list 'load-path (expand-file-name "~/.emacs.d/elisp"))
 ;;     (add-to-list 'load-path (expand-file-name "~/.emacs.d/elisp"))
 
+(defconst win32p  (eq system-type 'windows-nt) "윈도머신이면 참")
+(defconst unixp (eq system-type (or 'gnu/linux 'berkeley-unix)) "FreeBSD 머신이면 참")
+(defconst officep (string-match "omg" system-name)"사무실의 pc 라면 참")
+(defconst homep (not officep)"집의 pc 라면 참")
+;(defconst extra-packages "~/.emacs.d" "내가 추가로 설치한 el 패키지들의 위치")
+
+
+;; <SET ENV>
+(setq user-mail-address (if homep "howrujh@gmail.com" "jinhwan@pinetron.com"))
+(setq user-full-name "jinhwan Lee")
+
 ;; <INTERFACE>
 (tool-bar-mode -1)
 (menu-bar-mode -1)
@@ -23,6 +34,7 @@
 ;; -- using package.el for install popular packages --
 
 (setq pkg-list)
+(add-to-list 'pkg-list 'cl)
 (add-to-list 'pkg-list 'el-get)
 (add-to-list 'pkg-list 'xcscope)
 ;;(add-to-list 'pkg-list 'ascope)
@@ -31,7 +43,7 @@
 ;;(add-to-list 'pkg-list 'tango-2-theme)
 ;;(add-to-list 'pkg-list 'lush-theme)
 (add-to-list 'pkg-list 'highlight-symbol)
-;(add-to-list 'pkg-list 'cl)
+
 ;(add-to-list 'pkg-list 'ecb)
 ;(add-to-list 'pkg-list 'cedet)
 (add-to-list 'pkg-list 'psvn)
@@ -51,6 +63,7 @@
 (add-to-list 'pkg-list 'ace-jump-mode)
 (add-to-list 'pkg-list 'smart-mode-line)
 (add-to-list 'pkg-list 'visual-regexp)
+(add-to-list 'pkg-list 'haskell-mode)
 
 (when (require 'package nil 'noerror)
 
@@ -64,14 +77,28 @@
 
 
 
-  (when (not package-archive-contents)
-	(package-refresh-contents)
-	)
+;  (when (not package-archive-contents)
+;	(package-refresh-contents)
+;	)
 
-  (dolist (p pkg-list)
-	(when (not (package-installed-p p))
-	  (package-install p))
-	)
+;;  (dolist (p pkg-list)
+;	(when (not (package-installed-p p))
+;	  (package-install p))
+;	)
+
+  (defun has-package-not-installed ()
+	(loop for p in pkg-list
+		  when (not (package-installed-p p)) do (return t)
+		  finally (return nil)))
+  (when (has-package-not-installed)
+	;; Check for new packages (package versions)
+	(message "%s" "Get latest versions of all packages...")
+	(package-refresh-contents)
+	(message "%s" " done.")
+	;; Install the missing packages
+	(dolist (p pkg-list)
+	  (when (not (package-installed-p p))
+		(package-install p))))
 
   )
 
@@ -81,10 +108,10 @@
   ;; Set up packages
   (setq el-get-sources
 		'(
-		  (:name rscope
-				 :description "another interface to cscope tool."
-				 :type github
-				 :pkgname "rjarzmik/rscope")
+		;  (:name rscope
+		;		 :description "another interface to cscope tool."
+		;		 :type github
+		;		 :pkgname "rjarzmik/rscope")
 
 		; (:name rxvt
 		;		 :description "define function key sequences for rxvt"
@@ -282,6 +309,32 @@
   (yas-global-mode 1)
   )
 
+
+;; <SNIPPET>
+;;;; snippet.el
+;; 이정도만 알아두면 쓰는데 지장없다.
+;; $${blahblah} blahblah 기본값가진 필드
+;; blahblah$> blahblah 입력후 인덴트
+;; $. 커서위치
+;; \n newline
+;; 보기 흉해서 뉴라인을 모두 \n 으로 적어뒀으니 수정할 일이 있으면 \n
+;; 을 뉴라인으로 바꿔서 수정후 다시 \n 으로 바꿔주자.
+(when (require 'snippet nil 'noerror) 
+  (defun install-c++-snippet ()
+	(abbrev-mode 1)
+	(snippet-with-abbrev-table
+	 'c++-mode-abbrev-table
+	 ("classx" . "class $${class}$>\n{$>\npublic:$>\n$${class}();$>\n~$${class}();$>\nprivate:$>\n$${class}(const $${class}& _);$>\n$${class}& operator=(const $${class}& _);$>\n};\n")
+	 ("doxx" . "/**$>\n* \\brief $${brief}$>\n*$>\n* $.$>\n*/$>")
+	 ))
+  (add-hook 'c++-mode-hook 'install-c++-snippet)
+  )
+
+
+
+
+
+
 ;; <FLYMAKE GOOGLE CPPLINT>
 ;; wget http://google-styleguide.googlecode.com/svn/trunk/cpplint/cpplint.py
 (defun my:flymake-google-init()
@@ -468,7 +521,8 @@
 
   )
 
-
+;; <COMMENT OR UNCOMMNT REGION>
+(global-set-key (kbd "C-c /") 'comment-or-uncomment-region)
 
 ;; <GOTO LINE>
 (global-set-key (kbd "C-c j") 'goto-line)
@@ -835,4 +889,4 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(which-func ((t (:foreground "color-92")))))
+ '(which-func ((t (:foreground "brightmagenta")))))
