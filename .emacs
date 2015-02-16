@@ -63,6 +63,7 @@
 (add-to-list 'pkg-list 'multi-term)
 (add-to-list 'pkg-list 'multiple-cursors)
 (add-to-list 'pkg-list 'buffer-move)
+(add-to-list 'pkg-list 'ace-window)
 (add-to-list 'pkg-list 'ace-jump-mode)
 (add-to-list 'pkg-list 'smart-mode-line)
 (add-to-list 'pkg-list 'visual-regexp)
@@ -252,6 +253,7 @@
 
   ;; directory replace
   (add-to-list 'sml/replacer-regexp-list '("^~/xm4k/" ":ABR:") t)
+  (add-to-list 'sml/replacer-regexp-list '("^~/abr/" ":ABR:") t)
   (add-to-list 'sml/replacer-regexp-list '("^~/github/" ":GIT:") t)
   ;; Added in the right order, they even work sequentially:
   ;(add-to-list 'sml/replacer-regexp-list '("^:ABR:app/dvr_app_v2" ":ABR:APPV2:") t)
@@ -444,6 +446,12 @@
 (when (require 'ace-jump-mode nil 'noerror)
   (global-set-key (kbd "C-c SPC") 'ace-jump-mode)
   )
+
+;; <ACE JUMP MODE>
+(when (require 'ace-window nil 'noerror)
+  (global-set-key (kbd "C-x o") 'ace-window)
+  )
+
 ;; <HIGHLIGHT>
 (when (require 'highlight-symbol nil 'noerror)
 
@@ -451,7 +459,6 @@
   (global-set-key (kbd "C-c *") 'highlight-symbol-next)
   (global-set-key (kbd "C-c #") 'highlight-symbol-prev)
   )
-
 
 ;; <HIDE-IFDEF-MODE>
 ;(add-hook 'c++-mode-hook
@@ -491,6 +498,7 @@
 
 (add-hook 'c-mode-common-hook 'my-c-mode-if0-hook)
 
+
 ;; <DOXYGEN STYLE FUNCTION COMMENT>
 (add-to-list 'load-path "~/share/emacs/site-lisp")
 (when (require 'doxymacs nil 'noerror)
@@ -518,8 +526,10 @@
 	  (yas/expand-snippet snippet-text))
 	)
 
-  (global-set-key (kbd "C-c d f") 'my:doxy-func-comment)
-
+  ;(global-set-key (kbd "C-c d f") 'my:doxy-func-comment)
+  (global-set-key (kbd "C-c d f") 'doxymacs-insert-function-comment)
+  (global-set-key (kbd "C-c d m") 'doxymacs-insert-member-comment)
+  (global-set-key (kbd "C-c d c") 'doxymacs-insert-file-comment)
   )
 
 ;; <COMMENT OR UNCOMMNT REGION>
@@ -837,7 +847,7 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 ;; KEY MAPPING RULE
 ;;========================
 ;; [C-x] : window
-;;
+;;  o : ace-window (replaced)
 ;;========================
 ;; [C-c] : custom
 ;;------------------------
