@@ -60,6 +60,7 @@
 (add-to-list 'pkg-list 'multi-term)
 (add-to-list 'pkg-list 'multiple-cursors)
 (add-to-list 'pkg-list 'buffer-move)
+(add-to-list 'pkg-list 'ace-window)
 (add-to-list 'pkg-list 'ace-jump-mode)
 (add-to-list 'pkg-list 'smart-mode-line)
 (add-to-list 'pkg-list 'visual-regexp)
@@ -444,6 +445,12 @@
 (when (require 'ace-jump-mode nil 'noerror)
   (global-set-key (kbd "C-c SPC") 'ace-jump-mode)
   )
+
+;; <ACE JUMP MODE>
+(when (require 'ace-window nil 'noerror)
+  (global-set-key (kbd "C-x o") 'ace-window)
+  )
+
 ;; <HIGHLIGHT>
 (when (require 'highlight-symbol nil 'noerror)
 
@@ -839,7 +846,7 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 ;; KEY MAPPING RULE
 ;;========================
 ;; [C-x] : window
-;;
+;;  o : ace-window (replaced)
 ;;========================
 ;; [C-c] : custom
 ;;------------------------
