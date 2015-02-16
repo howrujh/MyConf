@@ -251,6 +251,7 @@
 
   ;; directory replace
   (add-to-list 'sml/replacer-regexp-list '("^~/xm4k/" ":ABR:") t)
+  (add-to-list 'sml/replacer-regexp-list '("^~/abr/" ":ABR:") t)
   (add-to-list 'sml/replacer-regexp-list '("^~/github/" ":GIT:") t)
   ;; Added in the right order, they even work sequentially:
   ;(add-to-list 'sml/replacer-regexp-list '("^:ABR:app/dvr_app_v2" ":ABR:APPV2:") t)
@@ -451,7 +452,6 @@
   (global-set-key (kbd "C-c #") 'highlight-symbol-prev)
   )
 
-
 ;; <HIDE-IFDEF-MODE>
 ;(add-hook 'c++-mode-hook
 ;   '(lambda ()
@@ -490,6 +490,7 @@
 
 (add-hook 'c-mode-common-hook 'my-c-mode-if0-hook)
 
+
 ;; <DOXYGEN STYLE FUNCTION COMMENT>
 (add-to-list 'load-path "~/share/emacs/site-lisp")
 (when (require 'doxymacs nil 'noerror)
@@ -517,8 +518,10 @@
 	  (yas/expand-snippet snippet-text))
 	)
 
-  (global-set-key (kbd "C-c d f") 'my:doxy-func-comment)
-
+  ;(global-set-key (kbd "C-c d f") 'my:doxy-func-comment)
+  (global-set-key (kbd "C-c d f") 'doxymacs-insert-function-comment)
+  (global-set-key (kbd "C-c d m") 'doxymacs-insert-member-comment)
+  (global-set-key (kbd "C-c d c") 'doxymacs-insert-file-comment)
   )
 
 ;; <COMMENT OR UNCOMMNT REGION>
