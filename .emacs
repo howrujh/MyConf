@@ -3,19 +3,22 @@
 ;;     (add-to-list 'load-path (expand-file-name "~/.emacs.d/elisp"))
 ;;     (add-to-list 'load-path (expand-file-name "~/.emacs.d/elisp"))
 
-(defconst win32p  (eq system-type 'windows-nt) "윈도머신이면 참")
-(defconst unixp (eq system-type (or 'gnu/linux 'berkeley-unix)) "FreeBSD 머신이면 참")
-(defconst officep (string-match "omg" system-name)"사무실의 pc 라면 참")
-(defconst homep (not officep)"집의 pc 라면 참")
+(defconst os_win32  (eq system-type 'windows-nt) "윈도머신이면 참")
+(defconst os_unixp (eq system-type (or 'gnu/linux 'berkeley-unix)) "FreeBSD 머신이면 참")
+(defconst os_mac (eq system-type 'darwin ) "Mac OS X 머신이면 참")
+
+(defconst is_office (string-match "omg" system-name)"사무실의 pc 라면 참")
+(defconst is_home (not is_office)"집의 pc 라면 참")
+
 ;(defconst extra-packages "~/.emacs.d" "내가 추가로 설치한 el 패키지들의 위치")
 
 
 ;; <SET ENV>
-(setq user-mail-address (if homep "howrujh@gmail.com" "jinhwan@pinetron.com"))
+(setq user-mail-address (if is_home "howrujh@gmail.com" "jinhwan@pinetron.com"))
 (setq user-full-name "jinhwan Lee")
 
 ;; <INTERFACE>
-(tool-bar-mode -1)
+;(tool-bar-mode -1)
 (menu-bar-mode -1)
 
 ;; <LAYOUT>
@@ -65,8 +68,8 @@
 (add-to-list 'pkg-list 'visual-regexp)
 (add-to-list 'pkg-list 'haskell-mode)
 
-(when (require 'package nil 'noerror)
 
+(when (require 'package nil 'noerror)
   (package-initialize)
 
   (setq package-archives '(
@@ -75,16 +78,11 @@
 						   ("gnu" . "http://elpa.gnu.org/packages/")
 						   ("marmalade" . "http://marmalade-repo.org/packages/")))
 
-
-
-;  (when (not package-archive-contents)
-;	(package-refresh-contents)
-;	)
-
-;;  (dolist (p pkg-list)
-;	(when (not (package-installed-p p))
-;	  (package-install p))
-;	)
+  ;; loop function needs cl package
+  (when (not (require 'cl nil 'noerror))
+	(package-refresh-contents)
+	(package-install 'cl)
+	)
 
   (defun has-package-not-installed ()
 	(loop for p in pkg-list
@@ -147,6 +145,9 @@
 		el-get-sources)
 
   )
+
+;; <MAC OS X>
+(setq mac-command-modifier 'meta)
 
 ;; <RXVT>
 ;(when (require 'rxvt nil 'noerror)
