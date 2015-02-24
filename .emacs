@@ -174,6 +174,12 @@
   (global-set-key (kbd "C-c b <right>")  'buf-move-right)
   )
 
+;; <NXML MODE>
+(when (require 'nxml-mode nil 'noerror)
+  (setq nxml-child-indent 4)
+  )
+
+
 ;; <CC MODE>
 (when (require 'cc-mode nil 'noerror)
   )
