@@ -384,12 +384,19 @@
 
   (defun my:cscope-init()
 	(setq cscope-close-window-after-select t)
+
+;	(setq cscope-index-file "hd41_cscope.files")
 	(cscope-minor-mode t)
 	)
 
   (add-hook 'c++-mode-hook 'my:cscope-init)
   (add-hook 'c-mode-hook 'my:cscope-init)
   (add-hook 'makefile-mode-hook 'my:cscope-init)
+
+  (defun my:cscope-get-index-file()
+	if( eq((getenv P), nil) (setq cscope-index-file "cscope.files")
+		  )
+	)
 
   (defun my:cscope-kill()
 	)
@@ -456,6 +463,8 @@
 ;; <ACE JUMP MODE>
 (when (require 'ace-window nil 'noerror)
   (global-set-key (kbd "C-x o") 'ace-window)
+  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+  (setq aw-scope 'frame)
   )
 
 ;; <HIGHLIGHT>
