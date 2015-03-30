@@ -3,19 +3,22 @@
 ;;     (add-to-list 'load-path (expand-file-name "~/.emacs.d/elisp"))
 ;;     (add-to-list 'load-path (expand-file-name "~/.emacs.d/elisp"))
 
-(defconst win32p  (eq system-type 'windows-nt) "윈도머신이면 참")
-(defconst unixp (eq system-type (or 'gnu/linux 'berkeley-unix)) "FreeBSD 머신이면 참")
-(defconst officep (string-match "omg" system-name)"사무실의 pc 라면 참")
-(defconst homep (not officep)"집의 pc 라면 참")
+(defconst os_win32  (eq system-type 'windows-nt) "윈도머신이면 참")
+(defconst os_unixp (eq system-type (or 'gnu/linux 'berkeley-unix)) "FreeBSD 머신이면 참")
+(defconst os_mac (eq system-type 'darwin ) "Mac OS X 머신이면 참")
+
+(defconst is_office (string-match "omg" system-name)"사무실의 pc 라면 참")
+(defconst is_home (not is_office)"집의 pc 라면 참")
+
 ;(defconst extra-packages "~/.emacs.d" "내가 추가로 설치한 el 패키지들의 위치")
 
 
 ;; <SET ENV>
-(setq user-mail-address (if homep "howrujh@gmail.com" "jinhwan@pinetron.com"))
+(setq user-mail-address (if is_home "howrujh@gmail.com" "jinhwan@pinetron.com"))
 (setq user-full-name "jinhwan Lee")
 
 ;; <INTERFACE>
-(tool-bar-mode -1)
+;(tool-bar-mode -1)
 (menu-bar-mode -1)
 
 ;; <LAYOUT>
@@ -60,13 +63,14 @@
 (add-to-list 'pkg-list 'multi-term)
 (add-to-list 'pkg-list 'multiple-cursors)
 (add-to-list 'pkg-list 'buffer-move)
+(add-to-list 'pkg-list 'ace-window)
 (add-to-list 'pkg-list 'ace-jump-mode)
 (add-to-list 'pkg-list 'smart-mode-line)
 (add-to-list 'pkg-list 'visual-regexp)
 (add-to-list 'pkg-list 'haskell-mode)
 
-(when (require 'package nil 'noerror)
 
+(when (require 'package nil 'noerror)
   (package-initialize)
 
   (setq package-archives '(
@@ -75,16 +79,11 @@
 						   ("gnu" . "http://elpa.gnu.org/packages/")
 						   ("marmalade" . "http://marmalade-repo.org/packages/")))
 
-
-
-;  (when (not package-archive-contents)
-;	(package-refresh-contents)
-;	)
-
-;;  (dolist (p pkg-list)
-;	(when (not (package-installed-p p))
-;	  (package-install p))
-;	)
+  ;; loop function needs cl package
+  (when (not (require 'cl nil 'noerror))
+	(package-refresh-contents)
+	(package-install 'cl)
+	)
 
   (defun has-package-not-installed ()
 	(loop for p in pkg-list
@@ -148,6 +147,9 @@
 
   )
 
+;; <MAC OS X>
+(setq mac-command-modifier 'meta)
+
 ;; <RXVT>
 ;(when (require 'rxvt nil 'noerror)
 ;  )
@@ -171,6 +173,12 @@
   (global-set-key (kbd "C-c b <left>")   'buf-move-left)
   (global-set-key (kbd "C-c b <right>")  'buf-move-right)
   )
+
+;; <NXML MODE>
+(when (require 'nxml-mode nil 'noerror)
+  (setq nxml-child-indent 4)
+  )
+
 
 ;; <CC MODE>
 (when (require 'cc-mode nil 'noerror)
@@ -251,6 +259,7 @@
 
   ;; directory replace
   (add-to-list 'sml/replacer-regexp-list '("^~/xm4k/" ":ABR:") t)
+  (add-to-list 'sml/replacer-regexp-list '("^~/abr/" ":ABR:") t)
   (add-to-list 'sml/replacer-regexp-list '("^~/github/" ":GIT:") t)
   ;; Added in the right order, they even work sequentially:
   ;(add-to-list 'sml/replacer-regexp-list '("^:ABR:app/dvr_app_v2" ":ABR:APPV2:") t)
@@ -375,12 +384,19 @@
 
   (defun my:cscope-init()
 	(setq cscope-close-window-after-select t)
+
+;	(setq cscope-index-file "hd41_cscope.files")
 	(cscope-minor-mode t)
 	)
 
   (add-hook 'c++-mode-hook 'my:cscope-init)
   (add-hook 'c-mode-hook 'my:cscope-init)
   (add-hook 'makefile-mode-hook 'my:cscope-init)
+
+  (defun my:cscope-get-index-file()
+	if( eq((getenv P), nil) (setq cscope-index-file "cscope.files")
+		  )
+	)
 
   (defun my:cscope-kill()
 	)
@@ -443,6 +459,14 @@
 (when (require 'ace-jump-mode nil 'noerror)
   (global-set-key (kbd "C-c SPC") 'ace-jump-mode)
   )
+
+;; <ACE JUMP MODE>
+(when (require 'ace-window nil 'noerror)
+  (global-set-key (kbd "C-x o") 'ace-window)
+  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+  (setq aw-scope 'frame)
+  )
+
 ;; <HIGHLIGHT>
 (when (require 'highlight-symbol nil 'noerror)
 
@@ -450,7 +474,6 @@
   (global-set-key (kbd "C-c *") 'highlight-symbol-next)
   (global-set-key (kbd "C-c #") 'highlight-symbol-prev)
   )
-
 
 ;; <HIDE-IFDEF-MODE>
 ;(add-hook 'c++-mode-hook
@@ -490,6 +513,7 @@
 
 (add-hook 'c-mode-common-hook 'my-c-mode-if0-hook)
 
+
 ;; <DOXYGEN STYLE FUNCTION COMMENT>
 (add-to-list 'load-path "~/share/emacs/site-lisp")
 (when (require 'doxymacs nil 'noerror)
@@ -517,8 +541,10 @@
 	  (yas/expand-snippet snippet-text))
 	)
 
-  (global-set-key (kbd "C-c d f") 'my:doxy-func-comment)
-
+  ;(global-set-key (kbd "C-c d f") 'my:doxy-func-comment)
+  (global-set-key (kbd "C-c d f") 'doxymacs-insert-function-comment)
+  (global-set-key (kbd "C-c d m") 'doxymacs-insert-member-comment)
+  (global-set-key (kbd "C-c d c") 'doxymacs-insert-file-comment)
   )
 
 ;; <COMMENT OR UNCOMMNT REGION>
@@ -836,7 +862,7 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 ;; KEY MAPPING RULE
 ;;========================
 ;; [C-x] : window
-;;
+;;  o : ace-window (replaced)
 ;;========================
 ;; [C-c] : custom
 ;;------------------------
