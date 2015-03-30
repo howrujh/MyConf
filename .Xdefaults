@@ -223,7 +223,7 @@ urxvt*boldFont: xft:inconsolata,xft:GulimChe:bold:pixelsize=16:antialias=true:hi
 !urxvt*boldFont: xft:monofur:bold:pixelsize=16:antialias=true:hinting=true
 
 urxvt*imLocale:ko_KR.UTF-8
-!urxvt.letterSpace: -1
+urxvt.letterSpace: -1
 
 ! Traditional fonts - a more traditional font setup in lieu of xft
 !urxvt*font:-*-courier-medium-r-normal-*-14-*-*-*-*-*-iso8859-1
