@@ -52,9 +52,10 @@
 (add-to-list 'pkg-list 'psvn)
 (add-to-list 'pkg-list 'evil)
 (add-to-list 'pkg-list 'undo-tree)
-(add-to-list 'pkg-list 'php-mode)
-(add-to-list 'pkg-list 'auto-complete)
-(add-to-list 'pkg-list 'yasnippet)
+
+(add-to-list 'pkg-list 'ycmd)
+;(add-to-list 'pkg-list 'auto-complete)
+;(add-to-list 'pkg-list 'yasnippet)
 (add-to-list 'pkg-list 'iedit)
 ;(add-to-list 'pkg-list 'flymake-google-cpplint)
 ;(add-to-list 'pkg-list 'flymake-cursor)
@@ -62,10 +63,14 @@
 (add-to-list 'pkg-list 'cc-mode)
 (add-to-list 'pkg-list 'multi-term)
 (add-to-list 'pkg-list 'multiple-cursors)
-(add-to-list 'pkg-list 'buffer-move)
+
 (add-to-list 'pkg-list 'ace-window)
-(add-to-list 'pkg-list 'ace-jump-mode)
 (add-to-list 'pkg-list 'smart-mode-line)
+
+(add-to-list 'pkg-list 'buffer-move)
+(add-to-list 'pkg-list 'ace-jump-mode)
+
+(add-to-list 'pkg-list 'php-mode)
 (add-to-list 'pkg-list 'visual-regexp)
 (add-to-list 'pkg-list 'haskell-mode)
 
@@ -293,30 +298,36 @@
 
 
 
+;; <YCMD>
+(when (require 'ycmd nil 'noerror)
+  (ycmd-setup)
+  (set-variable 'ycmd-server-command '("python" "/mnt/user1/jinhwan/github/ycmd/ycmd"))
+  )
+
 
 ;; <CEDET MODE>
 ;; turn on Semantic
 ;(require 'cedet)
-(semantic-mode t)
+;(semantic-mode t)
 (defun my:add-semantic-to-autocomplete()
 
-  (add-to-list 'ac-sources 'ac-source-semantic)
+;  (add-to-list 'ac-sources 'ac-source-semantic)
   )
 
-(add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
+;(add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
 
 
 ;; <AUTO COMPLETE>
-(when (require 'auto-complete nil 'noerror)
-  (when (require 'auto-complete-config nil 'noerror)
-	(ac-config-default)
-	)
-  )
+;(when (require 'auto-complete nil 'noerror)
+;  (when (require 'auto-complete-config nil 'noerror)
+;	(ac-config-default)
+;	)
+;  )
 
 ;; <YASNIPPET>
-(when (require 'yasnippet nil 'noerror)
-  (yas-global-mode 1)
-  )
+;(when (require 'yasnippet nil 'noerror)
+;  (yas-global-mode 1)
+;  )
 
 
 ;; <SNIPPET>
@@ -328,16 +339,16 @@
 ;; \n newline
 ;; 보기 흉해서 뉴라인을 모두 \n 으로 적어뒀으니 수정할 일이 있으면 \n
 ;; 을 뉴라인으로 바꿔서 수정후 다시 \n 으로 바꿔주자.
-(when (require 'snippet nil 'noerror) 
-  (defun install-c++-snippet ()
-	(abbrev-mode 1)
-	(snippet-with-abbrev-table
-	 'c++-mode-abbrev-table
-	 ("classx" . "class $${class}$>\n{$>\npublic:$>\n$${class}();$>\n~$${class}();$>\nprivate:$>\n$${class}(const $${class}& _);$>\n$${class}& operator=(const $${class}& _);$>\n};\n")
-	 ("doxx" . "/**$>\n* \\brief $${brief}$>\n*$>\n* $.$>\n*/$>")
-	 ))
-  (add-hook 'c++-mode-hook 'install-c++-snippet)
-  )
+;(when (require 'snippet nil 'noerror) 
+;  (defun install-c++-snippet ()
+;	(abbrev-mode 1)
+;	(snippet-with-abbrev-table
+;	 'c++-mode-abbrev-table
+;	 ("classx" . "class $${class}$>\n{$>\npublic:$>\n$${class}();$>\n~$${class}();$>\nprivate:$>\n$${class}(const $${class}& _);$>\n$${class}& operator=(const $${class}& _);$>\n};\n")
+;	 ("doxx" . "/**$>\n* \\brief $${brief}$>\n*$>\n* $.$>\n*/$>")
+;	 ))
+;  (add-hook 'c++-mode-hook 'install-c++-snippet)
+;  )
 
 
 
@@ -910,6 +921,7 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(inhibit-startup-screen t)
+ '(vc-follow-symlinks t)
  '(which-function-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
