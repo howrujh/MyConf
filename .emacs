@@ -339,17 +339,21 @@
   (global-ede-mode 1)
 
   ;TODO: set dynamic project path assign function
-  ;(setq macro-path-list)
-  ;(add-to-list 'macro-path-list "~/abr/app/dvr_app_v2/include/configs/pdrhd4k_config.h")
-  (setq inc-path-list '("~/abr/app/dvr_app_v2/include/"
+
+  (setq macro-path '("~/abr/app/dvr_app_v2/include/configs/pdrhd4k_config.h"))
+  
+  (setq inc-path '("~/abr/app/dvr_app_v2/include/"
 						"~/abr/app/dvr_app_v2/src/osd/olib/"
 						"../"
-						"~/abr/sdk/hi3531-sdk-1.0.9.0/src/mpp/include_hi3531/"))
+						"~/abr/sdk/hi3531-sdk-1.0.9.0/src/mpp/include_hi3531/"
+						"~/abr/sub/onvif/elements/5003.onvif/inc/"
+						))
 
   
   (ede-cpp-root-project "ABR_PROJECT"
-						:file "~/abr/app/dvr_app_v2/Makefile" 
-						:include-path inc-path-list
+						:file "~/abr/Makefile" 
+						:include-path inc-path
+						:spp-files macro-path
 						)
 
 
