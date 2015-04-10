@@ -48,14 +48,15 @@
 (add-to-list 'pkg-list 'highlight-symbol)
 
 ;(add-to-list 'pkg-list 'ecb)
-;(add-to-list 'pkg-list 'cedet)
+(add-to-list 'pkg-list 'cedet)
+(add-to-list 'pkg-list 'auto-complete)
+
+
 (add-to-list 'pkg-list 'psvn)
 (add-to-list 'pkg-list 'evil)
 (add-to-list 'pkg-list 'undo-tree)
 
-(add-to-list 'pkg-list 'ycmd)
-;(add-to-list 'pkg-list 'auto-complete)
-;(add-to-list 'pkg-list 'yasnippet)
+(add-to-list 'pkg-list 'yasnippet)
 (add-to-list 'pkg-list 'iedit)
 ;(add-to-list 'pkg-list 'flymake-google-cpplint)
 ;(add-to-list 'pkg-list 'flymake-cursor)
@@ -76,6 +77,7 @@
 
 
 (when (require 'package nil 'noerror)
+
   (package-initialize)
 
   (setq package-archives '(
@@ -108,7 +110,6 @@
 
 ;; -- using el-get for install from github, svn, etc..--
 (when (require 'el-get nil 'noerror)
-
   ;; Set up packages
   (setq el-get-sources
 		'(
@@ -297,37 +298,72 @@
   )
 
 
+;; <AUTO COMPLETE>
+(when (require 'auto-complete nil 'noerror)
+  (when (require 'auto-complete-config nil 'noerror)
+	(ac-config-default)
+	)
 
-;; <YCMD>
-(when (require 'ycmd nil 'noerror)
-  (ycmd-setup)
-  (set-variable 'ycmd-server-command '("python" "/mnt/user1/jinhwan/github/ycmd/ycmd"))
-  )
+  (defun my:ac-c-header-init ()
+	(require 'auto-complete-c-headers)
+	(add-to-list 'ac-sources 'ac-source-c-headers)
+	;(add-to-list 'achead:include-directories '"/Applications/Xcode.app/Contents/Developer/usr/llvm-gcc-4.2/lib/gcc/i686-apple-darwin11/4.2.1/include")
+	)
+
+  ;(add-hook 'c++-mode-hook 'my:ac-c-header-init)
+  ;(add-hook 'c-mode-hook 'my:ac-c-header-init)
+  
+ )
+
+
+
 
 
 ;; <CEDET MODE>
+(when (require 'cedet nil 'noerror)
 ;; turn on Semantic
-;(require 'cedet)
-;(semantic-mode t)
-(defun my:add-semantic-to-autocomplete()
+  (semantic-mode 1)
 
-;  (add-to-list 'ac-sources 'ac-source-semantic)
+  (global-semanticdb-minor-mode 1)
+  (global-semantic-idle-scheduler-mode 1) ;The idle scheduler with automatically reparse buffers in idle time.
+  
+  (add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
+  (add-hook 'c++-mode-common-hook 'my:add-semantic-to-autocomplete)
+
+  (defun my:add-semantic-to-autocomplete()
+
+	(add-to-list 'ac-sources 'ac-source-semantic)
   )
 
-;(add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
+  ;; Enable EDE (Project Management) features
+  (global-ede-mode 1)
+
+  ;TODO: set dynamic project path assign function
+  ;(setq macro-path-list)
+  ;(add-to-list 'macro-path-list "~/abr/app/dvr_app_v2/include/configs/pdrhd4k_config.h")
+  (setq inc-path-list '("~/abr/app/dvr_app_v2/include/"
+						"~/abr/app/dvr_app_v2/src/osd/olib/"
+						"../"
+						"~/abr/sdk/hi3531-sdk-1.0.9.0/src/mpp/include_hi3531/"))
+
+  
+  (ede-cpp-root-project "ABR_PROJECT"
+						:file "~/abr/app/dvr_app_v2/Makefile" 
+						:include-path inc-path-list
+						)
 
 
-;; <AUTO COMPLETE>
-;(when (require 'auto-complete nil 'noerror)
-;  (when (require 'auto-complete-config nil 'noerror)
-;	(ac-config-default)
-;	)
-;  )
+  ;(global-semantic-idle-completions-mode 1) ;Display a tooltip with a list of possible completions near the cursor.
+  ;(global-semantic-idle-summary-mode 1) ;Display a tag summary of the lexical token under the cursor.
+  )
+
+
+
 
 ;; <YASNIPPET>
-;(when (require 'yasnippet nil 'noerror)
-;  (yas-global-mode 1)
-;  )
+(when (require 'yasnippet nil 'noerror)
+  (yas-global-mode 1)
+  )
 
 
 ;; <SNIPPET>
@@ -594,14 +630,14 @@
 ;; <UNDO-TREE>
 (when (require 'undo-tree nil 'noerror)
   (global-undo-tree-mode 1)
-  (global-set-key (kbd "M-/") 'undo-tree-redo)
+;(global-set-key (kbd "C-?") 'undo-tree-redo)
 ;(global-set-key (kbd "C-z") 'undo-tree-undo) ; 【Ctrl+z】
 ;(global-set-key (kbd "C-S-z") 'undo-tree-redo) ; 【Ctrl+Shift+z】; Mac style
   )
 
 ;; <EVIL-MODE>
 (when (require 'evil nil 'noerror)
-;;(evil-mode)
+  ;(evil-mode nil)
   )
 ;; <PSVN)
 (when (require 'psvn nil 'noerror)
