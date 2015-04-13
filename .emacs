@@ -74,7 +74,7 @@
 (add-to-list 'pkg-list 'php-mode)
 (add-to-list 'pkg-list 'visual-regexp)
 (add-to-list 'pkg-list 'haskell-mode)
-
+(add-to-list 'pkg-list 'jedi)
 
 (when (require 'package nil 'noerror)
 
@@ -194,6 +194,16 @@
 ;; <PHP MODE>
 (when (require 'php-mode nil 'noerror)
   )
+
+;; <JEDI>
+(when (require 'jedi nil 'noerror)
+
+  (add-hook 'python-mode-hook 'jedi:setup)
+  (setq jedi:complete-on-dot t)                 ; optional
+  
+  )
+
+
 
 ;; <IEDIT MODE>
 (when (require 'iedit nil 'noerror)
@@ -348,11 +358,13 @@
 						"~/abr/sdk/hi3531-sdk-1.0.9.0/src/mpp/include_hi3531/"
 						"~/abr/sub/onvif/elements/5003.onvif/inc/"
 						))
-
+  
+  (setq sys-inc-path '("~/abr/kernel/linux-3.0.8-hisi-pdr/include/linux/"))
   
   (ede-cpp-root-project "ABR_PROJECT"
 						:file "~/abr/Makefile" 
 						:include-path inc-path
+						:system-include-path sys-inc-path
 						:spp-files macro-path
 						)
 
