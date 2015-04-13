@@ -49,7 +49,7 @@
 
 ;(add-to-list 'pkg-list 'ecb)
 (add-to-list 'pkg-list 'cedet)
-(add-to-list 'pkg-list 'auto-complete)
+;(add-to-list 'pkg-list 'auto-complete)
 
 
 (add-to-list 'pkg-list 'psvn)
@@ -74,7 +74,13 @@
 (add-to-list 'pkg-list 'php-mode)
 (add-to-list 'pkg-list 'visual-regexp)
 (add-to-list 'pkg-list 'haskell-mode)
-(add-to-list 'pkg-list 'jedi)
+
+(add-to-list 'pkg-list 'company)
+;(add-to-list 'pkg-list 'jedi)
+;(add-to-list 'pkg-list 'company-jedi)
+(add-to-list 'pkg-list 'anaconda-mode)
+(add-to-list 'pkg-list 'company-anaconda)
+
 
 (when (require 'package nil 'noerror)
 
@@ -195,15 +201,34 @@
 (when (require 'php-mode nil 'noerror)
   )
 
-;; <JEDI>
-(when (require 'jedi nil 'noerror)
 
-  (add-hook 'python-mode-hook 'jedi:setup)
-  (setq jedi:complete-on-dot t)                 ; optional
-  
+;; <COMPANY MODE>
+(when (require 'company nil 'noerror)
+  (add-hook 'after-init-hook 'global-company-mode)
+  )
+
+;; <ANACONDA MODE>
+(when (require 'anaconda-mode nil 'noerror)
+  (when (require 'company-anaconda nil 'noerror)
+	(add-to-list 'company-backends 'company-anaconda)
+	)
+  (add-hook 'python-mode-hook 'anaconda-mode)
+  (add-hook 'python-mode-hook 'eldoc-mode)  
   )
 
 
+;; ;; <JEDI>
+;; (when (require 'jedi nil 'noerror)
+;;   (add-hook 'python-mode-hook 'jedi:setup)
+;;   )
+
+
+;; (when (require 'company-jedi nil 'noerror)
+;;   (defun my/python-mode-hook ()
+;; 	(add-to-list 'company-backends 'company-jedi))
+
+;;   (add-hook 'python-mode-hook 'my/python-mode-hook)
+;;   )
 
 ;; <IEDIT MODE>
 (when (require 'iedit nil 'noerror)
@@ -309,21 +334,21 @@
 
 
 ;; <AUTO COMPLETE>
-(when (require 'auto-complete nil 'noerror)
-  (when (require 'auto-complete-config nil 'noerror)
-	(ac-config-default)
-	)
+;; (when (require 'auto-complete nil 'noerror)
+;;   (when (require 'auto-complete-config nil 'noerror)
+;; 	(ac-config-default)
+;; 	)
 
-  (defun my:ac-c-header-init ()
-	(require 'auto-complete-c-headers)
-	(add-to-list 'ac-sources 'ac-source-c-headers)
-	;(add-to-list 'achead:include-directories '"/Applications/Xcode.app/Contents/Developer/usr/llvm-gcc-4.2/lib/gcc/i686-apple-darwin11/4.2.1/include")
-	)
+;;   (defun my:ac-c-header-init ()
+;; 	(require 'auto-complete-c-headers)
+;; 	(add-to-list 'ac-sources 'ac-source-c-headers)
+;; 	;(add-to-list 'achead:include-directories '"/Applications/Xcode.app/Contents/Developer/usr/llvm-gcc-4.2/lib/gcc/i686-apple-darwin11/4.2.1/include")
+;; 	)
 
-  ;(add-hook 'c++-mode-hook 'my:ac-c-header-init)
-  ;(add-hook 'c-mode-hook 'my:ac-c-header-init)
+;;   ;(add-hook 'c++-mode-hook 'my:ac-c-header-init)
+;;   ;(add-hook 'c-mode-hook 'my:ac-c-header-init)
   
- )
+;;  )
 
 
 
@@ -342,32 +367,34 @@
 
   (defun my:add-semantic-to-autocomplete()
 
-	(add-to-list 'ac-sources 'ac-source-semantic)
+;	(add-to-list 'ac-sources 'ac-source-semantic)
   )
 
   ;; Enable EDE (Project Management) features
   (global-ede-mode 1)
 
   ;TODO: set dynamic project path assign function
-
-  (setq macro-path '("~/abr/app/dvr_app_v2/include/configs/pdrhd4k_config.h"))
-  
-  (setq inc-path '("~/abr/app/dvr_app_v2/include/"
-						"~/abr/app/dvr_app_v2/src/osd/olib/"
-						"../"
-						"~/abr/sdk/hi3531-sdk-1.0.9.0/src/mpp/include_hi3531/"
-						"~/abr/sub/onvif/elements/5003.onvif/inc/"
-						))
-  
-  (setq sys-inc-path '("~/abr/kernel/linux-3.0.8-hisi-pdr/include/linux/"))
-  
-  (ede-cpp-root-project "ABR_PROJECT"
-						:file "~/abr/Makefile" 
-						:include-path inc-path
-						:system-include-path sys-inc-path
-						:spp-files macro-path
-						)
-
+  (when is_office
+	(
+	 (setq macro-path '("~/abr/app/dvr_app_v2/include/configs/pdrhd4k_config.h"))
+	 
+	 (setq inc-path '("~/abr/app/dvr_app_v2/include/"
+					  "~/abr/app/dvr_app_v2/src/osd/olib/"
+					  "../"
+					  "~/abr/sdk/hi3531-sdk-1.0.9.0/src/mpp/include_hi3531/"
+					  "~/abr/sub/onvif/elements/5003.onvif/inc/"
+					  ))
+	 
+	 (setq sys-inc-path '("~/abr/kernel/linux-3.0.8-hisi-pdr/include/linux/"))
+	 
+	 (ede-cpp-root-project "ABR_PROJECT"
+						   :file "~/abr/Makefile" 
+						   :include-path inc-path
+						   :system-include-path sys-inc-path
+						   :spp-files macro-path
+						   )
+	 )
+	)
 
   ;(global-semantic-idle-completions-mode 1) ;Display a tooltip with a list of possible completions near the cursor.
   ;(global-semantic-idle-summary-mode 1) ;Display a tag summary of the lexical token under the cursor.
