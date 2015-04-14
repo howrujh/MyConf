@@ -216,7 +216,6 @@
   (add-hook 'python-mode-hook 'eldoc-mode)  
   )
 
-
 ;; ;; <JEDI>
 ;; (when (require 'jedi nil 'noerror)
 ;;   (add-hook 'python-mode-hook 'jedi:setup)
@@ -329,7 +328,7 @@
   (setq sml/name-width 34)
   (setq sml/mode-width 12)
   (sml/setup)
-  (sml/apply-theme 'automatic)
+  (sml/apply-theme 'dark)
   )
 
 
@@ -375,25 +374,23 @@
 
   ;TODO: set dynamic project path assign function
   (when is_office
-	(
-	 (setq macro-path '("~/abr/app/dvr_app_v2/include/configs/pdrhd4k_config.h"))
-	 
-	 (setq inc-path '("~/abr/app/dvr_app_v2/include/"
-					  "~/abr/app/dvr_app_v2/src/osd/olib/"
-					  "../"
-					  "~/abr/sdk/hi3531-sdk-1.0.9.0/src/mpp/include_hi3531/"
-					  "~/abr/sub/onvif/elements/5003.onvif/inc/"
-					  ))
-	 
-	 (setq sys-inc-path '("~/abr/kernel/linux-3.0.8-hisi-pdr/include/linux/"))
-	 
-	 (ede-cpp-root-project "ABR_PROJECT"
-						   :file "~/abr/Makefile" 
-						   :include-path inc-path
-						   :system-include-path sys-inc-path
-						   :spp-files macro-path
-						   )
-	 )
+	(setq macro-path '("~/abr/app/dvr_app_v2/include/configs/pdrhd4k_config.h"))
+	
+	(setq inc-path '("~/abr/app/dvr_app_v2/include/"
+					 "~/abr/app/dvr_app_v2/src/osd/olib/"
+					 "../"
+					 "~/abr/sdk/hi3531-sdk-1.0.9.0/src/mpp/include_hi3531/"
+					 "~/abr/sub/onvif/elements/5003.onvif/inc/"
+					 ))
+	
+	(setq sys-inc-path '("~/abr/kernel/linux-3.0.8-hisi-pdr/include/linux/"))
+	
+	(ede-cpp-root-project "ABR_PROJECT"
+						  :file "~/abr/Makefile" 
+						  :include-path inc-path
+						  :system-include-path sys-inc-path
+						  :spp-files macro-path
+						  )
 	)
 
   ;(global-semantic-idle-completions-mode 1) ;Display a tooltip with a list of possible completions near the cursor.
