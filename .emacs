@@ -52,10 +52,11 @@
 ;(add-to-list 'pkg-list 'auto-complete)
 
 
-(add-to-list 'pkg-list 'psvn)
+;(add-to-list 'pkg-list 'psvn)
 (add-to-list 'pkg-list 'evil)
 (add-to-list 'pkg-list 'undo-tree)
 
+(add-to-list 'pkg-list 'ediff)
 (add-to-list 'pkg-list 'yasnippet)
 (add-to-list 'pkg-list 'iedit)
 ;(add-to-list 'pkg-list 'flymake-google-cpplint)
@@ -289,6 +290,7 @@
 ;; <SMART MODE LINE>
 (when (require 'smart-mode-line nil 'noerror)
   (setq sml/no-confirm-load-theme t)
+
   (when (require 'rich-minority nil 'noerror)
 	;; hide minor modes
 	(add-to-list 'rm-excluded-modes " Undo-Tree")
@@ -327,8 +329,9 @@
   ;(setq sml/shorten-modes nil)
   (setq sml/name-width 34)
   (setq sml/mode-width 12)
-  (sml/setup)
   (sml/apply-theme 'dark)
+  (sml/setup)
+
   )
 
 
@@ -665,6 +668,7 @@
 ;(setq Ido-use-filename-at-point t) ;; prefer file names near point
 ;(setq ido-ignore-buffers '("*scratch*" "*Messages*"))
   (setq ido-ignore-buffers '("^ " "*Completions*" "*Shell Command Output*"
+							 "*Ediff" "**.~**~"
 							 "*Messages*" "*scratch*" "Async Shell Command"))
   )
 ;; <UNDO-TREE>
@@ -679,14 +683,54 @@
 (when (require 'evil nil 'noerror)
   ;(evil-mode nil)
   )
-;; <PSVN)
-(when (require 'psvn nil 'noerror)
+
+;; ;; <PSVN)
+;; (when (require 'psvn nil 'noerror)
+
+;;   )
+;; <VC>
+
+(when (require 'vc nil 'noerror)
+
+  (add-hook 'vc-annotate-mode-hook 'my:vc-annotate-local-map)
+  (defvar my:vc-annotate-local-keymap
+	(let ((map (make-keymap)))
+	  (suppress-keymap map)
+	  ;; The following section does not appear in the "Cscope" menu.
+
+	  (define-key map (kbd "q") 'kill-this-buffer)
+
+	  map)
+	"The custom *annotate* buffer keymap")
+
+  (defun my:vc-annotate-local-map()
+	(use-local-map my:vc-annotate-local-keymap)
+	)
+  
 
   )
-;; <EDIFF>
-(setq ediff-split-window-function 'split-window-horizontally)
-(setq ediff-merge-split-window-function 'split-window-horizontally)
 
+;; <EDIFF>
+(when (require 'ediff nil 'noerror)
+  ;(setq ediff-keep-variants nil)
+  (add-hook 'ediff-before-setup-hook
+			(lambda ()
+			  (setq ediff-saved-window-configuration (current-window-configuration))))
+
+  (add-hook 'ediff-cleanup-hook
+			(lambda ()
+			  (ediff-janitor nil t)))
+
+  (add-hook 'ediff-quit-hook
+			(lambda ()
+			  (set-window-configuration ediff-saved-window-configuration))
+			)
+  
+
+  
+  (setq ediff-split-window-function 'split-window-horizontally)
+  (setq ediff-merge-split-window-function 'split-window-horizontally)
+  )
 ;; <ECB>
 ;(require 'cl)
 ;(require 'ecb)
@@ -996,6 +1040,9 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+	("3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
  '(inhibit-startup-screen t)
  '(vc-follow-symlinks t)
  '(which-function-mode t))
