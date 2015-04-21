@@ -65,6 +65,7 @@
 (add-to-list 'pkg-list 'cc-mode)
 (add-to-list 'pkg-list 'multi-term)
 (add-to-list 'pkg-list 'multiple-cursors)
+;; (add-to-list 'pkg-list 'popwin)
 
 (add-to-list 'pkg-list 'ace-window)
 (add-to-list 'pkg-list 'smart-mode-line)
@@ -261,6 +262,44 @@
   (global-set-key (kbd "C-c c n") 'mc/mark-next-like-this)
   )
 
+;; ;; <POPWIN>
+;; (when (require 'popwin nil 'noerror)
+;;   (popwin-mode 1)
+;;   ;(setq popwin:reuse-window popwin:popup-window)
+;;   ;(setq popwin:close-popup-window-timer-interval 0.005)
+  
+;;   (push '("*cscope*" :position bottom :height 0.2) popwin:special-display-config)
+;;   ;;(push '(cscope-list-entry-mode :position bottom :height 0.2) popwin:special-display-config)
+;;   (push '("*Help*" :position bottom :height 0.3 ) popwin:special-display-config)
+;;   (push '(vc-annotate-mode :position top :height 0.35) popwin:special-display-config)
+;;   (push "*Shell Command Output*" popwin:special-display-config)
+
+;;   (push '("\\.[cChH]" :regexp t :position top :height 0.25 :noselect t) popwin:special-display-config)
+;;   (push '("^\\.el" :regexp t :position top :height 0.25 :noselect t) popwin:special-display-config)
+;;   (push '("Makefile" :regexp t :position top :height 0.25 :noselect t) popwin:special-display-config)
+;;   (push '("^\\.mk" :regexp t :position top :height 0.25 :noselect t) popwin:special-display-config)
+
+;;   (defun my:before-popup()
+
+;; 	;;(popwin:close-popup-window t)
+;; 	(if (eq major-mode "cscope-list-entry-mode")
+;; 		(message "before-popup-hook")
+;; 		(popwin:close-popup-window-timer)
+;; 		;;(popwin:close-popup-window)
+;; 	  )
+;; 	)
+
+  
+;;   (defun my:after-popup()
+;; 	;(message "after-popup-hook")
+;; 	;(popwin:close-popup-window-timer)
+;; 	)
+  
+;;   (add-hook 'popwin:before-popup-hook 'my:before-popup)
+;;   (add-hook 'popwin:after-popup-hook 'my:after-popup)
+;;   )
+
+
 ;; <COLOR THEME>
 (when (require 'color-theme nil 'noerror)
   ;;(require 'tango-2-theme)
@@ -364,13 +403,13 @@
   (global-semanticdb-minor-mode 1)
   (global-semantic-idle-scheduler-mode 1) ;The idle scheduler with automatically reparse buffers in idle time.
   
-  (add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
-  (add-hook 'c++-mode-common-hook 'my:add-semantic-to-autocomplete)
+  ;; (add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
+  ;; (add-hook 'c++-mode-common-hook 'my:add-semantic-to-autocomplete)
 
-  (defun my:add-semantic-to-autocomplete()
+  ;; (defun my:add-semantic-to-autocomplete()
 
-;	(add-to-list 'ac-sources 'ac-source-semantic)
-  )
+  ;; 	(add-to-list 'ac-sources 'ac-source-semantic)
+  ;; )
 
   ;; Enable EDE (Project Management) features
   (global-ede-mode 1)
@@ -455,27 +494,19 @@
 
 
 ;; <CSCOPE>
-;;(add-to-list 'load-path "/usr/share/cscope")
-;;(require 'xcscope)
-;;(require 'ascope)
-
 ;;(setq cscope-initial-directory "~/github/opengles2-book-sample/LinuxX11/")
 ;;(setq cscope-database-file "cscope.out")
 
 ;( setq pwd  ( getenv "PWD" ))
 
-;( cond (( file-exists-p ( expand-file-name "cscope.out"  pwd ))
-;  ( ascope-init ( concat pwd  "/" )))
-  ;TODO: select cscope file by current path.
-;  ( t (ascope-init "~/xm4k/" )))
-
-;(when (require 'rscope nil 'noerror)
 (when (require 'xcscope nil 'noerror)
 
+  (setq my:cscope-preview-window nil)
+  
   (defun my:cscope-init()
 	(setq cscope-close-window-after-select t)
 
-;	(setq cscope-index-file "hd41_cscope.files")
+	;; (setq cscope-index-file "hd41_cscope.files")
 	(cscope-minor-mode t)
 	)
 
@@ -483,47 +514,78 @@
   (add-hook 'c-mode-hook 'my:cscope-init)
   (add-hook 'makefile-mode-hook 'my:cscope-init)
 
-  (defun my:cscope-get-index-file()
-	if( eq((getenv P), nil) (setq cscope-index-file "cscope.files")
-		  )
-	)
+;;   (eval-after-load "xcscope"
 
-  (defun my:cscope-kill()
-	)
+;; 	'(defun cscope-show-entry-other-window ()
+;; 	   "Display the entry at point in other window.
+;; Point is not saved on mark ring."
+;; 	   (interactive)
 
-  (defun my:cscope-select-entry-specified-window()
-	;"Open in specific window"
-	(interactive)
-	;(setq prev_win (previous-window))
-	(setq list_win (selected-window))
-	(setq prev_win cscope-marker-window)
-	(select-window prev_win)
-	(split-window-vertically)
-	(select-window list_win)
-	(cscope-select-entry-specified-window prev_win)
+;; 	   (if (or (eq my:cscope-preview-window nil) (not (popwin:window-deletable-p my:cscope-preview-window)))
+;; 	   	  (setq my:cscope-preview-window (nth 1 (popwin:create-popup-window 0.3 'top t))))
 
-	(if cscope-close-window-after-select
-		(delete-windows-on cscope-output-buffer-name))
+;; 	   ;; (let ((navprops (cscope-get-navigation-properties)))
+;; 	   ;; 	 (cscope-show-entry-internal navprops nil my:cscope-preview-window nil)
+;; 	   ;; 	 )
+;; 	   ))
 
-  )
 
-  (defvar my:cscope-local-keymap
-	(let ((map (make-keymap)))
-	  (suppress-keymap map)
-	  ;; The following section does not appear in the "Cscope" menu.
+  ;; (defun my:cscope-select-entry-specified-window()
+  ;; 	;"Open in specific window"
+  ;; 	(interactive)
+  ;; 	(setq old-point (point))
+  ;; 	(setq prev_win (selected-window))
 
-	  (define-key map (kbd "n") 'cscope-help)
+  ;; 	(if (or (eq my:cscope-preview-window nil) (not (popwin:window-deletable-p my:cscope-preview-window)))
+  ;; 		(setq my:cscope-preview-window (nth 1 (popwin:create-popup-window 0.4 'top t))))
 
-	  (define-key map (kbd "\r") 'my:cscope-select-entry-specified-window)
+  ;; 	(cscope-select-entry-specified-window my:cscope-preview-window)
 
-	  map)
-	"The custom *cscope* buffer keymap")
+  ;; 	(set-window-point prev_win old-point)
+  ;; 	;; (if cscope-close-window-after-select
+  ;; 	;; 	(delete-windows-on cscope-output-buffer-name))
+  ;; )
 
-  (defun my:cscope-local-map()
-	(use-local-map my:cscope-local-keymap)
-	)
+  ;; (defun my:cscope-show-entry-specified-window()
+  ;; 	;"Open in specific window"
+  ;; 	(interactive)
 
-  ;(add-hook 'cscope-list-entry-hook 'my:cscope-local-map)
+  ;; 	;; (if (or (eq my:cscope-preview-window nil) (not (popwin:window-deletable-p my:cscope-preview-window)))
+  ;; 	;; 	(setq my:cscope-preview-window (nth 1 (popwin:create-popup-window 0.4 'top t))))
+	
+  ;; 	(popwin:create-popup-window 20 'top nil)
+
+  ;; 	;; (let (navprops (cscope-get-navigation-properties))
+
+  ;; 	;;   (cscope-show-entry-internal navprops nil my:cscope-preview-window))
+
+  ;; 	;; (let (navprops (cscope-get-navigation-properties)))
+  ;; 	;; (cscope-show-entry-internal navprops t my:cscope-preview-window)
+  ;; 	;; (if cscope-close-window-after-select
+  ;; 	;; 	(delete-windows-on cscope-output-buffer-name))
+  ;; )
+
+  
+  
+  ;; (defvar my:cscope-local-keymap
+  ;; 	(let ((map (make-keymap)))
+  ;; 	  (suppress-keymap map)
+  ;; 	  ;; The following section does not appear in the "Cscope" menu.
+
+  ;; 	  (define-key map (kbd "SPC") 'my:cscope-show-entry-specified-window)
+
+  ;; 	  ;; (define-key map (kbd "\r") 'my:cscope-select-entry-specified-window)
+
+
+  ;; 	  map)
+  ;; 	"The custom *cscope* buffer keymap")
+
+  ;; (defun my:cscope-local-map()
+  ;; 	(use-local-map my:cscope-local-keymap)
+  
+  ;; 	)
+
+  ;; (add-hook 'cscope-list-entry-hook 'my:cscope-local-map)
 )
 
 ;(add-hook 'kill-emacs-hook 'my:cscope-kill)
@@ -688,26 +750,13 @@
 ;; (when (require 'psvn nil 'noerror)
 
 ;;   )
+
+
 ;; <VC>
-
 (when (require 'vc nil 'noerror)
-
-  (add-hook 'vc-annotate-mode-hook 'my:vc-annotate-local-map)
-  (defvar my:vc-annotate-local-keymap
-	(let ((map (make-keymap)))
-	  (suppress-keymap map)
-	  ;; The following section does not appear in the "Cscope" menu.
-
-	  (define-key map (kbd "q") 'kill-this-buffer)
-
-	  map)
-	"The custom *annotate* buffer keymap")
-
-  (defun my:vc-annotate-local-map()
-	(use-local-map my:vc-annotate-local-keymap)
-	)
+  (add-hook 'vc-annotate-mode-hook 'my:kill-buffer-local-key)
+  (add-hook 'vc-svn-log-view-mode-hook 'my:kill-buffer-local-key)
   
-
   )
 
 ;; <EDIFF>
@@ -782,36 +831,45 @@
 ;    satellite-window))
 
 
+(defun my:display-buffer-in-info-window (buffer ignore)
+  "Display cscope buffer in info window"
+  (display-buffer-at-bottom buffer '((side . bottom) (window-height . 0.15)))
+  )
+
+(defun my:display-buffer-in-preview-window (buffer ignore)
+  "Display source code in preview window"
+  (display-buffer-in-side-window buffer '((side . top) (window-height . 0.18)))
+  )
+
 
 (defun my:display-buffer-in-top-window (buffer ignore)
-;  "Display the buffer in the top window."
+  "Display the buffer in the top window."
   (display-buffer-in-side-window buffer '((side . top)))
-)
+  )
 
 (defun my:display-buffer-in-bottom-window (buffer ignore)
-;  "Display the buffer in the bottom window."
+  "Display the buffer in the bottom window."
   (display-buffer-in-side-window buffer '((side . bottom)))
-)
+  )
 
 (defun my:display-buffer-in-left-window (buffer ignore)
-;  "Display the buffer in the left window."
+  "Display the buffer in the left window."
   (display-buffer-in-side-window buffer '((side . left)))
-)
-
+  )
 
 (defun my:display-buffer-in-right-window (buffer ignore)
-;  "Display the buffer in the right window."
+  "Display the buffer in the right window."
   (display-buffer-in-side-window buffer '((side . right)))
-)
-(push '("\\*[+]*" my:display-buffer-in-bottom-window) display-buffer-alist)
-;(push '("\\*Result*" my:display-buffer-in-bottom-window) display-buffer-alist)
-;(push '("\\*cscope*" my:display-buffer-in-bottom-window) display-buffer-alist)
+  )
 
-;(add-to-list 'display-buffer-alist  '("\\.[cChH]" my:display-buffer-in-top-window))
-(push '("\\.[cChH]" my:display-buffer-in-top-window) display-buffer-alist)
-(push '("\\.el" my:display-buffer-in-top-window) display-buffer-alist)
-(push '("\\.mk" my:display-buffer-in-top-window) display-buffer-alist)
-(push '("[Mm]akefile" my:display-buffer-in-top-window) display-buffer-alist)
+
+
+(push '("\\*[+]*" my:display-buffer-in-info-window) display-buffer-alist)
+(push '("\\.el" my:display-buffer-in-preview-window) display-buffer-alist)
+(push '("\\.mk" my:display-buffer-in-preview-window) display-buffer-alist)
+(push '("[Mm]akefile" my:display-buffer-in-preview-window) display-buffer-alist)
+(push '("\\.[cChH]" my:display-buffer-in-preview-window) display-buffer-alist)
+
 
 ;; <SCROLL WITHOUT CURSOR MOVE>
 (defun scroll-in-place (scroll-up)
@@ -949,6 +1007,17 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (global-set-key (kbd "C-c -") 'move-cursor-previous-frame)
 (global-set-key (kbd "C-c =") 'move-cursor-next-frame)
 (global-set-key (kbd "C-c !") 'new-frame)
+
+
+;; <DEFAULT MODE HOOK>
+(add-hook 'help-mode-hook 'my:kill-buffer-local-key)
+
+
+
+;; <MY LOCAL SET KEY FUNC>
+(defun my:kill-buffer-local-key()
+  (local-set-key (kbd "q") 'kill-this-buffer)
+  )
 
 
 ;; <RELOAD .emacs >
