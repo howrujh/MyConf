@@ -792,6 +792,7 @@
   (global-set-key (kbd "C-c t -") 'multi-term-prev)
   (global-set-key (kbd "C-c t =") 'multi-term-next)
   )
+
 ;; <SATELLITE WINDOW>
 (defun mark-this-window-as-satellite ()
   "Mark the current window as the satellite window."
@@ -830,37 +831,58 @@
 ;    (display-buffer-record-window 'reuse satellite-window buffer)
 ;    satellite-window))
 
+(setq my:use-window-manager t)
+(defun my:toggle-window-manager()
+  (interactive)
+
+  (setq my:use-window-manager (not my:use-window-manager))
+  (message "window manager %s" my:use-window-manager)
+  )
+
+(global-set-key (kbd "C-c w m") 'my:toggle-window-manager)
 
 (defun my:display-buffer-in-info-window (buffer ignore)
   "Display cscope buffer in info window"
-  (display-buffer-at-bottom buffer '((side . bottom) (window-height . 0.15)))
-  )
+  (when my:use-window-manager
+	(display-buffer-at-bottom buffer '((side . bottom) (window-height . 0.15)))
+  ))
 
 (defun my:display-buffer-in-preview-window (buffer ignore)
   "Display source code in preview window"
-  (display-buffer-in-side-window buffer '((side . top) (window-height . 0.18)))
-  )
 
+  (when my:use-window-manager
+	(setq info-list '(cscope-list-entry-mode))
+
+	(dolist (l info-list)
+	  (when (eq l major-mode)
+		(display-buffer-in-side-window buffer '((side . top) (window-height . 0.18)))
+		))
+	)
+  )
 
 (defun my:display-buffer-in-top-window (buffer ignore)
   "Display the buffer in the top window."
-  (display-buffer-in-side-window buffer '((side . top)))
-  )
+  (when my:use-window-manager
+	(display-buffer-in-side-window buffer '((side . top)))
+  ))
 
 (defun my:display-buffer-in-bottom-window (buffer ignore)
   "Display the buffer in the bottom window."
-  (display-buffer-in-side-window buffer '((side . bottom)))
-  )
+  (when my:use-window-manager
+	(display-buffer-in-side-window buffer '((side . bottom)))
+  ))
 
 (defun my:display-buffer-in-left-window (buffer ignore)
   "Display the buffer in the left window."
-  (display-buffer-in-side-window buffer '((side . left)))
-  )
+  (when my:use-window-manager
+	(display-buffer-in-side-window buffer '((side . left)))
+  ))
 
 (defun my:display-buffer-in-right-window (buffer ignore)
   "Display the buffer in the right window."
-  (display-buffer-in-side-window buffer '((side . right)))
-  )
+  (when my:use-window-manager
+	(display-buffer-in-side-window buffer '((side . right)))
+  ))
 
 
 
@@ -1072,6 +1094,7 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 ;;  w s : satellite window
 ;;  w l : window dedicate
 ;;  w p,n : window layout prev/next
+;;  w m : window manager on/off
 ;;------------------------
 ;;  b : buffer
 ;;  b arrow : buffer move
