@@ -18,7 +18,11 @@ alias greprs='source greprs.sh'
 alias less='less -R'
 
 alias c='clear'
+if [[ "$OSTYPE" == "darwin"* ]]; then
+alias ls='ls -G'
+else
 alias ls='ls --color=always'
+fi
 alias l='ls'
 alias p='pwd'
 alias sr='screen -S jh_session -X setenv DISPLAY "$DISPLAY"; screen -S jh_session -rd'
@@ -52,3 +56,5 @@ alias mkcscope='source cscope_maker.sh'
 
 
 alias tel='source telnet_auto_login_for_dvr.sh'
+
+
