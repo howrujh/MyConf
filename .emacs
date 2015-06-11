@@ -59,6 +59,7 @@
 (add-to-list 'pkg-list 'ediff)
 (add-to-list 'pkg-list 'yasnippet)
 (add-to-list 'pkg-list 'iedit)
+(add-to-list 'pkg-list 'flycheck)
 ;(add-to-list 'pkg-list 'flymake-google-cpplint)
 ;(add-to-list 'pkg-list 'flymake-cursor)
 ;(add-to-list 'pkg-list 'google-c-style)
@@ -470,6 +471,10 @@
 
 
 
+;; <FLYCHECK>
+;; (when (require 'flycheck nil 'noerror)
+;;   (add-hook 'after-init-hook #'global-flycheck-mode)
+;;   )
 
 
 
@@ -855,7 +860,7 @@
 
 	(dolist (l info-list)
 	  (when (eq l major-mode)
-		(display-buffer-in-side-window buffer '((side . top) (window-height . 0.18)))
+		(display-buffer-in-side-window buffer '((side . top) (window-height . 0.30)))
 		))
 	)
   )
@@ -886,7 +891,7 @@
 
 
 
-(push '("\\*[+]*" my:display-buffer-in-info-window) display-buffer-alist)
+(push '("\\*[+]*" my:display-buffer-in-bottom-window) display-buffer-alist)
 (push '("\\.el" my:display-buffer-in-preview-window) display-buffer-alist)
 (push '("\\.mk" my:display-buffer-in-preview-window) display-buffer-alist)
 (push '("[Mm]akefile" my:display-buffer-in-preview-window) display-buffer-alist)
@@ -983,7 +988,7 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (defun pdrerror-debug-message()
   "pdr_error debug message"
   (interactive)
-  (insert "pdr_error(\"\\x1b[32m===  \\x1b[0m\\n\");"))
+  (insert "pdr_error(\"\\x1b[32m===[%s]  \\x1b[0m\\n\",__PRETTY_FUNCTION__);"))
 
 (global-set-key (kbd "C-c m e") 'pdrerror-debug-message)
 
@@ -991,7 +996,7 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (defun pdrinfo-debug-message()
   "pdr_info debug message"
   (interactive)
-  (insert "pdr_info(\"\\x1b[32m===  \\x1b[0m\\n\");"))
+  (insert "pdr_info(\"\\x1b[32m===[%s]  \\x1b[0m\\n\",__PRETTY_FUNCTION__);"))
 
 (global-set-key (kbd "C-c m i") 'pdrinfo-debug-message)
 
@@ -999,7 +1004,7 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (defun onvifinfo-debug-message()
   "onvif_info debug message"
   (interactive)
-  (insert "onvif_info(\"\\x1b[32m===  \\x1b[0m\\n\");"))
+  (insert "onvif_info(\"\\x1b[32m===[%s]  \\x1b[0m\\n\",__PRETTY_FUNCTION__);"))
 
 (global-set-key (kbd "C-c m o") 'onvifinfo-debug-message)
 
@@ -1053,6 +1058,11 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 
 ;; <MOVE WINDOW>
 (windmove-default-keybindings 'meta)
+(define-key input-decode-map (kbd "\e[1;3A") [(meta up)])
+(define-key input-decode-map (kbd "\e[1;3B") [(meta down)])
+(define-key input-decode-map (kbd "\e[1;3D") [(meta left)])
+(define-key input-decode-map (kbd "\e[1;3C") [(meta right)])
+
 (define-key input-decode-map "\e\e[A" [(meta up)])
 (define-key input-decode-map "\e\e[B" [(meta down)])
 (define-key input-decode-map "\e\e[D" [(meta left)])
@@ -1068,6 +1078,11 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (define-key input-decode-map "\eOb" [(ctrl down)])
 (define-key input-decode-map "\eOd" [(ctrl left)])
 (define-key input-decode-map "\eOc" [(ctrl right)])
+
+(define-key input-decode-map (kbd "\e[1;5A") [(ctrl up)])
+(define-key input-decode-map (kbd "\e[1;5B") [(ctrl down)])
+(define-key input-decode-map (kbd "\e[1;5D") [(ctrl left)])
+(define-key input-decode-map (kbd "\e[1;5C") [(ctrl right)])
 
 
 ;;(global-set-key (kbd "C-c b") 'windmove-left)          ; move to left windnow
