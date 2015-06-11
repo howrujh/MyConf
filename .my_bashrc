@@ -5,6 +5,7 @@
 if [ -t 1 ]; then
    stty ixany
    stty ixoff -ixon
+   xset b off
 fi
 ######### VI Editing Mode ###################################
 #set -o vi

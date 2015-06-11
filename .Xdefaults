@@ -1,3 +1,5 @@
+
+
 !
 ! (c) Copyright 1995 TriGem Microsystem, Inc.
 ! ALL RIGHTS RESERVED
@@ -215,8 +217,8 @@ urxvt*background: Black
 !urxvt*boldFont: xft:terminus:bold:pixelsize=17
 
 ! Xft: INCONSOLATA fonts
-urxvt*font: xft:inconsolata,xft:GulimChe:pixelsize=16:antialias=true:hinting=true
-urxvt*boldFont: xft:inconsolata,xft:GulimChe:bold:pixelsize=16:antialias=true:hinting=true
+urxvt*font: xft:inconsolata,xft:NanumGothic:pixelsize=16:antialias=true:hinting=true
+urxvt*boldFont: xft:inconsolata,xft:NanumGothic:bold:pixelsize=16:antialias=true:hinting=true
 
 ! Xft: MONOFUR fonts
 !urxvt*font: xft:monofur:pixelsize=16:antialias=true:hinting=true
@@ -270,33 +272,39 @@ urxvt*scrollstyle: rxvt
 urxvt*iso14755: False
 urxvt*iso14755_52: False
 
+!urxvt*perl-lib: /home/jinhwan/.urxvt
+
 ! enable tabbar
 !urxvt*perl-ext-common: default,critabbed
-urxvt*perl-ext-common: default,tabbedex
+urxvt.perl-ext-common: default,tabbedex,clipboard
 !urxvt*perl-ext-common: default,tabbed,-selection
 
 ! tabbedex option
-urxvt*tabbed.no-tabbedex-keys: true
-urxvt*tabbed.autohide: true
-urxvt*keysym.Control-T: perl:tabbedex:new_tab
-urxvt*keysym.Control-N: perl:tabbedex:next_tab
-urxvt*keysym.Control-P: perl:tabbedex:prev_tab
+urxvt.tabbed.no-tabbedex-keys: true
+urxvt.keysym.Control-T: perl:tabbedex:new_tab
+urxvt.keysym.Control-N: perl:tabbedex:next_tab
+urxvt.keysym.Control-P: perl:tabbedex:prev_tab
 
-!urxvt*tabbed.tabbar-fg: 2
-!urxvt*tabbed.tabbar-bg: 0
-!urxvt*tabbed.tab-fg: 3
-!urxvt*tabbed.tab-bg: 0
-urxvt*tabbed*transparent:false
-urxvt*tabbed.new-button:false
-urxvt*tabbed.title:false
-urxvt*tabbed.autohide:true
-urxvt*tabbed.title-fg:7
-urxvt*tabbed.title-bg:0
-urxvt*tabbed.tabbar-fg:8
-urxvt*tabbed.tabbar-bg:0
-urxvt*tabbed.tab-fg:7
-urxvt*tabbed.tab-bg:0
-
+!urxvt.tabbed.tabbar-fg: 2
+!urxvt.tabbed.tabbar-bg: 0
+!urxvt.tabbed.tab-fg: 3
+!urxvt.tabbed.tab-bg: 0
+urxvt.tabbed.transparent: true
+urxvt.tabbed.new-button: false
+urxvt.tabbed.title: false
+urxvt.tabbed.autohide: true
+urxvt.tabbed.title-fg:7
+urxvt.tabbed.title-bg:0
+urxvt.tabbed.tabbar-fg:8
+urxvt.tabbed.tabbar-bg:0
+urxvt.tabbed.tab-fg:7
+urxvt.tabbed.tab-bg:0
 
 
+! clipboard option
+urxvt.iso14755: False
+urxvt.keysym.Shift-Control-C: perl:clipboard:copy
+urxvt.keysym.Shift-Control-V: perl:clipboard:paste
+urxvt.clipboard.copycmd:  xsel -ib
+urxvt.clipboard.pastecmd: xsel -ob
 
