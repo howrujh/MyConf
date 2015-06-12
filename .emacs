@@ -45,11 +45,13 @@
 (add-to-list 'pkg-list 'color-theme)
 ;;(add-to-list 'pkg-list 'tango-2-theme)
 ;;(add-to-list 'pkg-list 'lush-theme)
+(add-to-list 'pkg-list 'color-theme-solarized)
 (add-to-list 'pkg-list 'highlight-symbol)
 
-;(add-to-list 'pkg-list 'ecb)
+(add-to-list 'pkg-list 'smartparens)
+;;(add-to-list 'pkg-list 'ecb)
 (add-to-list 'pkg-list 'cedet)
-;(add-to-list 'pkg-list 'auto-complete)
+;;(add-to-list 'pkg-list 'auto-complete)
 
 
 ;(add-to-list 'pkg-list 'psvn)
@@ -60,9 +62,9 @@
 (add-to-list 'pkg-list 'yasnippet)
 (add-to-list 'pkg-list 'iedit)
 (add-to-list 'pkg-list 'flycheck)
-;(add-to-list 'pkg-list 'flymake-google-cpplint)
-;(add-to-list 'pkg-list 'flymake-cursor)
-;(add-to-list 'pkg-list 'google-c-style)
+;;(add-to-list 'pkg-list 'flymake-google-cpplint)
+;;(add-to-list 'pkg-list 'flymake-cursor)
+;;(add-to-list 'pkg-list 'google-c-style)
 (add-to-list 'pkg-list 'cc-mode)
 (add-to-list 'pkg-list 'multi-term)
 (add-to-list 'pkg-list 'multiple-cursors)
@@ -79,8 +81,8 @@
 (add-to-list 'pkg-list 'haskell-mode)
 
 (add-to-list 'pkg-list 'company)
-;(add-to-list 'pkg-list 'jedi)
-;(add-to-list 'pkg-list 'company-jedi)
+;;(add-to-list 'pkg-list 'jedi)
+;;(add-to-list 'pkg-list 'company-jedi)
 (add-to-list 'pkg-list 'anaconda-mode)
 (add-to-list 'pkg-list 'company-anaconda)
 
@@ -303,9 +305,25 @@
 
 ;; <COLOR THEME>
 (when (require 'color-theme nil 'noerror)
+
+  ;; (when (require 'color-theme-solarized nil 'noerror)
+  ;; 	(color-theme-solarized)
+  ;; 	(add-hook 'after-make-frame-functions
+  ;; 			  (set-frame-parameter nil 'background-mode 'dark)
+  ;; 			  (set-terminal-parameter nil 'background-mode 'dark)
+			  
+  ;; 			  )
+  ;; 	)
+
+  ;; (load-theme 'solarized)
+  ;; (set-terminal-parameter nil 'background-mode 'dark)	
+  ;;(setq solarized-termcolors 256)
+  ;;(enable-theme 'solarized)
+  
+
   ;;(require 'tango-2-theme)
   (load-theme 'tango-dark t)
-  ;;(load-theme 'lush t)
+    ;;(load-theme 'lush t)
   )
 
 ;; TRANSPARENT BG COLOR
@@ -323,7 +341,7 @@
   (add-to-list 'default-frame-alist '(alpha 85 50))
 )
 
-;(add-hook 'window-setup-hook 'on-after-init)
+;;(add-hook 'window-setup-hook 'on-after-init)
 
 
 
@@ -374,6 +392,10 @@
 
   )
 
+(when (require 'smartparens nil 'noerror)
+  (require 'smartparens-config)
+  (smartparens-global-mode t)
+  )
 
 ;; <AUTO COMPLETE>
 ;; (when (require 'auto-complete nil 'noerror)
@@ -1147,9 +1169,6 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   (quote
-	("3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
  '(inhibit-startup-screen t)
  '(vc-follow-symlinks t)
  '(which-function-mode t))
