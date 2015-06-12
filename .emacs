@@ -305,24 +305,25 @@
 
 ;; <COLOR THEME>
 (when (require 'color-theme nil 'noerror)
-
   (when (require 'color-theme-solarized nil 'noerror)
-	(load-theme 'solarized t)
-	(add-hook 'after-make-frame-functions
-			  (set-frame-parameter nil 'background-mode 'dark)
-			  (set-terminal-parameter nil 'background-mode 'dark)
-			  
+	(add-hook 'window-setup-hook
+			  (lambda()
+				(load-theme 'solarized t)
+				(setq solarized-termcolors 256)
+				(set-frame-parameter nil 'background-mode 'dark)
+				(set-terminal-parameter nil 'background-mode 'dark)
+				(enable-theme 'solarized)
+				)
 			  )
    	)
 
   ;; (set-terminal-parameter nil 'background-mode 'dark)	
-  ;;(setq solarized-termcolors 256)
-  
-
   ;;(require 'tango-2-theme)
   ;;(load-theme 'tango-dark t)
-    ;;(load-theme 'lush t)
+  ;;(load-theme 'lush t)
   )
+
+
 
 ;; TRANSPARENT BG COLOR
 
