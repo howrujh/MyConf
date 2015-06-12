@@ -306,23 +306,21 @@
 ;; <COLOR THEME>
 (when (require 'color-theme nil 'noerror)
 
-  ;; (when (require 'color-theme-solarized nil 'noerror)
-  ;; 	(color-theme-solarized)
-  ;; 	(add-hook 'after-make-frame-functions
-  ;; 			  (set-frame-parameter nil 'background-mode 'dark)
-  ;; 			  (set-terminal-parameter nil 'background-mode 'dark)
+  (when (require 'color-theme-solarized nil 'noerror)
+	(load-theme 'solarized t)
+	(add-hook 'after-make-frame-functions
+			  (set-frame-parameter nil 'background-mode 'dark)
+			  (set-terminal-parameter nil 'background-mode 'dark)
 			  
-  ;; 			  )
-  ;; 	)
+			  )
+   	)
 
-  ;; (load-theme 'solarized)
   ;; (set-terminal-parameter nil 'background-mode 'dark)	
   ;;(setq solarized-termcolors 256)
-  ;;(enable-theme 'solarized)
   
 
   ;;(require 'tango-2-theme)
-  (load-theme 'tango-dark t)
+  ;;(load-theme 'tango-dark t)
     ;;(load-theme 'lush t)
   )
 
