@@ -1,0 +1,56 @@
+xterm*utf8:             1
+xterm*title:           	xterm
+xterm*scrollBar:        off
+!xterm*initailFont:             7x14
+!xterm*hangulFont:		-baekmuk-gulim-medium-*-*-*-20-*-*-*-*-0-*-*
+xterm*hangulKeyboard:		2
+xterm*saveLines:                3000
+xterm*reverseWrap:              true
+!xterm*BorderColor:		gray
+xterm*sunFunctionKeys:			false
+xterm*highlightSelection:       true
+xterm*VT100*colorBDMode:        on
+xterm*VT100*colorBD:            steelblue1
+xterm*VT100*colorULMode:        on
+xterm*VT100*underLine:          off
+xterm*VT100*colorUL:            light pink
+xterm*VT100*dynamicColors:      on
+xterm*vt100.renderFont:			true
+xterm*visualBell:              false
+xterm*visualBellDelay:            0
+xterm*fastScroll:				 true
+
+!xterm*faceName: "Bitstream Vera Serif Mono"
+xterm*faceName: "Bitstream Vera Sans Mono"
+!xterm*faceName: "NanumGothicCoding"
+!xterm*faceName: "Terminus"
+
+!xterm*faceName: "DejaVu Sans Mono"
+xterm*faceSize:	10
+
+!XTerm*faceName: Monospace:size=14
+!xterm*font:                 -misc-*-medium-r-*-*-14-*-*-*-*-*-iso10646-1
+!xterm*boldfont:             -misc-*-bold-r-*-*-14-*-*-*-*-*-iso10646-1
+!xterm*wideFont:             -misc-baekmuk dotum-medium-*-*-*-14-*-*-*-*-*-iso10646-1
+!xterm*VT100*translations:    #override \
+!    !Ctrl           <Btn4Down>: scroll-back(1,halfpage) \n\
+!    !Lock Ctrl      <Btn4Down>: scroll-back(1,halfpage) \n\
+!    !Lock @Num_Lock Ctrl    <Btn4Down>: scroll-back(1,halfpage) \n\
+!    ! @Num_Lock Ctrl    <Btn4Down>: scroll-back(1,halfpage) \n\
+!                <Btn4Down>: scroll-back(5,line) \n\
+!    !Ctrl           <Btn5Down>: scroll-forw(1,halfpage) \n\
+!    !Lock Ctrl      <Btn5Down>: scroll-forw(1,halfpage) \n\
+!    !Lock @Num_Lock Ctrl    <Btn5Down>: scroll-forw(1,halfpage) \n\
+!    ! @Num_Lock Ctrl    <Btn5Down>: scroll-forw(1,halfpage) \n\
+!                <Btn5Down>: scroll-forw(5,line)
+!
+!	<Key>Insert:		string(0x1b) string("[2;2~")\n\
+!	<Key>Delete:		string(0x1b) string("[3;2~")\n\
+!	<Key>Page_Up:		scroll-back(1,halfpage)\n\
+!	<Key>Page_Down:		scroll-forw(1,halfpage)\n\
+!	Shift <KeyPress> Insert:		insert-selection(CLIPBOARD, CUT_BUFFER0)\n\
+!	<Key>Insert:		\n\
+
+xterm*VT100*translations:	#override \n\
+	<Key>Home:			string(0x1b) string("OH")\n\
+	<Key>End:			string(0x1b) string("OF")

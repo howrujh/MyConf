@@ -1,0 +1,3 @@
+#include ".Xresources.d/theme-solarized-dark"
+#include ".Xresources.d/urxvt"
+#include ".Xresources.d/xterm"

@@ -1,0 +1,125 @@
+urxvt.termName: rxvt-unicode-256color
+! transparency - true or false (default)
+urxvt.transparent: flase
+
+!urxvt.depth: 32
+
+! tint with any color; i.e., blue, red, tomato4, olivedrab2, etc.
+!   some nice listings are at:
+!     http://www.nisrv.com/drupal/?q=node/11
+!     http://www.htmlgoodies.com/tutorials/colors/article.php/3478921
+!urxvt.tintColor: White
+
+! shading - 0 to 99 darkens, 101 to 200 lightens.
+!   Do nott use with tintColor; just use a darker or lighter color instead.
+!urxvt.shading: 10
+
+! scrollback buffer lines - 65535 is max on most machines (64 is default)
+urxvt.saveLines: 12000
+
+! font color (default is black)
+!urxvt.foreground: White
+
+! background color (prior to tinting) (default is white)
+!urxvt.background: Black
+!urxvt.background: rgba:1111/1111/1111/eeee
+
+
+! Xft (X FreeType) with Bitstream, DejaVu, Liberation, or Terminus fonts:
+!  Fedora/debian packages: libXft/libxft2 
+!  An anti-aliased font setup with Xft looks fantastic; it can be a bit choppy 
+!  on older systems. You can always turn off anti-aliasing (antialias=false) if
+!  your terminal is sluggish. Use only ONE of the Xft pairs below:
+!
+! Xft: Bitstream fonts
+!  Fedora/debian packages: bitstream-vera-sans-mono-fonts/ttf-bitstream-vera 
+!urxvt.font: xft:Bitstream Vera Sans Mono:pixelsize=12:antialias=true:hinting=true
+!urxvt.boldFont: xft:Bitstream Vera Sans Mono:bold:pixelsize=12:antialias=true:hinting=true
+!
+! Xft: DejaVu fonts
+!  Fedora/debian packages: dejavu-sans-mono-fonts/ttf-dejavu 
+!urxvt.font: xft:DejaVu Sans Mono:pixelsize=13:antialias=true:hinting=true
+!urxvt.boldFont: xft:DejaVu Sans Mono:bold:pixelsize=13:antialias=true:hinting=true
+
+
+! Xft: Terminus fonts
+!  Fedora/debian packages: terminus-fonts/xfonts-terminus
+!urxvt.font: xft:terminus:pixelsize=17
+!urxvt.boldFont: xft:terminus:bold:pixelsize=17
+
+! Xft: INCONSOLATA fonts
+urxvt.font: xft:inconsolata,xft:NanumGothic:pixelsize=16:antialias=true:hinting=true
+urxvt.boldFont: xft:inconsolata:bold,xft:NanumGothic:bold:pixelsize=16:antialias=true:hinting=true
+
+! Xft: MONOFUR fonts
+!urxvt.font: xft:monofur:pixelsize=16:antialias=true:hinting=true
+!urxvt.boldFont: xft:monofur:bold:pixelsize=16:antialias=true:hinting=true
+
+urxvt.imLocale:ko_KR.UTF-8
+urxvt.letterSpace: -1
+
+! Traditional fonts - a more traditional font setup in lieu of xft
+!urxvt.font:-*-courier-medium-r-normal-*-14-*-*-*-*-*-iso8859-1
+!urxvt.boldFont:-*-courier-bold-r-normal-*-14-*-*-*-*-*-iso8859-1
+
+! Replace blue folder colors with a lighter shade for clarity. To
+!  set colored folders and files within urxvt, xterm, and aterm, add
+!  the following line to your ~/.bashrc ($HOME/.bashrc) file under
+!  the heading "# User specific aliases and functions":
+!   alias ls="ls -h --color=auto"
+!urxvt.color4: RoyalBlue
+!urxvt.color12: RoyalBlue
+
+
+
+
+urxvt.meta8: false
+
+! scrollbar - true (default) or false
+urxvt.scrollBar: false
+
+! scrollbar position - left=false (default) or right=true
+urxvt.scrollBar_right: true
+
+! scrollbar style - rxvt (default), plain, next, or xterm
+urxvt.scrollstyle: rxvt
+
+! ISO14755 mode
+urxvt.iso14755: False
+urxvt.iso14755_52: False
+
+!urxvt.perl-lib: /home/jinhwan/.urxvt
+
+! enable tabbar
+!urxvt.perl-ext-common: default,critabbed
+urxvt.perl-ext-common: default,tabbedex,clipboard
+!urxvt.perl-ext-common: default,tabbed,-selection
+
+! tabbedex option
+urxvt.tabbed.no-tabbedex-keys: true
+urxvt.keysym.Control-T: perl:tabbedex:new_tab
+urxvt.keysym.Control-N: perl:tabbedex:next_tab
+urxvt.keysym.Control-P: perl:tabbedex:prev_tab
+
+!urxvt.tabbed.tabbar-fg: 2
+!urxvt.tabbed.tabbar-bg: 0
+!urxvt.tabbed.tab-fg: 3
+!urxvt.tabbed.tab-bg: 0
+urxvt.tabbed.transparent: true
+urxvt.tabbed.new-button: false
+urxvt.tabbed.title: false
+urxvt.tabbed.autohide: true
+urxvt.tabbed.title-fg:7
+urxvt.tabbed.title-bg:0
+urxvt.tabbed.tabbar-fg:8
+urxvt.tabbed.tabbar-bg:0
+urxvt.tabbed.tab-fg:7
+urxvt.tabbed.tab-bg:0
+
+
+! clipboard option
+urxvt.keysym.Shift-Control-C: perl:clipboard:copy
+urxvt.keysym.Shift-Control-V: perl:clipboard:paste
+urxvt.clipboard.copycmd:  xsel -ib
+urxvt.clipboard.pastecmd: xsel -ob
+
