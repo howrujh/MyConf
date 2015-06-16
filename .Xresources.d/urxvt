@@ -4,6 +4,8 @@ urxvt.transparent: flase
 
 !urxvt.depth: 32
 
+urxvt.intensityStyles: false
+
 ! tint with any color; i.e., blue, red, tomato4, olivedrab2, etc.
 !   some nice listings are at:
 !     http://www.nisrv.com/drupal/?q=node/11
