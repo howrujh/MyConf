@@ -52,7 +52,9 @@
 ;;(add-to-list 'pkg-list 'ecb)
 (add-to-list 'pkg-list 'cedet)
 ;;(add-to-list 'pkg-list 'auto-complete)
-
+(add-to-list 'pkg-list 'smex)
+(add-to-list 'pkg-list 'winpoint)
+(add-to-list 'pkg-list 'blank-mode)
 
 ;(add-to-list 'pkg-list 'psvn)
 (add-to-list 'pkg-list 'evil)
@@ -770,6 +772,25 @@
 ;; <EVIL-MODE>
 (when (require 'evil nil 'noerror)
   ;(evil-mode nil)
+  )
+
+;; <SMEX>
+(when (require 'smex nil 'noerror)
+  (smex-initialize)
+  (global-set-key (kbd "M-x") 'smex)
+  (global-set-key (kbd "M-X") 'smex-major-mode-commands)
+  ;; This is your old M-x.
+  (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+  )
+
+;; <WINPOINT>
+(when (require 'winpoint nil 'noerror)
+  (winpoint-mode 1)
+  )
+
+;; <BLANK-MODE>
+(when (require 'blank-mode nil 'noerror)
+
   )
 
 ;; ;; <PSVN)
