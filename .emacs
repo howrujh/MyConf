@@ -18,8 +18,8 @@
 (setq user-full-name "jinhwan Lee")
 
 ;; <INTERFACE>
-;(tool-bar-mode -1)
-(menu-bar-mode -1)
+;;(tool-bar-mode -1)
+;;(menu-bar-mode -1)
 
 ;; <LAYOUT>
 
@@ -28,10 +28,12 @@
 			  tab-width 4
 			  indent-tabs-mode t)
 
+;; <FONT>
+(set-frame-font "Inconsolata 11")
 
 ;; <INDENT>
 ;;(setq c-offsets-alist '((case-label . 4)))
-
+(c-set-offset 'case-label '+)
 
 ;; <PACKAGE MANAGEMENT>
 ;; -- using package.el for install popular packages --
@@ -468,6 +470,7 @@
 
 ;; <YASNIPPET>
 (when (require 'yasnippet nil 'noerror)
+  (add-to-list 'yas/snippet-dirs "~/.emacs.d/myel/snippets")
   (yas-global-mode 1)
   )
 

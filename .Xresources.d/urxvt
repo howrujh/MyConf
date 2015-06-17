@@ -113,9 +113,9 @@ urxvt.tabbed.title: false
 urxvt.tabbed.autohide: true
 urxvt.tabbed.title-fg:7
 urxvt.tabbed.title-bg:0
-urxvt.tabbed.tabbar-fg:8
+urxvt.tabbed.tabbar-fg:11
 urxvt.tabbed.tabbar-bg:0
-urxvt.tabbed.tab-fg:7
+urxvt.tabbed.tab-fg:3
 urxvt.tabbed.tab-bg:0
 
 
