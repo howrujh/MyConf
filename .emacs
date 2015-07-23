@@ -18,7 +18,8 @@
 (setq user-full-name "jinhwan Lee")
 
 ;; <INTERFACE>
-(tool-bar-mode -1)
+(if window-system
+	(tool-bar-mode 0))
 (menu-bar-mode -1)
 
 ;; <LAYOUT>
@@ -29,7 +30,8 @@
 			  indent-tabs-mode t)
 
 ;; <FONT>
-(set-frame-font "Inconsolata 11")
+(if window-system
+	(set-frame-font "Inconsolata 11"))
 
 ;; <INDENT>
 ;;(setq c-offsets-alist '((case-label . 4)))
@@ -62,6 +64,7 @@
 (add-to-list 'pkg-list 'evil)
 (add-to-list 'pkg-list 'undo-tree)
 
+(add-to-list 'pkg-list 'sr-speedbar)
 (add-to-list 'pkg-list 'ediff)
 (add-to-list 'pkg-list 'yasnippet)
 (add-to-list 'pkg-list 'iedit)
@@ -451,7 +454,9 @@
 					 "~/abr/sub/onvif/elements/5003.onvif/inc/"
 					 ))
 	
-	(setq sys-inc-path '("~/abr/kernel/linux-3.0.8-hisi-pdr/include/linux/"))
+	(setq sys-inc-path '("~/abr/kernel/linux-3.0.8-hisi-pdr/include/linux/"
+						 "/opt/hisilicon/arm-hisiv200-linux/target/armv7a_soft/include/"
+						 ))
 	
 	(ede-cpp-root-project "ABR_PROJECT"
 						  :file "~/abr/Makefile" 
@@ -808,6 +813,12 @@
   (add-hook 'vc-svn-log-view-mode-hook 'my:kill-buffer-local-key)
   
   )
+
+;; <SR-SPEEDBAR>
+(when (require 'sr-speedbar nil 'noerror)
+  
+  )
+
 
 ;; <EDIFF>
 (when (require 'ediff nil 'noerror)
