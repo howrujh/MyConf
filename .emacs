@@ -44,7 +44,7 @@
 (add-to-list 'pkg-list 'cl)
 (add-to-list 'pkg-list 'el-get)
 (add-to-list 'pkg-list 'xcscope)
-;;(add-to-list 'pkg-list 'ascope)
+
 (add-to-list 'pkg-list 'ido)
 (add-to-list 'pkg-list 'color-theme)
 ;;(add-to-list 'pkg-list 'tango-2-theme)
@@ -60,7 +60,6 @@
 (add-to-list 'pkg-list 'winpoint)
 (add-to-list 'pkg-list 'blank-mode)
 
-;(add-to-list 'pkg-list 'psvn)
 (add-to-list 'pkg-list 'evil)
 (add-to-list 'pkg-list 'undo-tree)
 
@@ -624,24 +623,6 @@
   ;; (add-hook 'cscope-list-entry-hook 'my:cscope-local-map)
 )
 
-;(add-hook 'kill-emacs-hook 'my:cscope-kill)
-
-;  '(lambda ()
-;	 (cscope-minor-mode t)))
-
-;(set-process-query-on-exit-flag (get-process "ascope") nil)
-
-
-;;(global-set-key (kbd "C-c s s") 'cscope-find-this-symbol)
-;;(global-set-key (kbd "C-c s g") 'cscope-find-global-definition)
-;;(global-set-key (kbd "C-c s c") 'cscope-find-functions-calling-this-function)
-;;(global-set-key (kbd "C-c s u") 'cscope-pop-mark)
-
-;(global-set-key (kbd "C-c s s") 'ascope-find-this-symbol)
-;(global-set-key (kbd "C-c s g") 'ascope-find-global-definition)
-;(global-set-key (kbd "C-c s c") 'ascope-find-functions-calling-this-function)
-;(global-set-key (kbd "C-c s u") 'ascope-pop-mark)
-
 
 ;; <ACE JUMP MODE>
 (when (require 'ace-jump-mode nil 'noerror)
@@ -800,12 +781,6 @@
 (when (require 'blank-mode nil 'noerror)
 
   )
-
-;; ;; <PSVN)
-;; (when (require 'psvn nil 'noerror)
-
-;;   )
-
 
 ;; <VC>
 (when (require 'vc nil 'noerror)
