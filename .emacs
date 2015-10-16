@@ -46,6 +46,7 @@
 (add-to-list 'pkg-list 'xcscope)
 
 (add-to-list 'pkg-list 'ido)
+;;(add-to-list 'pkg-list 'tabbar)
 (add-to-list 'pkg-list 'color-theme)
 ;;(add-to-list 'pkg-list 'tango-2-theme)
 ;;(add-to-list 'pkg-list 'lush-theme)
@@ -716,6 +717,55 @@
   (global-set-key (kbd "C-c d c") 'doxymacs-insert-file-comment)
   )
 
+
+;; <DIFF REGION>
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; diff-region* - Diff two regions
+;;
+;;  To compare two regions, select the first region
+;; and run `diff-region`.  The region is now copied
+;; to a seperate diff-ing buffer.  Next, navigate
+;; to the next region in question (even in another file).
+;; Mark the region and run `diff-region-now`, the diff
+;; of the two regions will be displayed by ediff.
+;;
+;;  You can re-select the first region at any time
+;; by re-calling `diff-region`.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun diff-region ()
+  "Select a region to compare"
+  (interactive)
+  (when (use-region-p)  ; there is a region
+	(let (buf)
+	  (setq buf (get-buffer-create "*Diff-regionA*"))
+	  (save-current-buffer
+		(set-buffer buf)
+		(erase-buffer))
+	  (append-to-buffer buf (region-beginning) (region-end)))
+	)
+  (message "Now select other region to compare and run `diff-region-now`")
+  )
+
+(defun diff-region-now ()
+  "Compare current region with region already selected by `diff-region`"
+  (interactive)
+  (when (use-region-p)
+	(let (bufa bufb)
+	  (setq bufa (get-buffer-create "*Diff-regionA*"))
+	  (setq bufb (get-buffer-create "*Diff-regionB*"))
+	  (save-current-buffer
+		(set-buffer bufb)
+		(erase-buffer))
+	  (append-to-buffer bufb (region-beginning) (region-end))
+	  (ediff-buffers bufa bufb))
+	)
+  )
+
+(global-set-key (kbd "C-c d 1") 'diff-region)
+(global-set-key (kbd "C-c d 2") 'diff-region-now)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
 ;; <COMMENT OR UNCOMMNT REGION>
 (global-set-key (kbd "C-c /") 'comment-or-uncomment-region)
 
@@ -999,6 +1049,9 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 
 (global-set-key (kbd "C-c %") 'match-paren)
 
+;; <CONFIRM KILL EMACS>
+(setq confirm-kill-emacs 'y-or-n-p)
+
 ;; <PRINTF DEBUG MESSAGE>
 (defun printf-debug-message()
   "printf debug message"
@@ -1178,6 +1231,9 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+	("8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" default)))
  '(inhibit-startup-screen t)
  '(vc-follow-symlinks t)
  '(which-function-mode t))

@@ -31,6 +31,7 @@ alias p='pwd'
 alias sr='screen -S jh_session -X setenv DISPLAY "$DISPLAY"; screen -S jh_session -rd'
 
 alias ta='tmux attach-session -t  "$USER@"`hostname -s` -d || tmux new-session -s "$USER@"`hostname -s`'
+alias tc='tmux -CC attach-session -t  "$USER@"`hostname -s` -d || tmux -CC new-session -s "$USER@"`hostname -s`'
 alias te='source tmux_set_env.sh'
 #alias ta='source ~/bin/tmux_get_display.sh; /usr/bin/tmux attach-session -t  orz_jh || /usr/bin/tmux new-session -s orz_jh'
 #alias td='source ~/bin/tmux_set_display.sh'
