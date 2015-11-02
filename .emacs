@@ -18,7 +18,12 @@
 (setq user-full-name "jinhwan Lee")
 
 ;; <INTERFACE>
+<<<<<<< HEAD
 ;(tool-bar-mode -1)
+=======
+(if window-system
+	(tool-bar-mode 0))
+>>>>>>> 2b82d9f6770a0c621e45e0a0dd3503bc876e64c4
 (menu-bar-mode -1)
 
 ;; <LAYOUT>
@@ -29,7 +34,8 @@
 			  indent-tabs-mode t)
 
 ;; <FONT>
-(set-frame-font "Inconsolata 11")
+(if window-system
+	(set-frame-font "Inconsolata 11"))
 
 ;; <INDENT>
 ;;(setq c-offsets-alist '((case-label . 4)))
@@ -42,8 +48,9 @@
 (add-to-list 'pkg-list 'cl)
 (add-to-list 'pkg-list 'el-get)
 (add-to-list 'pkg-list 'xcscope)
-;;(add-to-list 'pkg-list 'ascope)
+
 (add-to-list 'pkg-list 'ido)
+;;(add-to-list 'pkg-list 'tabbar)
 (add-to-list 'pkg-list 'color-theme)
 ;;(add-to-list 'pkg-list 'tango-2-theme)
 ;;(add-to-list 'pkg-list 'lush-theme)
@@ -58,10 +65,10 @@
 (add-to-list 'pkg-list 'winpoint)
 (add-to-list 'pkg-list 'blank-mode)
 
-;(add-to-list 'pkg-list 'psvn)
 (add-to-list 'pkg-list 'evil)
 (add-to-list 'pkg-list 'undo-tree)
 
+(add-to-list 'pkg-list 'sr-speedbar)
 (add-to-list 'pkg-list 'ediff)
 (add-to-list 'pkg-list 'yasnippet)
 (add-to-list 'pkg-list 'iedit)
@@ -455,7 +462,9 @@
 					 "~/abr/sub/onvif/elements/5003.onvif/inc/"
 					 ))
 	
-	(setq sys-inc-path '("~/abr/kernel/linux-3.0.8-hisi-pdr/include/linux/"))
+	(setq sys-inc-path '("~/abr/kernel/linux-3.0.8-hisi-pdr/include/linux/"
+						 "/opt/hisilicon/arm-hisiv200-linux/target/armv7a_soft/include/"
+						 ))
 	
 	(ede-cpp-root-project "ABR_PROJECT"
 						  :file "~/abr/Makefile" 
@@ -623,24 +632,6 @@
   ;; (add-hook 'cscope-list-entry-hook 'my:cscope-local-map)
 )
 
-;(add-hook 'kill-emacs-hook 'my:cscope-kill)
-
-;  '(lambda ()
-;	 (cscope-minor-mode t)))
-
-;(set-process-query-on-exit-flag (get-process "ascope") nil)
-
-
-;;(global-set-key (kbd "C-c s s") 'cscope-find-this-symbol)
-;;(global-set-key (kbd "C-c s g") 'cscope-find-global-definition)
-;;(global-set-key (kbd "C-c s c") 'cscope-find-functions-calling-this-function)
-;;(global-set-key (kbd "C-c s u") 'cscope-pop-mark)
-
-;(global-set-key (kbd "C-c s s") 'ascope-find-this-symbol)
-;(global-set-key (kbd "C-c s g") 'ascope-find-global-definition)
-;(global-set-key (kbd "C-c s c") 'ascope-find-functions-calling-this-function)
-;(global-set-key (kbd "C-c s u") 'ascope-pop-mark)
-
 
 ;; <ACE JUMP MODE>
 (when (require 'ace-jump-mode nil 'noerror)
@@ -734,6 +725,55 @@
   (global-set-key (kbd "C-c d c") 'doxymacs-insert-file-comment)
   )
 
+
+;; <DIFF REGION>
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; diff-region* - Diff two regions
+;;
+;;  To compare two regions, select the first region
+;; and run `diff-region`.  The region is now copied
+;; to a seperate diff-ing buffer.  Next, navigate
+;; to the next region in question (even in another file).
+;; Mark the region and run `diff-region-now`, the diff
+;; of the two regions will be displayed by ediff.
+;;
+;;  You can re-select the first region at any time
+;; by re-calling `diff-region`.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun diff-region ()
+  "Select a region to compare"
+  (interactive)
+  (when (use-region-p)  ; there is a region
+	(let (buf)
+	  (setq buf (get-buffer-create "*Diff-regionA*"))
+	  (save-current-buffer
+		(set-buffer buf)
+		(erase-buffer))
+	  (append-to-buffer buf (region-beginning) (region-end)))
+	)
+  (message "Now select other region to compare and run `diff-region-now`")
+  )
+
+(defun diff-region-now ()
+  "Compare current region with region already selected by `diff-region`"
+  (interactive)
+  (when (use-region-p)
+	(let (bufa bufb)
+	  (setq bufa (get-buffer-create "*Diff-regionA*"))
+	  (setq bufb (get-buffer-create "*Diff-regionB*"))
+	  (save-current-buffer
+		(set-buffer bufb)
+		(erase-buffer))
+	  (append-to-buffer bufb (region-beginning) (region-end))
+	  (ediff-buffers bufa bufb))
+	)
+  )
+
+(global-set-key (kbd "C-c d 1") 'diff-region)
+(global-set-key (kbd "C-c d 2") 'diff-region-now)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
 ;; <COMMENT OR UNCOMMNT REGION>
 (global-set-key (kbd "C-c /") 'comment-or-uncomment-region)
 
@@ -800,18 +840,18 @@
 
   )
 
-;; ;; <PSVN)
-;; (when (require 'psvn nil 'noerror)
-
-;;   )
-
-
 ;; <VC>
 (when (require 'vc nil 'noerror)
   (add-hook 'vc-annotate-mode-hook 'my:kill-buffer-local-key)
   (add-hook 'vc-svn-log-view-mode-hook 'my:kill-buffer-local-key)
   
   )
+
+;; <SR-SPEEDBAR>
+(when (require 'sr-speedbar nil 'noerror)
+  
+  )
+
 
 ;; <EDIFF>
 (when (require 'ediff nil 'noerror)
@@ -1017,6 +1057,9 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 
 (global-set-key (kbd "C-c %") 'match-paren)
 
+;; <CONFIRM KILL EMACS>
+(setq confirm-kill-emacs 'y-or-n-p)
+
 ;; <PRINTF DEBUG MESSAGE>
 (defun printf-debug-message()
   "printf debug message"
@@ -1037,7 +1080,7 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (defun pdrerror-debug-message()
   "pdr_error debug message"
   (interactive)
-  (insert "pdr_error(\"\\x1b[32m===[%s]  \\x1b[0m\\n\",__PRETTY_FUNCTION__);"))
+  (insert "pdr_error(\"===[%s]  \\n\",__PRETTY_FUNCTION__);"))
 
 (global-set-key (kbd "C-c m e") 'pdrerror-debug-message)
 
@@ -1196,6 +1239,9 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+	("8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" default)))
  '(inhibit-startup-screen t)
  '(vc-follow-symlinks t)
  '(which-function-mode t))
