@@ -4,7 +4,7 @@
 ;;     (add-to-list 'load-path (expand-file-name "~/.emacs.d/elisp"))
 
 (defconst os_win32  (eq system-type 'windows-nt) "윈도머신이면 참")
-(defconst os_unixp (eq system-type (or 'gnu/linux 'berkeley-unix)) "FreeBSD 머신이면 참")
+(defconst os_unix (eq system-type (or 'gnu/linux 'berkeley-unix)) "FreeBSD 머신이면 참")
 (defconst os_mac (eq system-type 'darwin ) "Mac OS X 머신이면 참")
 
 (defconst is_office (string-match "omg" system-name)"사무실의 pc 라면 참")
@@ -18,7 +18,7 @@
 (setq user-full-name "jinhwan Lee")
 
 ;; <INTERFACE>
-(tool-bar-mode -1)
+;(tool-bar-mode -1)
 (menu-bar-mode -1)
 
 ;; <LAYOUT>
@@ -169,7 +169,11 @@
   )
 
 ;; <MAC OS X>
+;(when os_mac
+;  (setq mac-option-modifier 'alt)
 (setq mac-command-modifier 'meta)
+;  )
+
 
 ;; <RXVT>
 ;(when (require 'rxvt nil 'noerror)
