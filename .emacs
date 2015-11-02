@@ -18,13 +18,9 @@
 (setq user-full-name "jinhwan Lee")
 
 ;; <INTERFACE>
-<<<<<<< HEAD
 ;(tool-bar-mode -1)
-=======
 (if window-system
 	(tool-bar-mode 0))
->>>>>>> 2b82d9f6770a0c621e45e0a0dd3503bc876e64c4
-(menu-bar-mode -1)
 
 ;; <LAYOUT>
 
