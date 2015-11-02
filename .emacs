@@ -21,6 +21,7 @@
 ;(tool-bar-mode -1)
 (if window-system
 	(tool-bar-mode 0))
+(menu-bar-mode -1)
 
 ;; <LAYOUT>
 
