@@ -1072,7 +1072,7 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (defun pdrerror-debug-message()
   "pdr_error debug message"
   (interactive)
-  (insert "pdr_error(\"\\x1b[32m===[%s]  \\x1b[0m\\n\",__PRETTY_FUNCTION__);"))
+  (insert "pdr_error(\"===[%s]  \\n\",__PRETTY_FUNCTION__);"))
 
 (global-set-key (kbd "C-c m e") 'pdrerror-debug-message)
 
