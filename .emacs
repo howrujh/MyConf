@@ -87,6 +87,8 @@
 (add-to-list 'pkg-list 'php-mode)
 (add-to-list 'pkg-list 'visual-regexp)
 (add-to-list 'pkg-list 'haskell-mode)
+(add-to-list 'pkg-list 'go-mode)
+;;(add-to-list 'pkg-list 'go-mode-autoloads)
 
 (add-to-list 'pkg-list 'company)
 ;;(add-to-list 'pkg-list 'jedi)
@@ -186,6 +188,9 @@
 ;; <GDB>
 (setq gdb-many-windows 1)
 
+;; <MOUSE>
+(xterm-mouse-mode t)
+
 ;; <WINNER MODE>
 (setq winner-dont-bind-my-keys t)
 (when (require 'winner nil 'noerror)
@@ -216,6 +221,10 @@
 
 ;; <PHP MODE>
 (when (require 'php-mode nil 'noerror)
+  )
+
+;; <GO MODE>
+(when (require 'go-mode-autoloads nil 'noerror)
   )
 
 
