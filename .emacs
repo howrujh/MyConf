@@ -60,7 +60,7 @@
 ;;(add-to-list 'pkg-list 'auto-complete)
 (add-to-list 'pkg-list 'smex)
 (add-to-list 'pkg-list 'winpoint)
-(add-to-list 'pkg-list 'blank-mode)
+;;(add-to-list 'pkg-list 'blank-mode)
 
 (add-to-list 'pkg-list 'evil)
 (add-to-list 'pkg-list 'undo-tree)
@@ -78,6 +78,7 @@
 (add-to-list 'pkg-list 'multiple-cursors)
 ;; (add-to-list 'pkg-list 'popwin)
 
+
 (add-to-list 'pkg-list 'ace-window)
 (add-to-list 'pkg-list 'smart-mode-line)
 
@@ -86,7 +87,7 @@
 
 (add-to-list 'pkg-list 'php-mode)
 (add-to-list 'pkg-list 'visual-regexp)
-(add-to-list 'pkg-list 'haskell-mode)
+;;(add-to-list 'pkg-list 'haskell-mode)
 (add-to-list 'pkg-list 'go-mode)
 ;;(add-to-list 'pkg-list 'go-mode-autoloads)
 
@@ -324,6 +325,7 @@
 ;;   )
 
 
+  
 ;; <COLOR THEME>
 (when (require 'color-theme nil 'noerror)
   (when (require 'color-theme-solarized nil 'noerror)
