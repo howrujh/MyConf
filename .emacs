@@ -60,7 +60,7 @@
 ;;(add-to-list 'pkg-list 'auto-complete)
 (add-to-list 'pkg-list 'smex)
 (add-to-list 'pkg-list 'winpoint)
-(add-to-list 'pkg-list 'blank-mode)
+;;(add-to-list 'pkg-list 'blank-mode)
 
 (add-to-list 'pkg-list 'evil)
 (add-to-list 'pkg-list 'undo-tree)
@@ -842,9 +842,9 @@
   )
 
 ;; <BLANK-MODE>
-(when (require 'blank-mode nil 'noerror)
+;; (when (require 'blank-mode nil 'noerror)
 
-  )
+;;   )
 
 ;; <VC>
 (when (require 'vc nil 'noerror)
@@ -944,7 +944,7 @@
 (defun my:display-buffer-in-info-window (buffer ignore)
   "Display cscope buffer in info window"
   (when my:use-window-manager
-	(display-buffer-at-bottom buffer '((side . bottom) (window-height . 0.15)))
+	(display-buffer-at-bottom buffer '((side . bottom) (window-height . 8)))
   ))
 
 (defun my:display-buffer-in-preview-window (buffer ignore)
@@ -955,7 +955,7 @@
 
 	(dolist (l info-list)
 	  (when (eq l major-mode)
-		(display-buffer-in-side-window buffer '((side . top) (window-height . 0.30)))
+		(display-buffer-in-side-window buffer '((side . top) (window-height . 12)))
 		))
 	)
   )
