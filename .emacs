@@ -54,7 +54,7 @@
 (add-to-list 'pkg-list 'color-theme-solarized)
 (add-to-list 'pkg-list 'highlight-symbol)
 
-(add-to-list 'pkg-list 'smartparens)
+;;(add-to-list 'pkg-list 'smartparens)
 ;;(add-to-list 'pkg-list 'ecb)
 (add-to-list 'pkg-list 'cedet)
 ;;(add-to-list 'pkg-list 'auto-complete)
@@ -414,10 +414,10 @@
 
   )
 
-(when (require 'smartparens nil 'noerror)
-  (require 'smartparens-config)
-  (smartparens-global-mode t)
-  )
+;; (when (require 'smartparens nil 'noerror)
+;;   (require 'smartparens-config)
+;;   (smartparens-global-mode t)
+;;   )
 
 ;; <AUTO COMPLETE>
 ;; (when (require 'auto-complete nil 'noerror)
