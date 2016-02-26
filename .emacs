@@ -37,6 +37,13 @@
 ;; <INDENT>
 ;;(setq c-offsets-alist '((case-label . 4)))
 (c-set-offset 'case-label '+)
+(add-hook 'python-mode-hook
+		  (lambda () (setq indent-tabs-mode t)))
+(add-hook 'python-mode-hook
+		  (lambda ()
+			(setq indent-tabs-mode t)
+			(setq python-indent 8)
+			(setq tab-width 4)))
 
 ;; <PACKAGE MANAGEMENT>
 ;; -- using package.el for install popular packages --
