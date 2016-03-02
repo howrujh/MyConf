@@ -553,7 +553,7 @@
 
 (when (require 'xcscope nil 'noerror)
 
-  (setq my:cscope-preview-window nil)
+  ;;(setq my:cscope-preview-window nil)
   
   (defun my:cscope-init()
 	(setq cscope-close-window-after-select t)
@@ -946,7 +946,8 @@
 (defun my:display-buffer-in-info-window (buffer ignore)
   "Display cscope buffer in info window"
   (when my:use-window-manager
-	(display-buffer-at-bottom buffer '((side . bottom) (window-height . 8)))
+	;;(display-buffer-at-bottom buffer '((side . bottom) (window-height . 7)))
+	(display-buffer-in-side-window buffer '((side . bottom) (window-height . 12)))
   ))
 
 (defun my:display-buffer-in-preview-window (buffer ignore)
@@ -957,12 +958,12 @@
 
 	(dolist (l info-list)
 	  (when (eq l major-mode)
-		(display-buffer-in-side-window buffer '((side . top) (window-height . 12)))
+		(display-buffer-in-side-window buffer '((side . top) (window-height . 20)))
 		))
 	)
   )
 
-(defun my:display-buffer-in-top-window (buffer ignore)
+(defun my:dissplay-buffer-in-top-window (buffer ignore)
   "Display the buffer in the top window."
   (when my:use-window-manager
 	(display-buffer-in-side-window buffer '((side . top)))
@@ -988,11 +989,27 @@
 
 
 
-(push '("\\*[+]*" my:display-buffer-in-bottom-window) display-buffer-alist)
+(push '("\\*[+]*" my:display-buffer-in-info-window) display-buffer-alist)
 (push '("\\.el" my:display-buffer-in-preview-window) display-buffer-alist)
 (push '("\\.mk" my:display-buffer-in-preview-window) display-buffer-alist)
 (push '("[Mm]akefile" my:display-buffer-in-preview-window) display-buffer-alist)
 (push '("\\.[cChH]" my:display-buffer-in-preview-window) display-buffer-alist)
+
+;; (add-to-list 'display-buffer-alist
+;; 			 `("*[+]*"
+;; 			   (display-buffer-reuse-window
+;; 				display-buffer-in-side-window)
+;; 			   (reusable-frames . visible)
+;; 			   (side            . bottom)
+;; 			                  (window-height   . 12)))
+
+;; (add-to-list 'display-buffer-alist
+;; 			 `("\\.[cChH]"
+;; 			   (display-buffer-reuse-window
+;; 				display-buffer-in-side-window)
+;; 			   (reusable-frames . visible)
+;; 			   (side            . top)
+;; 			                  (window-height   . 15)))
 
 
 ;; <SCROLL WITHOUT CURSOR MOVE>
@@ -1088,7 +1105,7 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (defun pdrerror-debug-message()
   "pdr_error debug message"
   (interactive)
-  (insert "pdr_error(\"===[%s]  \\n\",__PRETTY_FUNCTION__);"))
+  (insert "pdr_error(\"===  \\n\");"))
 
 (global-set-key (kbd "C-c m e") 'pdrerror-debug-message)
 
@@ -1096,7 +1113,7 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (defun pdrinfo-debug-message()
   "pdr_info debug message"
   (interactive)
-  (insert "pdr_info(\"\\x1b[32m===[%s]  \\x1b[0m\\n\",__PRETTY_FUNCTION__);"))
+  (insert "pdr_info(\"===  \\n\");"))
 
 (global-set-key (kbd "C-c m i") 'pdrinfo-debug-message)
 
@@ -1145,6 +1162,7 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (defun my:kill-buffer-local-key()
   (local-set-key (kbd "q") 'kill-this-buffer)
   )
+
 
 
 ;; <RELOAD .emacs >
