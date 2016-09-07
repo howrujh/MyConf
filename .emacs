@@ -574,15 +574,7 @@
   (defun cscope-display-buffer-wrapper (buffer)
 	"Calls `display-buffer' using
 `cscope-display-buffer-args'"
-	(when my:use-window-manager
-	  (setq info-list '(cscope-list-entry-mode))
-
-	  (dolist (l info-list)
-		(when (eq l major-mode)
-		  (display-buffer-in-side-window buffer '((side . top) (window-width . 30)))
-		  ;;(apply 'display-buffer buffer cscope-display-buffer-args))
-		  ))
-	  )
+	(display-buffer-in-side-window buffer '((side . top) (window-width . 30)))
 	)
 	
   
