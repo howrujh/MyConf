@@ -45,6 +45,8 @@
 			(setq python-indent 4)
 			(setq tab-width 4)))
 
+;; <COMMENT>
+
 ;; <PACKAGE MANAGEMENT>
 ;; -- using package.el for install popular packages --
 
@@ -412,9 +414,9 @@
   (add-to-list 'sml/replacer-regexp-list '("^:ABR:\\(.*\\)/font/" ":F:") t)
   (add-to-list 'sml/replacer-regexp-list '("^:F:res_v\\(.?\\)/" ":F:RES\\1:") t)
 
-  ;(setq sml/shorten-directory nil)
-  ;(setq sml/shorten-modes nil)
-  (setq sml/name-width 34)
+  (setq sml/shorten-directory t)
+  (setq sml/shorten-modes t)
+  (setq sml/name-width 33)
   (setq sml/mode-width 12)
   (sml/apply-theme 'dark)
   (sml/setup)
@@ -569,6 +571,21 @@
 	(cscope-minor-mode t)
 	)
 
+  (defun cscope-display-buffer-wrapper (buffer)
+	"Calls `display-buffer' using
+`cscope-display-buffer-args'"
+	(when my:use-window-manager
+	  (setq info-list '(cscope-list-entry-mode))
+
+	  (dolist (l info-list)
+		(when (eq l major-mode)
+		  (display-buffer-in-side-window buffer '((side . top) (window-width . 30)))
+		  ;;(apply 'display-buffer buffer cscope-display-buffer-args))
+		  ))
+	  )
+	)
+	
+  
   (add-hook 'c++-mode-hook 'my:cscope-init)
   (add-hook 'c-mode-hook 'my:cscope-init)
   (add-hook 'makefile-mode-hook 'my:cscope-init)
@@ -968,6 +985,7 @@
 		(display-buffer-in-side-window buffer '((side . top) (window-height . 20)))
 		))
 	)
+  
   )
 
 (defun my:dissplay-buffer-in-top-window (buffer ignore)
@@ -1000,7 +1018,7 @@
 (push '("\\.el" my:display-buffer-in-preview-window) display-buffer-alist)
 (push '("\\.mk" my:display-buffer-in-preview-window) display-buffer-alist)
 (push '("[Mm]akefile" my:display-buffer-in-preview-window) display-buffer-alist)
-(push '("\\.[cChH]" my:display-buffer-in-preview-window) display-buffer-alist)
+;(push '("\\.[cChH]" my:display-buffer-in-preview-window) display-buffer-alist)
 
 ;; (add-to-list 'display-buffer-alist
 ;; 			 `("*[+]*"
