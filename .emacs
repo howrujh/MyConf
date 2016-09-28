@@ -36,7 +36,7 @@
 
 ;; <INDENT>
 ;;(setq c-offsets-alist '((case-label . 4)))
-(c-set-offset 'case-label '+)
+;(c-set-offset 'case-label '+)
 (add-hook 'python-mode-hook
 		  (lambda () (setq indent-tabs-mode t)))
 (add-hook 'python-mode-hook
@@ -144,6 +144,11 @@
   ;; Set up packages
   (setq el-get-sources
 		'(
+		(:name unicad
+				 :description "auto encoding detection"
+				 :type http
+				 :url "https://www.emacswiki.org/emacs/download/unicad.el")
+		  
 		;  (:name rscope
 		;		 :description "another interface to cscope tool."
 		;		 :type github
@@ -194,6 +199,10 @@
 ;; <RXVT>
 ;(when (require 'rxvt nil 'noerror)
 ;  )
+
+;; <UNICAD>
+(when (require 'unicad nil 'noerror)
+  )
 
 ;; <GDB>
 (setq gdb-many-windows 1)
@@ -419,7 +428,7 @@
   (setq sml/name-width 33)
   (setq sml/mode-width 12)
   (sml/apply-theme 'dark)
-  (sml/setup)
+  ;;(sml/setup)
 
   )
 
