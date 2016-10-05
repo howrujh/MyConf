@@ -14,7 +14,7 @@
 
 
 ;; <SET ENV>
-(setq user-mail-address (if is_home "howrujh@gmail.com" "jinhwan@pinetron.com"))
+(setq user-mail-address (if is_home "howrujh@gmail.com" "jinhwan@auto-it.co.kr"))
 (setq user-full-name "jinhwan Lee")
 
 ;; <INTERFACE>
@@ -50,66 +50,66 @@
 ;; <PACKAGE MANAGEMENT>
 ;; -- using package.el for install popular packages --
 
-(setq pkg-list)
-(add-to-list 'pkg-list 'cl)
-(add-to-list 'pkg-list 'el-get)
-(add-to-list 'pkg-list 'xcscope)
-
-(add-to-list 'pkg-list 'ido)
-;;(add-to-list 'pkg-list 'tabbar)
-(add-to-list 'pkg-list 'color-theme)
-;;(add-to-list 'pkg-list 'tango-2-theme)
-;;(add-to-list 'pkg-list 'lush-theme)
-(add-to-list 'pkg-list 'color-theme-solarized)
-(add-to-list 'pkg-list 'highlight-symbol)
-
-;;(add-to-list 'pkg-list 'smartparens)
-;;(add-to-list 'pkg-list 'ecb)
-(add-to-list 'pkg-list 'cedet)
-;;(add-to-list 'pkg-list 'auto-complete)
-(add-to-list 'pkg-list 'smex)
-(add-to-list 'pkg-list 'winpoint)
-;;(add-to-list 'pkg-list 'blank-mode)
-
-(add-to-list 'pkg-list 'evil)
-(add-to-list 'pkg-list 'undo-tree)
-
-(add-to-list 'pkg-list 'sr-speedbar)
-(add-to-list 'pkg-list 'ediff)
-(add-to-list 'pkg-list 'yasnippet)
-(add-to-list 'pkg-list 'iedit)
-(add-to-list 'pkg-list 'flycheck)
-;;(add-to-list 'pkg-list 'flymake-google-cpplint)
-;;(add-to-list 'pkg-list 'flymake-cursor)
-;;(add-to-list 'pkg-list 'google-c-style)
-(add-to-list 'pkg-list 'cc-mode)
-(add-to-list 'pkg-list 'multi-term)
-(add-to-list 'pkg-list 'multiple-cursors)
-;; (add-to-list 'pkg-list 'popwin)
 
 
-(add-to-list 'pkg-list 'ace-window)
-(add-to-list 'pkg-list 'smart-mode-line)
-
-(add-to-list 'pkg-list 'buffer-move)
-(add-to-list 'pkg-list 'ace-jump-mode)
-
-(add-to-list 'pkg-list 'php-mode)
-(add-to-list 'pkg-list 'visual-regexp)
-;;(add-to-list 'pkg-list 'haskell-mode)
-(add-to-list 'pkg-list 'go-mode)
-;;(add-to-list 'pkg-list 'go-mode-autoloads)
-
-(add-to-list 'pkg-list 'company)
-;;(add-to-list 'pkg-list 'jedi)
-;;(add-to-list 'pkg-list 'company-jedi)
-(add-to-list 'pkg-list 'anaconda-mode)
-(add-to-list 'pkg-list 'company-anaconda)
-
-
+  
 (when (require 'package nil 'noerror)
+  (package-initialize)  
+  (setq pkg-list)
+  (add-to-list 'pkg-list 'cl)
+  (add-to-list 'pkg-list 'el-get)
+  (add-to-list 'pkg-list 'xcscope)
 
-  (package-initialize)
+  (add-to-list 'pkg-list 'ido)
+  ;;(add-to-list 'pkg-list 'tabbar)
+  (add-to-list 'pkg-list 'color-theme)
+  ;;(add-to-list 'pkg-list 'tango-2-theme)
+  ;;(add-to-list 'pkg-list 'lush-theme)
+  (add-to-list 'pkg-list 'color-theme-solarized)
+  (add-to-list 'pkg-list 'highlight-symbol)
+
+  ;;(add-to-list 'pkg-list 'smartparens)
+  ;;(add-to-list 'pkg-list 'ecb)
+  (add-to-list 'pkg-list 'cedet)
+  ;;(add-to-list 'pkg-list 'auto-complete)
+  (add-to-list 'pkg-list 'smex)
+  (add-to-list 'pkg-list 'winpoint)
+  ;;(add-to-list 'pkg-list 'blank-mode)
+
+  (add-to-list 'pkg-list 'evil)
+  (add-to-list 'pkg-list 'undo-tree)
+
+  (add-to-list 'pkg-list 'sr-speedbar)
+  (add-to-list 'pkg-list 'ediff)
+  (add-to-list 'pkg-list 'yasnippet)
+  (add-to-list 'pkg-list 'iedit)
+  (add-to-list 'pkg-list 'flycheck)
+  ;;(add-to-list 'pkg-list 'flymake-google-cpplint)
+  ;;(add-to-list 'pkg-list 'flymake-cursor)
+  ;;(add-to-list 'pkg-list 'google-c-style)
+  (add-to-list 'pkg-list 'cc-mode)
+  (add-to-list 'pkg-list 'multi-term)
+  (add-to-list 'pkg-list 'multiple-cursors)
+  ;; (add-to-list 'pkg-list 'popwin)
+
+
+  (add-to-list 'pkg-list 'ace-window)
+  (add-to-list 'pkg-list 'smart-mode-line)
+
+  (add-to-list 'pkg-list 'buffer-move)
+  (add-to-list 'pkg-list 'ace-jump-mode)
+
+  (add-to-list 'pkg-list 'php-mode)
+  (add-to-list 'pkg-list 'visual-regexp)
+  ;;(add-to-list 'pkg-list 'haskell-mode)
+  (add-to-list 'pkg-list 'go-mode)
+  ;;(add-to-list 'pkg-list 'go-mode-autoloads)
+
+  (add-to-list 'pkg-list 'company)
+  ;;(add-to-list 'pkg-list 'jedi)
+  ;;(add-to-list 'pkg-list 'company-jedi)
+  (add-to-list 'pkg-list 'anaconda-mode)
+  (add-to-list 'pkg-list 'company-anaconda)
 
   (setq package-archives '(
 						   ("ELPA" . "http://tromey.com/elpa/")
@@ -139,49 +139,50 @@
 
   )
 
+
 ;; -- using el-get for install from github, svn, etc..--
 
 (when (require 'el-get nil 'noerror)
   ;; Set up packages
   (setq el-get-sources
 		'(
-		(:name unicad
+		  (:name unicad
 				 :description "auto encoding detection"
 				 :type http
 				 :url "https://www.emacswiki.org/emacs/download/unicad.el")
 		  
-		;  (:name rscope
-		;		 :description "another interface to cscope tool."
-		;		 :type github
-		;		 :pkgname "rjarzmik/rscope")
+										;  (:name rscope
+										;		 :description "another interface to cscope tool."
+										;		 :type github
+										;		 :pkgname "rjarzmik/rscope")
 
-		; (:name rxvt
-		;		 :description "define function key sequences for rxvt"
-		;		 :type http
-		;		 :url "http://www.emacswiki.org/emacs/download/rxvt.el")
+										; (:name rxvt
+										;		 :description "define function key sequences for rxvt"
+										;		 :type http
+										;		 :url "http://www.emacswiki.org/emacs/download/rxvt.el")
 
-		;(:name multiple-cursors
-		;	   :description "An experiment in adding multiple cursors to emacs"
-		;	   :type github
-		;	   :pkgname "magnars/multiple-cursors.el"
-		;	   :features multiple-cursors)
-		;(:name scala-mode
-		;	   :description "Major mode for editing Scala code."
-		;	   :type git
-		;	   :url "https://github.com/scala/scala-dist.git"
-		;	   :build `(("make -C tool-support/src/emacs" ,(concat "ELISP_COMMAND=" el-get-emacs)))
-		;	   :load-path ("tool-support/src/emacs")
-		;	   :features scala-mode-auto)
-		;(:name rainbow-mode :type elpa)
-		;(:name js2-mode
-		;	   :website "https://github.com/mooz/js2-mode#readme"
-		;	   :description "An improved JavaScript editing mode"
-		;	   :type github
-		;	   :pkgname "mooz/js2-mode"
-		;	   :prepare (autoload 'js2-mode "js2-mode" nil t))
+										;(:name multiple-cursors
+										;	   :description "An experiment in adding multiple cursors to emacs"
+										;	   :type github
+										;	   :pkgname "magnars/multiple-cursors.el"
+										;	   :features multiple-cursors)
+										;(:name scala-mode
+										;	   :description "Major mode for editing Scala code."
+										;	   :type git
+										;	   :url "https://github.com/scala/scala-dist.git"
+										;	   :build `(("make -C tool-support/src/emacs" ,(concat "ELISP_COMMAND=" el-get-emacs)))
+										;	   :load-path ("tool-support/src/emacs")
+										;	   :features scala-mode-auto)
+										;(:name rainbow-mode :type elpa)
+										;(:name js2-mode
+										;	   :website "https://github.com/mooz/js2-mode#readme"
+										;	   :description "An improved JavaScript editing mode"
+										;	   :type github
+										;	   :pkgname "mooz/js2-mode"
+										;	   :prepare (autoload 'js2-mode "js2-mode" nil t))
 		  ))
 
-
+  
   ;; install any packages not installed yet
   (when (not os_win32)
 		(mapc (lambda (f)
@@ -191,6 +192,7 @@
 
 		)
   )
+
 
 ;; <MAC OS X>
 ;(when os_mac
@@ -389,74 +391,56 @@
 
 
 ;; <SMART MODE LINE>
-(when (require 'smart-mode-line nil 'noerror)
-  (setq sml/no-confirm-load-theme t)
+;;(when (require 'smart-mode-line nil 'noerror)
+  ;; (setq sml/no-confirm-load-theme t)
 
-  (when (require 'rich-minority nil 'noerror)
-	;; hide minor modes
-	(add-to-list 'rm-excluded-modes " Undo-Tree")
-	(add-to-list 'rm-excluded-modes " yas")
-	(add-to-list 'rm-excluded-modes " Abbrev")
+  ;; (when (require 'rich-minority nil 'noerror)
+  ;; 	;; hide minor modes
+  ;; 	(add-to-list 'rm-excluded-modes " Undo-Tree")
+  ;; 	(add-to-list 'rm-excluded-modes " yas")
+  ;; 	(add-to-list 'rm-excluded-modes " Abbrev")
 
-	)
+  ;; 	)
 
-  ;; directory replace
-  (add-to-list 'sml/replacer-regexp-list '("^~/xm4k/" ":ABR:") t)
-  (add-to-list 'sml/replacer-regexp-list '("^~/abr/" ":ABR:") t)
-  (add-to-list 'sml/replacer-regexp-list '("^~/github/" ":GIT:") t)
-  ;; Added in the right order, they even work sequentially:
-  ;(add-to-list 'sml/replacer-regexp-list '("^:ABR:app/dvr_app_v2" ":ABR:APPV2:") t)
+  ;; ;; directory replace
+  ;; (add-to-list 'sml/replacer-regexp-list '("^~/xm4k/" ":ABR:") t)
+  ;; (add-to-list 'sml/replacer-regexp-list '("^~/abr/" ":ABR:") t)
+  ;; (add-to-list 'sml/replacer-regexp-list '("^~/github/" ":GIT:") t)
+  ;; ;; Added in the right order, they even work sequentially:
+  ;; ;(add-to-list 'sml/replacer-regexp-list '("^:ABR:app/dvr_app_v2" ":ABR:APPV2:") t)
 
-  (add-to-list 'sml/replacer-regexp-list '("^:ABR:\\(.*\\)/dvr_app_v\\(.?\\)/" ":A\\2:") t)
-  (add-to-list 'sml/replacer-regexp-list '("^:A\\(.?\\):\\(.*\\)/hictrl\\(.?\\)/" ":A\\1:HI\\3:") t)
-  (add-to-list 'sml/replacer-regexp-list '("^:A\\(.?\\):\\(.*\\)/osd/" ":A\\1:OSD:") t)
-  (add-to-list 'sml/replacer-regexp-list '("^:A\\(.?\\):OSD:windows/" ":A\\1:OSD:W:") t)
+  ;; (add-to-list 'sml/replacer-regexp-list '("^:ABR:\\(.*\\)/dvr_app_v\\(.?\\)/" ":A\\2:") t)
+  ;; (add-to-list 'sml/replacer-regexp-list '("^:A\\(.?\\):\\(.*\\)/hictrl\\(.?\\)/" ":A\\1:HI\\3:") t)
+  ;; (add-to-list 'sml/replacer-regexp-list '("^:A\\(.?\\):\\(.*\\)/osd/" ":A\\1:OSD:") t)
+  ;; (add-to-list 'sml/replacer-regexp-list '("^:A\\(.?\\):OSD:windows/" ":A\\1:OSD:W:") t)
 
-  (add-to-list 'sml/replacer-regexp-list '("^:A\\(.?\\):\\(.*\\)/diskman/" ":A\\1:DISK:") t)
-  (add-to-list 'sml/replacer-regexp-list '("^:A\\(.?\\):\\(.*\\)/ioman/" ":A\\1:IO:") t)
-  (add-to-list 'sml/replacer-regexp-list '("^:A\\(.?\\):\\(.*\\)/monitor/" ":A\\1:MON:") t)
-  (add-to-list 'sml/replacer-regexp-list '("^:A\\(.?\\):\\(.*\\)/ipreceiver/" ":A\\1:IP:") t)
-  (add-to-list 'sml/replacer-regexp-list '("^:A\\(.?\\):\\(.*\\)/network/" ":A\\1:NET:") t)
-  (add-to-list 'sml/replacer-regexp-list '("^:A\\(.?\\):\\(.*\\)/playback/" ":A\\1:PB:") t)
-  (add-to-list 'sml/replacer-regexp-list '("^:A\\(.?\\):\\(.*\\)/recorder/" ":A\\1:REC:") t)
+  ;; (add-to-list 'sml/replacer-regexp-list '("^:A\\(.?\\):\\(.*\\)/diskman/" ":A\\1:DISK:") t)
+  ;; (add-to-list 'sml/replacer-regexp-list '("^:A\\(.?\\):\\(.*\\)/ioman/" ":A\\1:IO:") t)
+  ;; (add-to-list 'sml/replacer-regexp-list '("^:A\\(.?\\):\\(.*\\)/monitor/" ":A\\1:MON:") t)
+  ;; (add-to-list 'sml/replacer-regexp-list '("^:A\\(.?\\):\\(.*\\)/ipreceiver/" ":A\\1:IP:") t)
+  ;; (add-to-list 'sml/replacer-regexp-list '("^:A\\(.?\\):\\(.*\\)/network/" ":A\\1:NET:") t)
+  ;; (add-to-list 'sml/replacer-regexp-list '("^:A\\(.?\\):\\(.*\\)/playback/" ":A\\1:PB:") t)
+  ;; (add-to-list 'sml/replacer-regexp-list '("^:A\\(.?\\):\\(.*\\)/recorder/" ":A\\1:REC:") t)
 
-  (add-to-list 'sml/replacer-regexp-list '("^:A\\(.?\\):util/" ":A\\1:U:") t)
-  (add-to-list 'sml/replacer-regexp-list '("^:A\\(.?\\):include/" ":A\\1:INC:") t)
+  ;; (add-to-list 'sml/replacer-regexp-list '("^:A\\(.?\\):util/" ":A\\1:U:") t)
+  ;; (add-to-list 'sml/replacer-regexp-list '("^:A\\(.?\\):include/" ":A\\1:INC:") t)
 
-  (add-to-list 'sml/replacer-regexp-list '("^:ABR:\\(.*\\)/font/" ":F:") t)
-  (add-to-list 'sml/replacer-regexp-list '("^:F:res_v\\(.?\\)/" ":F:RES\\1:") t)
+  ;; (add-to-list 'sml/replacer-regexp-list '("^:ABR:\\(.*\\)/font/" ":F:") t)
+  ;; (add-to-list 'sml/replacer-regexp-list '("^:F:res_v\\(.?\\)/" ":F:RES\\1:") t)
 
-  (setq sml/shorten-directory t)
-  (setq sml/shorten-modes t)
-  (setq sml/name-width 33)
-  (setq sml/mode-width 12)
-  (sml/apply-theme 'dark)
-  ;;(sml/setup)
+  ;; (setq sml/shorten-directory t)
+  ;; (setq sml/shorten-modes t)
+  ;; (setq sml/name-width 33)
+  ;; (setq sml/mode-width 12)
+  ;; (sml/apply-theme 'dark)
+  ;; ;;(sml/setup)
 
-  )
+  ;; )
 
 ;; (when (require 'smartparens nil 'noerror)
 ;;   (require 'smartparens-config)
 ;;   (smartparens-global-mode t)
 ;;   )
-
-;; <AUTO COMPLETE>
-;; (when (require 'auto-complete nil 'noerror)
-;;   (when (require 'auto-complete-config nil 'noerror)
-;; 	(ac-config-default)
-;; 	)
-
-;;   (defun my:ac-c-header-init ()
-;; 	(require 'auto-complete-c-headers)
-;; 	(add-to-list 'ac-sources 'ac-source-c-headers)
-;; 	;(add-to-list 'achead:include-directories '"/Applications/Xcode.app/Contents/Developer/usr/llvm-gcc-4.2/lib/gcc/i686-apple-darwin11/4.2.1/include")
-;; 	)
-
-;;   ;(add-hook 'c++-mode-hook 'my:ac-c-header-init)
-;;   ;(add-hook 'c-mode-hook 'my:ac-c-header-init)
-  
-;;  )
-
 
 
 
@@ -539,39 +523,7 @@
 
 
 
-;; <FLYCHECK>
-;; (when (require 'flycheck nil 'noerror)
-;;   (add-hook 'after-init-hook #'global-flycheck-mode)
-;;   )
-
-
-
-;; <FLYMAKE GOOGLE CPPLINT>
-;; wget http://google-styleguide.googlecode.com/svn/trunk/cpplint/cpplint.py
-(defun my:flymake-google-init()
-  (when (require 'flymake-google-cpplint nil 'noerror)
-	(when (require 'flymake-cursor nil 'noerror)
-	;  (custom-set-variables
-	;  '(flymake-google-cpplint-command "~/scripts/cpplint.py"))
-	  (flymake-google-cpplint-load)
-	  )
-	)
-  )
-;(add-hook 'c-mode-hook 'my:flymake-google-init)
-;(add-hook 'c++-mode-hook 'my:flymake-google-init)
-
-;; <GOOGLE C STYLE>
-;(require 'google-c-style)
-;(add-hook 'c-mode-common-hook 'google-set-c-style)
-;(add-hook 'c-mode-common-hook 'google-make-newline-indent)
-
-
 ;; <CSCOPE>
-;;(setq cscope-initial-directory "~/github/opengles2-book-sample/LinuxX11/")
-;;(setq cscope-database-file "cscope.out")
-
-;( setq pwd  ( getenv "PWD" ))
-
 (when (require 'xcscope nil 'noerror)
 
   ;;(setq my:cscope-preview-window nil)
@@ -594,78 +546,6 @@
   (add-hook 'c-mode-hook 'my:cscope-init)
   (add-hook 'makefile-mode-hook 'my:cscope-init)
 
-;;   (eval-after-load "xcscope"
-
-;; 	'(defun cscope-show-entry-other-window ()
-;; 	   "Display the entry at point in other window.
-;; Point is not saved on mark ring."
-;; 	   (interactive)
-
-;; 	   (if (or (eq my:cscope-preview-window nil) (not (popwin:window-deletable-p my:cscope-preview-window)))
-;; 	   	  (setq my:cscope-preview-window (nth 1 (popwin:create-popup-window 0.3 'top t))))
-
-;; 	   ;; (let ((navprops (cscope-get-navigation-properties)))
-;; 	   ;; 	 (cscope-show-entry-internal navprops nil my:cscope-preview-window nil)
-;; 	   ;; 	 )
-;; 	   ))
-
-
-  ;; (defun my:cscope-select-entry-specified-window()
-  ;; 	;"Open in specific window"
-  ;; 	(interactive)
-  ;; 	(setq old-point (point))
-  ;; 	(setq prev_win (selected-window))
-
-  ;; 	(if (or (eq my:cscope-preview-window nil) (not (popwin:window-deletable-p my:cscope-preview-window)))
-  ;; 		(setq my:cscope-preview-window (nth 1 (popwin:create-popup-window 0.4 'top t))))
-
-  ;; 	(cscope-select-entry-specified-window my:cscope-preview-window)
-
-  ;; 	(set-window-point prev_win old-point)
-  ;; 	;; (if cscope-close-window-after-select
-  ;; 	;; 	(delete-windows-on cscope-output-buffer-name))
-  ;; )
-
-  ;; (defun my:cscope-show-entry-specified-window()
-  ;; 	;"Open in specific window"
-  ;; 	(interactive)
-
-  ;; 	;; (if (or (eq my:cscope-preview-window nil) (not (popwin:window-deletable-p my:cscope-preview-window)))
-  ;; 	;; 	(setq my:cscope-preview-window (nth 1 (popwin:create-popup-window 0.4 'top t))))
-	
-  ;; 	(popwin:create-popup-window 20 'top nil)
-
-  ;; 	;; (let (navprops (cscope-get-navigation-properties))
-
-  ;; 	;;   (cscope-show-entry-internal navprops nil my:cscope-preview-window))
-
-  ;; 	;; (let (navprops (cscope-get-navigation-properties)))
-  ;; 	;; (cscope-show-entry-internal navprops t my:cscope-preview-window)
-  ;; 	;; (if cscope-close-window-after-select
-  ;; 	;; 	(delete-windows-on cscope-output-buffer-name))
-  ;; )
-
-  
-  
-  ;; (defvar my:cscope-local-keymap
-  ;; 	(let ((map (make-keymap)))
-  ;; 	  (suppress-keymap map)
-  ;; 	  ;; The following section does not appear in the "Cscope" menu.
-
-  ;; 	  (define-key map (kbd "SPC") 'my:cscope-show-entry-specified-window)
-
-  ;; 	  ;; (define-key map (kbd "\r") 'my:cscope-select-entry-specified-window)
-
-
-  ;; 	  map)
-  ;; 	"The custom *cscope* buffer keymap")
-
-  ;; (defun my:cscope-local-map()
-  ;; 	(use-local-map my:cscope-local-keymap)
-  
-  ;; 	)
-
-  ;; (add-hook 'cscope-list-entry-hook 'my:cscope-local-map)
 )
 
 
@@ -689,13 +569,6 @@
   (global-set-key (kbd "C-c #") 'highlight-symbol-prev)
   )
 
-;; <HIDE-IFDEF-MODE>
-;(add-hook 'c++-mode-hook
-;   '(lambda ()
-;      (hide-ifdef-mode t)
-;	   (setq hide-ifdef-initially t)
-;	   (setq hide-ifdef-shadow t)
-;    ))
 
 (defun my-c-mode-font-lock-if0 (limit)
   (save-restriction
@@ -729,37 +602,37 @@
 
 
 ;; <DOXYGEN STYLE FUNCTION COMMENT>
-(add-to-list 'load-path "~/share/emacs/site-lisp")
-(when (require 'doxymacs nil 'noerror)
+;; (add-to-list 'load-path "~/share/emacs/site-lisp")
+;; (when (require 'doxymacs nil 'noerror)
 
-  (defun my:doxy-func-comment()
-	"Write doxygen style comment"
-	(interactive)
-	(let* ((next-func-alist (doxymacs-find-next-func))
-		   (func-name (cdr (assoc 'func next-func-alist)))
-		   (params-list (cdr (assoc 'args next-func-alist)))
-		   (return-name (cdr (assoc 'return next-func-alist)))
-		   (snippet-text "")
-		   (idx 1))
-	  (setq snippet-text (format "/**\n * \@brief ${1:%s}\n * \n" func-name))
-	  (setq idx 2)
-	  (dolist (param params-list)
-		(unless (string= param "this")
-		  (setq snippet-text (concat snippet-text
-									 (format " * \@param %s ${%d:}\n" param idx)))
-		  (setq idx (+ 1 idx))))
-	  (when (and return-name (not (string= return-name "void")))
-		(setq snippet-text (concat snippet-text
-								   (format " * \@return ${%d:%s}\n" idx return-name))))
-	  (setq snippet-text (concat snippet-text " */"))
-	  (yas/expand-snippet snippet-text))
-	)
+;;   (defun my:doxy-func-comment()
+;; 	"Write doxygen style comment"
+;; 	(interactive)
+;; 	(let* ((next-func-alist (doxymacs-find-next-func))
+;; 		   (func-name (cdr (assoc 'func next-func-alist)))
+;; 		   (params-list (cdr (assoc 'args next-func-alist)))
+;; 		   (return-name (cdr (assoc 'return next-func-alist)))
+;; 		   (snippet-text "")
+;; 		   (idx 1))
+;; 	  (setq snippet-text (format "/**\n * \@brief ${1:%s}\n * \n" func-name))
+;; 	  (setq idx 2)
+;; 	  (dolist (param params-list)
+;; 		(unless (string= param "this")
+;; 		  (setq snippet-text (concat snippet-text
+;; 									 (format " * \@param %s ${%d:}\n" param idx)))
+;; 		  (setq idx (+ 1 idx))))
+;; 	  (when (and return-name (not (string= return-name "void")))
+;; 		(setq snippet-text (concat snippet-text
+;; 								   (format " * \@return ${%d:%s}\n" idx return-name))))
+;; 	  (setq snippet-text (concat snippet-text " */"))
+;; 	  (yas/expand-snippet snippet-text))
+;; 	)
 
-  ;(global-set-key (kbd "C-c d f") 'my:doxy-func-comment)
-  (global-set-key (kbd "C-c d f") 'doxymacs-insert-function-comment)
-  (global-set-key (kbd "C-c d m") 'doxymacs-insert-member-comment)
-  (global-set-key (kbd "C-c d c") 'doxymacs-insert-file-comment)
-  )
+;;   ;(global-set-key (kbd "C-c d f") 'my:doxy-func-comment)
+;;   (global-set-key (kbd "C-c d f") 'doxymacs-insert-function-comment)
+;;   (global-set-key (kbd "C-c d m") 'doxymacs-insert-member-comment)
+;;   (global-set-key (kbd "C-c d c") 'doxymacs-insert-file-comment)
+;;   )
 
 
 ;; <DIFF REGION>
@@ -1024,22 +897,6 @@
 (push '("[Mm]akefile" my:display-buffer-in-preview-window) display-buffer-alist)
 ;(push '("\\.[cChH]" my:display-buffer-in-preview-window) display-buffer-alist)
 
-;; (add-to-list 'display-buffer-alist
-;; 			 `("*[+]*"
-;; 			   (display-buffer-reuse-window
-;; 				display-buffer-in-side-window)
-;; 			   (reusable-frames . visible)
-;; 			   (side            . bottom)
-;; 			                  (window-height   . 12)))
-
-;; (add-to-list 'display-buffer-alist
-;; 			 `("\\.[cChH]"
-;; 			   (display-buffer-reuse-window
-;; 				display-buffer-in-side-window)
-;; 			   (reusable-frames . visible)
-;; 			   (side            . top)
-;; 			                  (window-height   . 15)))
-
 
 ;; <SCROLL WITHOUT CURSOR MOVE>
 (defun scroll-in-place (scroll-up)
@@ -1195,13 +1052,14 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 
 
 ;; <RELOAD .emacs >
-(defun reload-emacs-config()
+(defun my:reload-emacs-config()
   (interactive)
   (load-file "~/.emacs")
+
   ;(on-after-init)
 )
 
-(global-set-key (kbd "C-c C-r") 'reload-emacs-config)
+(global-set-key (kbd "C-c C-r") 'my:reload-emacs-config)
 
 ;; <MOVE WINDOW>
 (windmove-default-keybindings 'meta)
