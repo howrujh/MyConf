@@ -142,6 +142,7 @@
 
 
 ;; -- using el-get for install from github, svn, etc..--
+
 (when (require 'el-get nil 'noerror)
   ;; Set up packages
   (setq el-get-sources
@@ -184,11 +185,13 @@
 
   
   ;; install any packages not installed yet
-  (mapc (lambda (f)
-		  (let ((name (plist-get f :name)))
-			(when (not (require name nil t)) (el-get-install name))))
-		el-get-sources)
+  (when (not os_win32)
+		(mapc (lambda (f)
+				(let ((name (plist-get f :name)))
+				  (when (not (require name nil t)) (el-get-install name))))
+			  el-get-sources)
 
+		)
   )
 
 
