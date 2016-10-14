@@ -55,7 +55,8 @@
   
 (when (require 'package nil 'noerror)
   (package-initialize)  
-  (setq pkg-list)
+  (setq pkg-list '())
+				   
   (add-to-list 'pkg-list 'cl)
   (add-to-list 'pkg-list 'el-get)
   (add-to-list 'pkg-list 'xcscope)
@@ -79,7 +80,7 @@
   (add-to-list 'pkg-list 'evil)
   (add-to-list 'pkg-list 'undo-tree)
 
-  (add-to-list 'pkg-list 'sr-speedbar)
+  ;; (add-to-list 'pkg-list 'sr-speedbar)
   (add-to-list 'pkg-list 'ediff)
   (add-to-list 'pkg-list 'yasnippet)
   (add-to-list 'pkg-list 'iedit)
@@ -754,9 +755,9 @@
   )
 
 ;; <SR-SPEEDBAR>
-(when (require 'sr-speedbar nil 'noerror)
+;; (when (require 'sr-speedbar nil 'noerror)
   
-  )
+;;   )
 
 
 ;; <EDIFF>
@@ -1153,6 +1154,9 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
    (quote
 	("8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" default)))
  '(inhibit-startup-screen t)
+ '(package-selected-packages
+   (quote
+	(el-get xcscope color-theme-solarized highlight-symbol smex winpoint evil undo-tree sr-speedbar yasnippet iedit flycheck multi-term multiple-cursors ace-window smart-mode-line buffer-move ace-jump-mode php-mode visual-regexp go-mode company-anaconda)))
  '(vc-follow-symlinks t)
  '(which-function-mode t))
 (custom-set-faces
