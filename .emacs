@@ -7,15 +7,22 @@
 (defconst os_unix (eq system-type (or 'gnu/linux 'berkeley-unix)) "FreeBSD 머신이면 참")
 (defconst os_mac (eq system-type 'darwin ) "Mac OS X 머신이면 참")
 
-(defconst is_office (string-match "omg" system-name)"사무실의 pc 라면 참")
-(defconst is_home (not is_office)"집의 pc 라면 참")
+(defconst is_office (string-match "omg" system-name) "사무실의 pc 라면 참")
+(defconst is_home (not is_office) "집의 pc 라면 참")
 
 ;(defconst extra-packages "~/.emacs.d" "내가 추가로 설치한 el 패키지들의 위치")
+
 
 
 ;; <SET ENV>
 (setq user-mail-address (if is_home "howrujh@gmail.com" "jinhwan@auto-it.co.kr"))
 (setq user-full-name "jinhwan Lee")
+(eval-when-compile (defvar emacs-root)) ; defined in ~/.init.el
+
+
+(if (file-exists-p "~/.emacs_disable.el")
+	(load-file "~/.emacs_disable.el")
+  )
 
 ;; <INTERFACE>
 ;(tool-bar-mode -1)
@@ -32,7 +39,7 @@
 
 ;; <FONT>
 (if window-system
-	(set-frame-font "Inconsolata 11"))
+	(set-frame-font "Inconsolata 12"))
 
 ;; <INDENT>
 ;;(setq c-offsets-alist '((case-label . 4)))
@@ -51,8 +58,6 @@
 ;; -- using package.el for install popular packages --
 
 
-
-  
 (when (require 'package nil 'noerror)
   (package-initialize)  
   (setq pkg-list '())
@@ -69,6 +74,8 @@
   (add-to-list 'pkg-list 'color-theme-solarized)
   (add-to-list 'pkg-list 'highlight-symbol)
 
+  ;;(add-to-list 'pkg-list 'ack)
+  ;;(add-to-list 'pkg-list 'etags-select)
   ;;(add-to-list 'pkg-list 'smartparens)
   ;;(add-to-list 'pkg-list 'ecb)
   (add-to-list 'pkg-list 'cedet)
@@ -77,7 +84,9 @@
   (add-to-list 'pkg-list 'winpoint)
   ;;(add-to-list 'pkg-list 'blank-mode)
 
-  (add-to-list 'pkg-list 'evil)
+  (if (not (boundp 'disable_evil))
+	  (add-to-list 'pkg-list 'evil))
+  
   (add-to-list 'pkg-list 'undo-tree)
 
   ;; (add-to-list 'pkg-list 'sr-speedbar)
@@ -89,7 +98,11 @@
   ;;(add-to-list 'pkg-list 'flymake-cursor)
   ;;(add-to-list 'pkg-list 'google-c-style)
   (add-to-list 'pkg-list 'cc-mode)
-  (add-to-list 'pkg-list 'multi-term)
+
+  (if (not os_win32)
+	  (add-to-list 'pkg-list 'multi-term)
+	)
+  
   (add-to-list 'pkg-list 'multiple-cursors)
   ;; (add-to-list 'pkg-list 'popwin)
 
@@ -98,19 +111,28 @@
   (add-to-list 'pkg-list 'smart-mode-line)
 
   (add-to-list 'pkg-list 'buffer-move)
-  (add-to-list 'pkg-list 'ace-jump-mode)
+  ;; (add-to-list 'pkg-list 'ace-jump-mode)
 
-  (add-to-list 'pkg-list 'php-mode)
-  (add-to-list 'pkg-list 'visual-regexp)
+  (if (not (boundp 'disable_php-mode))
+	  (add-to-list 'pkg-list 'php-mode)
+	)
+  
+  (if (not (boundp 'disable_visual-regexp))
+	  (add-to-list 'pkg-list 'visual-regexp)
+	)
   ;;(add-to-list 'pkg-list 'haskell-mode)
-  (add-to-list 'pkg-list 'go-mode)
+  (if (not (boundp 'disable_go-mode))
+	  (add-to-list 'pkg-list 'go-mode)
+	)
   ;;(add-to-list 'pkg-list 'go-mode-autoloads)
 
   (add-to-list 'pkg-list 'company)
   ;;(add-to-list 'pkg-list 'jedi)
   ;;(add-to-list 'pkg-list 'company-jedi)
-  (add-to-list 'pkg-list 'anaconda-mode)
-  (add-to-list 'pkg-list 'company-anaconda)
+  (if (not (boundp 'disable_python-mode))
+	  ((add-to-list 'pkg-list 'anaconda-mode)
+	   (add-to-list 'pkg-list 'company-anaconda))
+	)
 
   (setq package-archives '(
 						   ("ELPA" . "http://tromey.com/elpa/")
@@ -139,7 +161,6 @@
 		(package-install p))))
 
   )
-
 
 ;; -- using el-get for install from github, svn, etc..--
 
@@ -185,13 +206,12 @@
 
   
   ;; install any packages not installed yet
-  (when (not os_win32)
-		(mapc (lambda (f)
-				(let ((name (plist-get f :name)))
-				  (when (not (require name nil t)) (el-get-install name))))
-			  el-get-sources)
 
-		)
+  (mapc (lambda (f)
+		  (let ((name (plist-get f :name)))
+			(when (not (require name nil t)) (el-get-install name))))
+		el-get-sources)
+
   )
 
 
@@ -206,15 +226,19 @@
 ;(when (require 'rxvt nil 'noerror)
 ;  )
 
+
 ;; <UNICAD>
 (when (require 'unicad nil 'noerror)
   )
 
+
 ;; <GDB>
 (setq gdb-many-windows 1)
 
+
 ;; <MOUSE>
 (xterm-mouse-mode t)
+
 
 ;; <WINNER MODE>
 (setq winner-dont-bind-my-keys t)
@@ -223,6 +247,7 @@
   (global-set-key (kbd "C-c w n") 'winner-redo)
   (winner-mode t)
   )
+
 
 ;; <MOVE BUFFER>
 (when (require 'buffer-move nil 'noerror)
@@ -233,8 +258,10 @@
   (global-set-key (kbd "C-c b <right>")  'buf-move-right)
   )
 
+
 ;; <NXML MODE>
-(when (require 'nxml-mode nil 'noerror)
+(when (and (not (boundp 'disable_nxml-mode))
+		   (require 'nxml-mode nil 'noerror))
   (setq nxml-child-indent 4)
   )
 
@@ -245,11 +272,14 @@
 
 
 ;; <PHP MODE>
-(when (require 'php-mode nil 'noerror)
+(when (and (not (boundp 'disable_php-mode))
+		   (require 'php-mode nil 'noerror))
   )
 
+
 ;; <GO MODE>
-(when (require 'go-mode-autoloads nil 'noerror)
+(when (and (not (boundp 'disable_go-mode))
+		   (require 'go-mode-autoloads nil 'noerror))
   )
 
 
@@ -258,8 +288,11 @@
   (add-hook 'after-init-hook 'global-company-mode)
   )
 
+
 ;; <ANACONDA MODE>
-(when (require 'anaconda-mode nil 'noerror)
+(when (and (not (boundp 'disable_python-mode))
+		   (require 'anaconda-mode nil 'noerror))
+  
   (when (require 'company-anaconda nil 'noerror)
 	(add-to-list 'company-backends 'company-anaconda)
 	)
@@ -267,18 +300,6 @@
   (add-hook 'python-mode-hook 'eldoc-mode)  
   )
 
-;; ;; <JEDI>
-;; (when (require 'jedi nil 'noerror)
-;;   (add-hook 'python-mode-hook 'jedi:setup)
-;;   )
-
-
-;; (when (require 'company-jedi nil 'noerror)
-;;   (defun my/python-mode-hook ()
-;; 	(add-to-list 'company-backends 'company-jedi))
-
-;;   (add-hook 'python-mode-hook 'my/python-mode-hook)
-;;   )
 
 ;; <IEDIT MODE>
 (when (require 'iedit nil 'noerror)
@@ -311,47 +332,10 @@
   (global-set-key (kbd "C-c c n") 'mc/mark-next-like-this)
   )
 
-;; ;; <POPWIN>
-;; (when (require 'popwin nil 'noerror)
-;;   (popwin-mode 1)
-;;   ;(setq popwin:reuse-window popwin:popup-window)
-;;   ;(setq popwin:close-popup-window-timer-interval 0.005)
-  
-;;   (push '("*cscope*" :position bottom :height 0.2) popwin:special-display-config)
-;;   ;;(push '(cscope-list-entry-mode :position bottom :height 0.2) popwin:special-display-config)
-;;   (push '("*Help*" :position bottom :height 0.3 ) popwin:special-display-config)
-;;   (push '(vc-annotate-mode :position top :height 0.35) popwin:special-display-config)
-;;   (push "*Shell Command Output*" popwin:special-display-config)
 
-;;   (push '("\\.[cChH]" :regexp t :position top :height 0.25 :noselect t) popwin:special-display-config)
-;;   (push '("^\\.el" :regexp t :position top :height 0.25 :noselect t) popwin:special-display-config)
-;;   (push '("Makefile" :regexp t :position top :height 0.25 :noselect t) popwin:special-display-config)
-;;   (push '("^\\.mk" :regexp t :position top :height 0.25 :noselect t) popwin:special-display-config)
-
-;;   (defun my:before-popup()
-
-;; 	;;(popwin:close-popup-window t)
-;; 	(if (eq major-mode "cscope-list-entry-mode")
-;; 		(message "before-popup-hook")
-;; 		(popwin:close-popup-window-timer)
-;; 		;;(popwin:close-popup-window)
-;; 	  )
-;; 	)
-
-  
-;;   (defun my:after-popup()
-;; 	;(message "after-popup-hook")
-;; 	;(popwin:close-popup-window-timer)
-;; 	)
-  
-;;   (add-hook 'popwin:before-popup-hook 'my:before-popup)
-;;   (add-hook 'popwin:after-popup-hook 'my:after-popup)
-;;   )
-
-
-  
 ;; <COLOR THEME>
 (when (require 'color-theme nil 'noerror)
+
   (when (require 'color-theme-solarized nil 'noerror)
 	(add-hook 'window-setup-hook
 			  (lambda()
@@ -373,9 +357,7 @@
 
 
 ;; TRANSPARENT BG COLOR
-
 (defun on-after-init ()
-
   ;; for terminal using
   (unless (display-graphic-p (selected-frame))
 	(set-face-background 'default "unspecified-bg" (selected-frame)))
@@ -445,7 +427,6 @@
 
 
 
-
 ;; <CEDET MODE>
 (when (require 'cedet nil 'noerror)
 ;; turn on Semantic
@@ -494,7 +475,6 @@
 
 
 
-
 ;; <YASNIPPET>
 (when (require 'yasnippet nil 'noerror)
   (add-to-list 'yas/snippet-dirs "~/.emacs.d/myel/snippets")
@@ -511,6 +491,7 @@
 ;; \n newline
 ;; 보기 흉해서 뉴라인을 모두 \n 으로 적어뒀으니 수정할 일이 있으면 \n
 ;; 을 뉴라인으로 바꿔서 수정후 다시 \n 으로 바꿔주자.
+
 ;(when (require 'snippet nil 'noerror) 
 ;  (defun install-c++-snippet ()
 ;	(abbrev-mode 1)
@@ -523,7 +504,9 @@
 ;  )
 
 
-
+;; <ETAGS>
+;;(setq tags-table-list '("d:/project/cch/trunk/TAGS"))
+ 
 ;; <CSCOPE>
 (when (require 'xcscope nil 'noerror)
 
@@ -555,12 +538,14 @@
   (global-set-key (kbd "C-c SPC") 'ace-jump-mode)
   )
 
+
 ;; <ACE JUMP MODE>
 (when (require 'ace-window nil 'noerror)
   (global-set-key (kbd "C-x o") 'ace-window)
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
   (setq aw-scope 'frame)
   )
+
 
 ;; <HIGHLIGHT>
 (when (require 'highlight-symbol nil 'noerror)
@@ -569,7 +554,6 @@
   (global-set-key (kbd "C-c *") 'highlight-symbol-next)
   (global-set-key (kbd "C-c #") 'highlight-symbol-prev)
   )
-
 
 (defun my-c-mode-font-lock-if0 (limit)
   (save-restriction
@@ -699,7 +683,6 @@
 (add-hook 'c-mode-hook 'my:which-func)
 
 
-
 ;; <IDO-MODE>
 (setq confirm-nonexistent-file-or-buffer nil)
 (when (require 'ido nil 'noerror)
@@ -721,15 +704,19 @@
 ;; <UNDO-TREE>
 (when (require 'undo-tree nil 'noerror)
   (global-undo-tree-mode 1)
-;(global-set-key (kbd "C-?") 'undo-tree-redo)
-;(global-set-key (kbd "C-z") 'undo-tree-undo) ; 【Ctrl+z】
-;(global-set-key (kbd "C-S-z") 'undo-tree-redo) ; 【Ctrl+Shift+z】; Mac style
+  ;; (global-set-key (kbd "C-?") 'undo-tree-redo)
+  ;; (global-set-key (kbd "C-z") 'undo-tree-undo) ; 【Ctrl+z】
+  ;; (global-set-key (kbd "C-S-z") 'undo-tree-redo) ; 【Ctrl+Shift+z】; Mac style
+  
   )
 
+
 ;; <EVIL-MODE>
-(when (require 'evil nil 'noerror)
+(when (and (not (boundp 'disable_evil))
+		   (require 'evil nil 'noerror))
   ;(evil-mode nil)
   )
+
 
 ;; <SMEX>
 (when (require 'smex nil 'noerror)
@@ -740,6 +727,7 @@
   (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
   )
 
+
 ;; <WINPOINT>
 (when (require 'winpoint nil 'noerror)
   (winpoint-mode 1)
@@ -749,6 +737,7 @@
 ;; (when (require 'blank-mode nil 'noerror)
 
 ;;   )
+
 
 ;; <VC>
 (when (require 'vc nil 'noerror)
@@ -784,18 +773,22 @@
   (setq ediff-split-window-function 'split-window-horizontally)
   (setq ediff-merge-split-window-function 'split-window-horizontally)
   )
+
+
 ;; <ECB>
 ;(require 'cl)
 ;(require 'ecb)
 
+
 ;; <MULTI-TERM>
-(when (require 'multi-term nil 'noerror)
+(when (and (not os_win32) (require 'multi-term nil 'noerror))
 
   (setq multi-term-program "/bin/bash")
   (global-set-key (kbd "C-c t n") 'multi-term)
   (global-set-key (kbd "C-c t -") 'multi-term-prev)
   (global-set-key (kbd "C-c t =") 'multi-term-next)
   )
+
 
 ;; <SATELLITE WINDOW>
 (defun mark-this-window-as-satellite ()
@@ -856,7 +849,7 @@
   "Display source code in preview window"
 
   (when my:use-window-manager
-	(setq info-list '(cscope-list-entry-mode))
+	(setq info-list '( (cscope-list-entry-mode) (xref--xref-buffer-mode)))
 
 	(dolist (l info-list)
 	  (when (eq l major-mode)
@@ -976,7 +969,7 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (defun printf-debug-message()
   "printf debug message"
   (interactive)
-  (insert "printf(\"\\x1b[32m===%s(%d)  \\x1b[0m\\n\",__PRETTY_FUNCTION__,__LINE__);"))
+  (insert "cch_dbg(\\r\\n);"))
 
 (global-set-key (kbd "C-c m p") 'printf-debug-message)
 
@@ -1049,7 +1042,6 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (defun my:kill-buffer-local-key()
   (local-set-key (kbd "q") 'kill-this-buffer)
   )
-
 
 
 ;; <RELOAD .emacs >
@@ -1147,7 +1139,6 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 ;;-----------------------
 
 
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -1159,12 +1150,18 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
  '(inhibit-startup-screen t)
  '(package-selected-packages
    (quote
-	(el-get xcscope color-theme-solarized highlight-symbol smex winpoint evil undo-tree sr-speedbar yasnippet iedit flycheck multi-term multiple-cursors ace-window smart-mode-line buffer-move ace-jump-mode php-mode visual-regexp go-mode company-anaconda)))
+	(xcscope el-get color-theme-solarized highlight-symbol smex winpoint evil undo-tree yasnippet iedit flycheck multiple-cursors ace-window smart-mode-line buffer-move ace-jump-mode php-mode go-mode company anaconda-mode)))
  '(vc-follow-symlinks t)
  '(which-function-mode t))
+;; (custom-set-faces
+;;  ;; custom-set-faces was added by Custom.
+;;  ;; If you edit it by hand, you could mess it up, so be careful.
+;;  ;; Your init file should contain only one such instance.
+;;  ;; If there is more than one, they won't work right.
+;;  '(which-func ((t (:foreground "brightmagenta")))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(which-func ((t (:foreground "brightmagenta")))))
+ )
