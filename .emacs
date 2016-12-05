@@ -892,6 +892,74 @@
 ;(push '("\\.[cChH]" my:display-buffer-in-preview-window) display-buffer-alist)
 
 
+;; <INC/DEC INTEGER AT POINT>
+(when (require 'thingatpt nil 'noerror)
+
+  (defun thing-at-point-goto-end-of-integer ()
+	"Go to end of integer at point."
+	(let ((inhibit-changing-match-data t))
+	  ;; Skip over optional sign
+	  (when (looking-at "[+-]")
+		(forward-char 1))
+	  ;; Skip over digits
+	  (skip-chars-forward "[[:digit:]]")
+	  ;; Check for at least one digit
+	  (unless (looking-back "[[:digit:]]")
+		(error "No integer here"))))
+  (put 'integer 'beginning-op 'thing-at-point-goto-end-of-integer)
+
+  (defun thing-at-point-goto-beginning-of-integer ()
+	"Go to end of integer at point."
+	(let ((inhibit-changing-match-data t))
+	  ;; Skip backward over digits
+	  (skip-chars-backward "[[:digit:]]")
+	  ;; Check for digits and optional sign
+	  (unless (looking-at "[+-]?[[:digit:]]")
+		(error "No integer here"))
+	  ;; Skip backward over optional sign
+	  (when (looking-back "[+-]")
+		(backward-char 1))))
+  (put 'integer 'beginning-op 'thing-at-point-goto-beginning-of-integer)
+
+  (defun thing-at-point-bounds-of-integer-at-point ()
+	"Get boundaries of integer at point."
+	(save-excursion
+	  (let (beg end)
+		(thing-at-point-goto-beginning-of-integer)
+		(setq beg (point))
+		(thing-at-point-goto-end-of-integer)
+		(setq end (point))
+		(cons beg end))))
+  (put 'integer 'bounds-of-thing-at-point 'thing-at-point-bounds-of-integer-at-point)
+
+  (defun thing-at-point-integer-at-point ()
+	"Get integer at point."
+	(let ((bounds (bounds-of-thing-at-point 'integer)))
+	  (string-to-number (buffer-substring (car bounds) (cdr bounds)))))
+  (put 'integer 'thing-at-point 'thing-at-point-integer-at-point)
+
+  (defun increment-integer-at-point (&optional inc)
+    "Increment integer at point by one.
+
+With numeric prefix arg INC, increment the integer by INC amount."
+	(interactive "p")
+	(let ((inc (or inc 1))
+		  (n (thing-at-point 'integer))
+		  (bounds (bounds-of-thing-at-point 'integer)))
+	  (delete-region (car bounds) (cdr bounds))
+	  (insert (int-to-string (+ n inc)))))
+
+  (defun decrement-integer-at-point (&optional dec)
+    "Decrement integer at point by one.
+
+With numeric prefix arg DEC, decrement the integer by DEC amount."
+	(interactive "p")
+	(increment-integer-at-point (- (or dec 1))))
+
+  (global-set-key (kbd "M-<insert>") 'increment-integer-at-point)
+  (global-set-key (kbd "M-<delete>") 'decrement-integer-at-point)
+  )
+
 ;; <SCROLL WITHOUT CURSOR MOVE>
 (defun scroll-in-place (scroll-up)
   "Scroll window up (or down) without moving point (if possible).
@@ -1138,30 +1206,3 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 ;;  c r : multi curosr reg xp
 ;;-----------------------
 
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   (quote
-	("8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" default)))
- '(inhibit-startup-screen t)
- '(package-selected-packages
-   (quote
-	(xcscope el-get color-theme-solarized highlight-symbol smex winpoint evil undo-tree yasnippet iedit flycheck multiple-cursors ace-window smart-mode-line buffer-move ace-jump-mode php-mode go-mode company anaconda-mode)))
- '(vc-follow-symlinks t)
- '(which-function-mode t))
-;; (custom-set-faces
-;;  ;; custom-set-faces was added by Custom.
-;;  ;; If you edit it by hand, you could mess it up, so be careful.
-;;  ;; Your init file should contain only one such instance.
-;;  ;; If there is more than one, they won't work right.
-;;  '(which-func ((t (:foreground "brightmagenta")))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
