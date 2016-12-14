@@ -1,0 +1,13 @@
+--ignore-case
+--group
+
+--ignore-dir=.svn
+--ignore-dir=.git
+
+--ignore-dir=ext:bak
+
+--ignore-dir=ext:bak
+--ignore-file=ext:out
+
+--ignore-file=match:.gitignore
+--ignore-file=match:/[._].*\.swp$/

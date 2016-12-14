@@ -130,8 +130,8 @@
   ;;(add-to-list 'pkg-list 'jedi)
   ;;(add-to-list 'pkg-list 'company-jedi)
   (if (not (boundp 'disable_python-mode))
-	  ((add-to-list 'pkg-list 'anaconda-mode)
-	   (add-to-list 'pkg-list 'company-anaconda))
+	  (add-to-list 'pkg-list 'anaconda-mode)
+	  (add-to-list 'pkg-list 'company-anaconda)
 	)
 
   (setq package-archives '(
@@ -1206,3 +1206,17 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 ;;  c r : multi curosr reg xp
 ;;-----------------------
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+	("8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" default))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
