@@ -38,7 +38,7 @@ alias te='source tmux_set_env.sh'
 
 alias sb='source ~/.bashrc'
 
-alias test='cd $HOME/work/code_test'
+#alias test='cd $HOME/work/code_test'
 
 alias emacs='emacs -nw'
 #alias e='~/scripts/emacs_start.sh'
