@@ -64,7 +64,7 @@ values."
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
      ;; spell-checking
-     syntax-checking
+     ;; syntax-checking
      ;; version-control
      c-c++
      semantic
@@ -75,7 +75,7 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '()
+   dotspacemacs-additional-packages '(highlight-symbol)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -338,7 +338,64 @@ you should place your code here."
   (spacemacs/toggle-indent-guide-globally-on)
 
 
-  )
+  ;; <HIGHLIGHT>
+  (define-key evil-normal-state-map "g1" #'highlight-symbol-at-point)
+
+  ;; <ACE WINDOWN>
+  (global-set-key (kbd "C-x o") 'ace-window)
+  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+  (setq aw-scope 'frame)
+
+  ;; <DIFF REGION>
+  (defun diff-region ()
+	"Select a region to compare"
+	(interactive)
+	(when (use-region-p)  ; there is a region
+	  (let (buf)
+		(setq buf (get-buffer-create "*Diff-regionA*"))
+		(save-current-buffer
+		  (set-buffer buf)
+		  (erase-buffer))
+		(append-to-buffer buf (region-beginning) (region-end)))
+	  )
+	(message "Now select other region to compare and run `diff-region-now`")
+	)
+
+  (defun diff-region-now ()
+	"Compare current region with region already selected by `diff-region`"
+	(interactive)
+	(when (use-region-p)
+	  (let (bufa bufb)
+		(setq bufa (get-buffer-create "*Diff-regionA*"))
+		(setq bufb (get-buffer-create "*Diff-regionB*"))
+		(save-current-buffer
+		  (set-buffer bufb)
+		  (erase-buffer))
+		(append-to-buffer bufb (region-beginning) (region-end))
+		(ediff-buffers bufa bufb))
+	  )
+	)
+
+  (global-set-key (kbd "C-c d 1") 'diff-region)
+  (global-set-key (kbd "C-c d 2") 'diff-region-now)
+
+  ;; <WIND MOVE>
+  (windmove-default-keybindings 'meta)
+  (define-key input-decode-map (kbd "\e[1;3A") [(meta up)])
+  (define-key input-decode-map (kbd "\e[1;3B") [(meta down)])
+  (define-key input-decode-map (kbd "\e[1;3D") [(meta left)])
+  (define-key input-decode-map (kbd "\e[1;3C") [(meta right)])
+
+  (define-key input-decode-map "\e\e[A" [(meta up)])
+  (define-key input-decode-map "\e\e[B" [(meta down)])
+  (define-key input-decode-map "\e\e[D" [(meta left)])
+  (define-key input-decode-map "\e\e[C" [(meta right)])
+
+  (define-key input-decode-map (kbd "ESC M-O A") [(meta up)])
+  (define-key input-decode-map (kbd "ESC M-O B") [(meta down)])
+  (define-key input-decode-map (kbd "ESC M-O D") [(meta left)])
+  (define-key input-decode-map (kbd "ESC M-O C") [(meta right)])
+)
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
@@ -349,7 +406,7 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (company-quickhelp web-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data smeargle orgit org magit-gitflow helm-gitignore gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link evil-magit magit magit-popup git-commit with-editor dash async imenu-list pdf-tools tablist flycheck-pos-tip pos-tip flycheck skewer-mode simple-httpd json-snatcher json-reformat multiple-cursors js2-mode dash-functional tern stickyfunc-enhance srefactor flyspell-correct-helm flyspell-correct auto-dictionary yapfify ws-butler window-numbering which-key web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package toc-org swift-mode spacemacs-theme spaceline restart-emacs request rainbow-delimiters quelpa pyvenv pytest pyenv-mode py-isort popwin pip-requirements persp-mode pcre2el paradox org-plus-contrib org-bullets open-junk-file neotree mwim move-text macrostep lorem-ipsum livid-mode live-py-mode linum-relative link-hint json-mode js2-refactor js-doc info+ indent-guide ido-vertical-mode hy-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump disaster define-word cython-mode company-tern company-statistics company-c-headers company-anaconda column-enforce-mode coffee-mode cmake-mode clean-aindent-mode clang-format auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
+    (highlight-symbol company-quickhelp web-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data smeargle orgit org magit-gitflow helm-gitignore gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link evil-magit magit magit-popup git-commit with-editor dash async imenu-list pdf-tools tablist flycheck-pos-tip pos-tip flycheck skewer-mode simple-httpd json-snatcher json-reformat multiple-cursors js2-mode dash-functional tern stickyfunc-enhance srefactor flyspell-correct-helm flyspell-correct auto-dictionary yapfify ws-butler window-numbering which-key web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package toc-org swift-mode spacemacs-theme spaceline restart-emacs request rainbow-delimiters quelpa pyvenv pytest pyenv-mode py-isort popwin pip-requirements persp-mode pcre2el paradox org-plus-contrib org-bullets open-junk-file neotree mwim move-text macrostep lorem-ipsum livid-mode live-py-mode linum-relative link-hint json-mode js2-refactor js-doc info+ indent-guide ido-vertical-mode hy-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump disaster define-word cython-mode company-tern company-statistics company-c-headers company-anaconda column-enforce-mode coffee-mode cmake-mode clean-aindent-mode clang-format auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
