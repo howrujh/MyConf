@@ -34,6 +34,7 @@ values."
      python
      ;; swift
 	 html
+	 ;; java
 	 (javascript :variables javascript-disable-tern-port-files nil)
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
@@ -75,7 +76,10 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(highlight-symbol)
+   dotspacemacs-additional-packages '(
+									  highlight-symbol
+									  meghanada groovy-mode gradle-mode ;; for java
+									  )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -337,6 +341,18 @@ you should place your code here."
   (setq-default powerline-default-separator 'wave)
   (spacemacs/toggle-indent-guide-globally-on)
 
+  ;; <JAVA>
+  ;; (setq eclim-eclipse-dirs "/Applications/Eclipse.app/Contents/Eclipse"
+  ;; 		eclim-executable "/Applications/Eclipse.app/Contents/Eclipse/eclim")
+  (require 'meghanada)
+  (add-hook 'java-mode-hook
+			(lambda ()
+			  (meghanada-mode t)
+			  (gradle-mode t)
+			  (add-hook 'before-save-hook 'delete-trailing-whitespace)))
+  (add-hook 'groovy-mode-hook
+            (lambda ()
+              (gradle-mode t)))
 
   ;; <HIGHLIGHT>
   (define-key evil-normal-state-map "g1" #'highlight-symbol-at-point)
@@ -406,7 +422,7 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (highlight-symbol company-quickhelp web-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data smeargle orgit org magit-gitflow helm-gitignore gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link evil-magit magit magit-popup git-commit with-editor dash async imenu-list pdf-tools tablist flycheck-pos-tip pos-tip flycheck skewer-mode simple-httpd json-snatcher json-reformat multiple-cursors js2-mode dash-functional tern stickyfunc-enhance srefactor flyspell-correct-helm flyspell-correct auto-dictionary yapfify ws-butler window-numbering which-key web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package toc-org swift-mode spacemacs-theme spaceline restart-emacs request rainbow-delimiters quelpa pyvenv pytest pyenv-mode py-isort popwin pip-requirements persp-mode pcre2el paradox org-plus-contrib org-bullets open-junk-file neotree mwim move-text macrostep lorem-ipsum livid-mode live-py-mode linum-relative link-hint json-mode js2-refactor js-doc info+ indent-guide ido-vertical-mode hy-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump disaster define-word cython-mode company-tern company-statistics company-c-headers company-anaconda column-enforce-mode coffee-mode cmake-mode clean-aindent-mode clang-format auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
+    (meghanada flycheck groovy-mode gradle-mode yapfify web-mode web-beautify tagedit stickyfunc-enhance srefactor slim-mode scss-mode sass-mode pyvenv pytest pyenv-mode py-isort pug-mode pip-requirements mwim livid-mode skewer-mode simple-httpd live-py-mode less-css-mode json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc imenu-list hy-mode highlight-symbol helm-pydoc helm-css-scss helm-company helm-c-yasnippet haml-mode emmet-mode disaster cython-mode company-web web-completion-data company-tern dash-functional tern company-statistics company-emacs-eclim eclim company-c-headers company-anaconda company coffee-mode cmake-mode clang-format auto-yasnippet yasnippet anaconda-mode pythonic ac-ispell auto-complete ws-butler window-numbering which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spacemacs-theme spaceline restart-emacs request rainbow-delimiters quelpa popwin persp-mode pcre2el paradox org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide ido-vertical-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
