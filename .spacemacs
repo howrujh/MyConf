@@ -31,8 +31,13 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
-     python
-     ;; swift
+	 typescript
+	 python
+	 ;; swift
+	 (go :variables
+		 go-use-gometalinter t
+		 go-tab-width 4
+		 )
 	 html
 	 ;; java
 	 (javascript :variables javascript-disable-tern-port-files nil)
@@ -44,6 +49,7 @@ values."
      (helm :variables
            helm-follow-mode-persistent t
            helm-ag-use-agignore t
+		   helm-buffers-fuzzy-matching t
       )
 
      (auto-completion :variables

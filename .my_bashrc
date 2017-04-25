@@ -2,13 +2,12 @@
 
 # User specific aliases and functions
 ############## #CTRL + S command off ###########################
-if [ -t 1 ]; then
-   stty ixany
-   stty ixoff -ixon
-
-else
-   xset b off
-fi
+#if [ -t 1 ]; then
+#   stty ixany
+#   stty ixoff -ixon
+#else
+#   xset b off
+#fi
 ######### VI Editing Mode ###################################
 #set -o vi
 
