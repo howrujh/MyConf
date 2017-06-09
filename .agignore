@@ -1,0 +1,17 @@
+*.tags*
+*.map
+*.js.map
+*.bundle.js.map
+*.out
+*.csv
+*.tmp*
+*.old
+*.pdf
+*.md
+*.log
+*.args
+*.dat
+/.meghanada/
+assets
+node_modules
+
