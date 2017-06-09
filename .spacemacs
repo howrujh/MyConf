@@ -31,7 +31,10 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
-	 typescript
+	 yaml
+   (typescript :variables
+               typescript-fmt-on-save t
+               )
 	 python
 	 ;; swift
 	 (go :variables
@@ -49,6 +52,7 @@ values."
      (helm :variables
            helm-follow-mode-persistent t
            helm-ag-use-agignore t
+           helm-ag-base-command "ag --nocolor --nogroup --path-to-ignore ~/.agignore"
 		   helm-buffers-fuzzy-matching t
       )
 
@@ -335,10 +339,23 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
-  (setq-default c-default-style "k&r"
-                c-basic-offset 4
-                tab-width 4
-                indent-tabs-mode t)
+  (setq mac-command-modifier 'meta)
+
+  (add-hook 'c-mode-hook
+            (lambda ()
+
+              (setq-default c-default-style "k&r"
+                            c-basic-offset 4
+                            tab-width 4
+                            indent-tabs-mode t)
+              ))
+
+  ;; (add-hook 'typescript-mode-hook
+  ;;           (lambda ()
+
+  ;;             (setq-default tab-width 2
+  ;;                           indent-tabs-mode t)
+  ;;             ))
 
   (setq-default js2-basic-offset 2)
   (setq-default js-indent-level 2)
@@ -419,19 +436,3 @@ you should place your code here."
   (define-key input-decode-map (kbd "ESC M-O C") [(meta right)])
 )
 
-;; Do not write anything past this comment. This is where Emacs will
-;; auto-generate custom variable definitions.
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (meghanada flycheck groovy-mode gradle-mode yapfify web-mode web-beautify tagedit stickyfunc-enhance srefactor slim-mode scss-mode sass-mode pyvenv pytest pyenv-mode py-isort pug-mode pip-requirements mwim livid-mode skewer-mode simple-httpd live-py-mode less-css-mode json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc imenu-list hy-mode highlight-symbol helm-pydoc helm-css-scss helm-company helm-c-yasnippet haml-mode emmet-mode disaster cython-mode company-web web-completion-data company-tern dash-functional tern company-statistics company-emacs-eclim eclim company-c-headers company-anaconda company coffee-mode cmake-mode clang-format auto-yasnippet yasnippet anaconda-mode pythonic ac-ispell auto-complete ws-butler window-numbering which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spacemacs-theme spaceline restart-emacs request rainbow-delimiters quelpa popwin persp-mode pcre2el paradox org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide ido-vertical-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
