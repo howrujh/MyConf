@@ -89,6 +89,8 @@ values."
    dotspacemacs-additional-packages '(
 									  highlight-symbol
 									  meghanada groovy-mode gradle-mode ;; for java
+                    multiple-cursors
+                    visual-regexp
 									  )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -385,6 +387,24 @@ you should place your code here."
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
   (setq aw-scope 'frame)
 
+  ;; <VISUAL REGEXP>
+  (when (require 'visual-regexp nil 'noerror)
+    ;;  (global-set-key (kbd "C-s") 'vr/isearch-forward)
+    ;;  (global-set-key (kbd "C-r") 'vr/isearch-backward)
+    (define-key global-map (kbd "C-c r") 'vr/replace)
+    (define-key global-map (kbd "C-c q") 'vr/query-replace)
+    ;; if you use multiple-cursors, this is for you:
+    (when (require 'multiple-cursors nil 'noerror)
+      (define-key global-map (kbd "C-c c r") 'vr/mc-mark))
+    )
+
+  ;; <MULTIPLE CURSORS>
+  (when (require 'multiple-cursors nil 'noerror)
+    (global-set-key (kbd "C-c c m") 'mc/edit-lines)
+    (global-set-key (kbd "C-c c p") 'mc/mark-previous-like-this)
+    (global-set-key (kbd "C-c c n") 'mc/mark-next-like-this)
+    )
+
   ;; <DIFF REGION>
   (defun diff-region ()
 	"Select a region to compare"
@@ -436,3 +456,17 @@ you should place your code here."
   (define-key input-decode-map (kbd "ESC M-O C") [(meta right)])
 )
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (visual-regexp yapfify yaml-mode ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tide tagedit stickyfunc-enhance srefactor spaceline slim-mode scss-mode sass-mode restart-emacs request rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox org-plus-contrib org-bullets open-junk-file neotree mwim move-text meghanada macrostep lorem-ipsum livid-mode live-py-mode linum-relative link-hint less-css-mode json-mode js2-refactor js-doc info+ indent-guide imenu-list hy-mode hungry-delete hl-todo highlight-symbol highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag groovy-mode gradle-mode google-translate golden-ratio go-guru go-eldoc fuzzy flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu emmet-mode elisp-slime-nav dumb-jump disaster define-word cython-mode company-web company-tern company-statistics company-go company-c-headers company-anaconda column-enforce-mode coffee-mode cmake-mode clean-aindent-mode clang-format auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
