@@ -80,7 +80,8 @@ values."
      c-c++
      semantic
 	 ;; pdf-tools
-	 imenu-list
+   ;; asciidoc
+   (markdown :variables markdown-live-preview-engine 'vmd)
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -91,6 +92,8 @@ values."
 									  meghanada groovy-mode gradle-mode ;; for java
                     multiple-cursors
                     visual-regexp
+                    imenu-list
+                    textile-mode
 									  )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -170,7 +173,7 @@ values."
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("Source Code Pro"
-                               :size 14
+                               :size 13
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)
@@ -366,6 +369,37 @@ you should place your code here."
   (setq-default powerline-default-separator 'wave)
   (spacemacs/toggle-indent-guide-globally-on)
 
+
+  (defun copy-to-clipboard ()
+    "Copies selection to x-clipboard."
+    (interactive)
+    (if (display-graphic-p)
+        (progn
+          (message "Yanked region to x-clipboard!")
+          (call-interactively 'clipboard-kill-ring-save)
+          )
+      (if (region-active-p)
+          (progn
+            (shell-command-on-region (region-beginning) (region-end) "pbcopy")
+            (message "Yanked region to clipboard!")
+            (deactivate-mark))
+        (message "No region active; can't yank to clipboard!")))
+    )
+
+  (defun paste-from-clipboard ()
+    "Pastes from x-clipboard."
+    (interactive)
+    (if (display-graphic-p)
+        (progn
+          (clipboard-yank)
+          (message "graphics active")
+          )
+      (insert (shell-command-to-string "pbpaste"))
+      )
+    )
+  (define-key global-map (kbd "C-x y") 'copy-to-clipboard)
+  (define-key global-map (kbd "C-x p") 'paste-from-clipboard)
+
   ;; <JAVA>
   ;; (setq eclim-eclipse-dirs "/Applications/Eclipse.app/Contents/Eclipse"
   ;; 		eclim-executable "/Applications/Eclipse.app/Contents/Eclipse/eclim")
@@ -394,8 +428,8 @@ you should place your code here."
     (define-key global-map (kbd "C-c r") 'vr/replace)
     (define-key global-map (kbd "C-c q") 'vr/query-replace)
     ;; if you use multiple-cursors, this is for you:
-    (when (require 'multiple-cursors nil 'noerror)
-      (define-key global-map (kbd "C-c c r") 'vr/mc-mark))
+    ;; (when (require 'multiple-cursors nil 'noerror)
+    ;;   (define-key global-map (kbd "C-c c r") 'vr/mc-mark))
     )
 
   ;; <MULTIPLE CURSORS>
@@ -435,6 +469,15 @@ you should place your code here."
 	  )
 	)
 
+  ;; <EVIL KEY REMAP>
+  (with-eval-after-load 'evil-maps
+    (define-key evil-normal-state-map (kbd "ㅓ") 'evil-next-line)
+    (define-key evil-normal-state-map (kbd "ㅏ") 'evil-previous-line)
+    (define-key evil-normal-state-map (kbd "ㅗ") 'evil-backward-char)
+    (define-key evil-normal-state-map (kbd "ㅣ") 'evil-forward-char)
+    (define-key evil-normal-state-map (kbd "ㅑ") 'evil-insert)
+    )
+
   (global-set-key (kbd "C-c d 1") 'diff-region)
   (global-set-key (kbd "C-c d 2") 'diff-region-now)
 
@@ -463,7 +506,7 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (visual-regexp yapfify yaml-mode ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tide tagedit stickyfunc-enhance srefactor spaceline slim-mode scss-mode sass-mode restart-emacs request rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox org-plus-contrib org-bullets open-junk-file neotree mwim move-text meghanada macrostep lorem-ipsum livid-mode live-py-mode linum-relative link-hint less-css-mode json-mode js2-refactor js-doc info+ indent-guide imenu-list hy-mode hungry-delete hl-todo highlight-symbol highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag groovy-mode gradle-mode google-translate golden-ratio go-guru go-eldoc fuzzy flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu emmet-mode elisp-slime-nav dumb-jump disaster define-word cython-mode company-web company-tern company-statistics company-go company-c-headers company-anaconda column-enforce-mode coffee-mode cmake-mode clean-aindent-mode clang-format auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
+    (textile-mode pandoc-mode ox-pandoc ht org-projectile org-present org-pomodoro alert log4e gntp org-download htmlize gnuplot adoc-mode markup-faces vmd-mode mmm-mode markdown-toc markdown-mode gh-md visual-regexp yapfify yaml-mode ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tide tagedit stickyfunc-enhance srefactor spaceline slim-mode scss-mode sass-mode restart-emacs request rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox org-plus-contrib org-bullets open-junk-file neotree mwim move-text meghanada macrostep lorem-ipsum livid-mode live-py-mode linum-relative link-hint less-css-mode json-mode js2-refactor js-doc info+ indent-guide imenu-list hy-mode hungry-delete hl-todo highlight-symbol highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag groovy-mode gradle-mode google-translate golden-ratio go-guru go-eldoc fuzzy flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu emmet-mode elisp-slime-nav dumb-jump disaster define-word cython-mode company-web company-tern company-statistics company-go company-c-headers company-anaconda column-enforce-mode coffee-mode cmake-mode clean-aindent-mode clang-format auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
