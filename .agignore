@@ -2,6 +2,8 @@
 *.map
 *.js.map
 *.bundle.js.map
+*.min.js
+.js.map
 *.out
 *.csv
 *.tmp*
@@ -14,4 +16,8 @@
 /.meghanada/
 assets
 node_modules
+dist
+platforms
+plugins
+www
 
