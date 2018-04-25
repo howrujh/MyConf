@@ -31,21 +31,11 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
-	 swift
-     octave
-	 yaml
-   (typescript :variables
-               typescript-fmt-on-save t
-               )
-	 python
-	 ;; swift
-	 (go :variables
-		 go-use-gometalinter t
-		 go-tab-width 4
-		 )
-	 html
-	 ;; java
-	 (javascript :variables javascript-disable-tern-port-files nil)
+     html
+     javascript
+     (typescript :variables
+                 typescript-fmt-on-save t
+                 )
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
@@ -55,21 +45,21 @@ values."
            helm-follow-mode-persistent t
            helm-ag-use-agignore t
            helm-ag-base-command "ag --nocolor --nogroup --path-to-ignore ~/.agignore"
-		   helm-buffers-fuzzy-matching t
-      )
-
+           helm-buffers-fuzzy-matching t
+           )
+     ;; auto-completion
+     ;; better-defaults
+     emacs-lisp
      (auto-completion :variables
-					  ;;auto-completion-enable-help-tooltip t
-                      ;;auto-completion-enable-snippets-in-popup t
-					  auto-completion-enable-sort-by-usage t
+                      auto-completion-enable-help-tooltip t
+                      ;; auto-completion-enable-snippets-in-popup t
+                      auto-completion-enable-sort-by-usage t
                       ;;spacemacs-default-company-backends '(company-files company-capf)
                       auto-completion-return-key-behavior 'complete
                       auto-completion-tab-key-behavior 'cycle
                       auto-completion-complete-with-key-sequence nil
                       auto-completion-complete-with-key-sequence-delay 0.1
                       auto-completion-private-snippets-directory nil)
-     better-defaults
-     emacs-lisp
      ;; git
      ;; markdown
      ;; org
@@ -77,27 +67,22 @@ values."
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
      ;; spell-checking
-     ;; syntax-checking
+     (syntax-checking :variables
+                      syntax-checking-enable-by-default nil
+                      syntax-checking-use-original-bitmaps t
+      )
      ;; version-control
-     c-c++
-     (shell :variables shell-default-shell 'eshell)
-     semantic
-	 ;; pdf-tools
-   ;; asciidoc
-   (markdown :variables markdown-live-preview-engine 'vmd)
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(
-									  highlight-symbol
-									  meghanada groovy-mode gradle-mode ;; for java
-                    multiple-cursors
-                    visual-regexp
-                    imenu-list
-                    textile-mode
-									  )
+                                      ;;meghanada groovy-mode gradle-mode ;; for java
+                                      highlight-symbol
+                                      multiple-cursors
+                                      visual-regexp
+                                      )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -289,8 +274,18 @@ values."
    ;; scrolling overrides the default behavior of Emacs which recenters point
    ;; when it reaches the top or bottom of the screen. (default t)
    dotspacemacs-smooth-scrolling t
-   ;; If non nil line numbers are turned on in all `prog-mode' and `text-mode'
-   ;; derivatives. If set to `relative', also turns on relative line numbers.
+   ;; Control line numbers activation.
+   ;; If set to `t' or `relative' line numbers are turned on in all `prog-mode' and
+   ;; `text-mode' derivatives. If set to `relative', line numbers are relative.
+   ;; This variable can also be set to a property list for finer control:
+   ;; '(:relative nil
+   ;;   :disabled-for-modes dired-mode
+   ;;                       doc-view-mode
+   ;;                       markdown-mode
+   ;;                       org-mode
+   ;;                       pdf-view-mode
+   ;;                       text-mode
+   ;;   :size-limit-kb 1000)
    ;; (default nil)
    dotspacemacs-line-numbers nil
    ;; Code folding method. Possible values are `evil' and `origami'.
@@ -334,9 +329,7 @@ executes.
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
 
-  (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
   (setq exec-path (append exec-path '("/usr/local/bin")))
-  (setq-default git-enable-magit-svn-plugin t)
   )
 
 (defun dotspacemacs/user-config ()
@@ -348,30 +341,8 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
   (setq mac-command-modifier 'meta)
-
-  (add-hook 'c-mode-hook
-            (lambda ()
-
-              (setq-default c-default-style "k&r"
-                            c-basic-offset 4
-                            tab-width 4
-                            indent-tabs-mode t)
-              ))
-
-  ;; (add-hook 'typescript-mode-hook
-  ;;           (lambda ()
-
-  ;;             (setq-default tab-width 2
-  ;;                           indent-tabs-mode t)
-  ;;             ))
-
-  (setq-default js2-basic-offset 2)
-  (setq-default js-indent-level 2)
   (setq-default vc-follow-symlinks t)
-
   (setq-default powerline-default-separator 'wave)
-  (spacemacs/toggle-indent-guide-globally-on)
-
 
   (defun copy-to-clipboard ()
     "Copies selection to x-clipboard."
@@ -402,19 +373,6 @@ you should place your code here."
     )
   (define-key global-map (kbd "C-x y") 'copy-to-clipboard)
   (define-key global-map (kbd "C-x p") 'paste-from-clipboard)
-
-  ;; <JAVA>
-  ;; (setq eclim-eclipse-dirs "/Applications/Eclipse.app/Contents/Eclipse"
-  ;; 		eclim-executable "/Applications/Eclipse.app/Contents/Eclipse/eclim")
-  (require 'meghanada)
-  (add-hook 'java-mode-hook
-			(lambda ()
-			  (meghanada-mode t)
-			  (gradle-mode t)
-			  (add-hook 'before-save-hook 'delete-trailing-whitespace)))
-  (add-hook 'groovy-mode-hook
-            (lambda ()
-              (gradle-mode t)))
 
   ;; <HIGHLIGHT>
   (define-key evil-normal-state-map "g1" #'highlight-symbol-at-point)
@@ -500,16 +458,20 @@ you should place your code here."
   (define-key input-decode-map (kbd "ESC M-O B") [(meta down)])
   (define-key input-decode-map (kbd "ESC M-O D") [(meta left)])
   (define-key input-decode-map (kbd "ESC M-O C") [(meta right)])
-)
 
+  )
+
+;; Do not write anything past this comment. This is where Emacs will
+;; auto-generate custom variable definitions.
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(flycheck-temp-prefix ".#flycheck")
  '(package-selected-packages
    (quote
-    (xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help typescript-mode powerline spinner flycheck skewer-mode simple-httpd json-snatcher json-reformat multiple-cursors js2-mode hydra parent-mode projectile pkg-info epl haml-mode flx smartparens iedit anzu evil goto-chg undo-tree highlight diminish web-completion-data dash-functional tern go-mode company bind-map bind-key yasnippet packed anaconda-mode pythonic f dash s helm avy helm-core async auto-complete popup swift-mode textile-mode pandoc-mode ox-pandoc ht org-projectile org-present org-pomodoro alert log4e gntp org-download htmlize gnuplot adoc-mode markup-faces vmd-mode mmm-mode markdown-toc markdown-mode gh-md visual-regexp yapfify yaml-mode ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tide tagedit stickyfunc-enhance srefactor spaceline slim-mode scss-mode sass-mode restart-emacs request rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox org-plus-contrib org-bullets open-junk-file neotree mwim move-text meghanada macrostep lorem-ipsum livid-mode live-py-mode linum-relative link-hint less-css-mode json-mode js2-refactor js-doc info+ indent-guide imenu-list hy-mode hungry-delete hl-todo highlight-symbol highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag groovy-mode gradle-mode google-translate golden-ratio go-guru go-eldoc fuzzy flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu emmet-mode elisp-slime-nav dumb-jump disaster define-word cython-mode company-web company-tern company-statistics company-go company-c-headers company-anaconda column-enforce-mode coffee-mode cmake-mode clean-aindent-mode clang-format auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
+    (visual-regexp highlight-symbol web-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data flycheck-pos-tip web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc company-tern dash-functional tern coffee-mode company-quickhelp pos-tip helm-company helm-c-yasnippet fuzzy company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete tide typescript-mode flycheck ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump diminish define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
